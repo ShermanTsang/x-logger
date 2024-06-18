@@ -8,6 +8,7 @@ function getStyledChalkInstance(styles: (keyof ChalkInstance)[], text: string) {
 }
 
 export class Logger {
+  // @ts-expect-error
   private _type: string
   private _message: string = ''
   private _messageStyles: (keyof ChalkInstance)[] = []
