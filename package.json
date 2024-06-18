@@ -4,9 +4,6 @@
   "author": "ShermanT",
   "main": ".output/dist/index.js",
   "types": ".output/dist/index.d.ts",
-  "files": [
-    ".output/dist"
-  ],
   "description": "",
   "license": "ISC",
   "scripts": {
