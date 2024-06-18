@@ -1,0 +1,24 @@
+{
+  "name": "@shermant/boilerplate-bun",
+  "version": "1.0.0",
+  "author": "ShermanT",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.20.0",
+    "@types/bun": "^1.1.4",
+    "@types/node": "^20.14.2",
+    "eslint": "^9.4.0",
+    "eslint-plugin-format": "^0.1.1"
+  },
+  "bin": {
+    "bin-name": "bin/index.js"
+  },
+  "description": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "bun build ./src/index.ts --outdir ./.output/build --target node"
+  },
+  "type": "module"
+}
