@@ -13,7 +13,6 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
     // Best practices
     "strict": true,
     "skipLibCheck": true,
@@ -23,15 +22,16 @@
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true,
     // Custom
-    "declaration": true
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": ".output/dist"
   },
   "include": [
     "src/**/*"
   ],
-  // Include all files in src directory
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    ".output"
   ]
-  // Exclude node_modules and test files}
 }
