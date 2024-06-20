@@ -132,7 +132,7 @@ export class Logger {
     return this
   }
 
-  displayTime(isShow: boolean) {
+  time(isShow: boolean) {
     this._displayTime = isShow
     return this
   }
