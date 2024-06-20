@@ -20,7 +20,7 @@
     // Some stricter flags
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "noPropertyAccessFromIndexSignature": false,
     // Custom
     "declaration": true,
     "emitDeclarationOnly": true,
