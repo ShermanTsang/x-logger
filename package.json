@@ -7,10 +7,11 @@
   "description": "",
   "license": "ISC",
   "scripts": {
-    "dev": "bun run src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dist:clean": "rimraf -rf ./.output/dist",
-    "build": "bun run dist:clean && bun build ./src/index.ts --outdir ./.output/dist --target node && tsc"
+    "dev": "bun run ./src/index.ts",
+    "test": "vitest --watch=false",
+    "test:watch": "vitest --watch=true",
+    "clean:dist": "rimraf -rf ./.output/dist",
+    "build": "bun run test && bun run clean:dist && bun build ./src/index.ts --outdir ./.output/dist --target node && tsc"
   },
   "type": "module",
   "devDependencies": {
@@ -19,7 +20,8 @@
     "@types/node": "^20.14.2",
     "eslint": "^9.4.0",
     "eslint-plugin-format": "^0.1.1",
-    "rimraf": "^5.0.7"
+    "rimraf": "^5.0.7",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "chalk": "^5.3.0"
