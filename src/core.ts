@@ -1,46 +1,38 @@
 import type { ChalkInstance } from 'chalk'
 import chalk from 'chalk'
+import type { LoggerType } from './typings'
 
-function getStyledChalkInstance(styles: (keyof ChalkInstance)[], text: string) {
+function getStyledChalkInstance(styles: LoggerType.Styles = [], text: string) {
   return styles.reduce((accumulator, currentStyle) => {
     return (chalk[currentStyle] as ChalkInstance)(accumulator)
   }, text)
 }
 
 export class Logger {
-  // @ts-expect-error
-  private _type: string
   private _message: string = ''
-  private _messageStyles: (keyof ChalkInstance)[] = []
+  private _messageStyles: LoggerType.Styles = []
   private _tag: string | null = null
-  private _tagStyles: (keyof ChalkInstance)[] = []
+  private _tagStyles: LoggerType.Styles = []
   private _data: any
   private _displayTime: boolean = false
   private _prependDivider: boolean = false
-  private _prependDividerStyles: (keyof ChalkInstance)[] = []
+  private _prependDividerStyles: LoggerType.Styles = []
   private _prependDividerLength: number = 1
   private _prependDividerChar: string = '-'
   private _appendDivider: boolean = false
-  private _appendDividerStyles: (keyof ChalkInstance)[] = []
+  private _appendDividerStyles: LoggerType.Styles = []
   private _appendDividerChar: string = '-'
   private _appendDividerLength: number = 1
   private _singleDivider: boolean = false
-  private _singleDividerStyles: (keyof ChalkInstance)[] = []
+  private _singleDividerStyles: LoggerType.Styles = []
   private _singleDividerChar: string = '-'
   private _singleDividerLength: number = 1
 
-  constructor(
-    type: LoggerParams['type'] = 'debug',
-    tagStyles: (keyof ChalkInstance)[],
-  ) {
-    this._type = type
+  constructor(tagStyles: LoggerType.Styles) {
     this._tagStyles = tagStyles
   }
 
-  private static _stylesMap: Record<
-    LoggerParams['type'] | string,
-    (keyof ChalkInstance)[]
-  > = {
+  static stylesMap: Record<LoggerType.Type | string, LoggerType.Styles> = {
     info: ['bgBlueBright'],
     warn: ['bgYellowBright'],
     error: ['bgRedBright'],
@@ -50,53 +42,63 @@ export class Logger {
     plain: ['white'],
   }
 
-  static createLoggerInstance(type: LoggerParams['type']) {
-    if (!(type in Logger._stylesMap)) {
-      throw new Error(`Type "${type}" is not defined in Logger styles map.`)
-    }
-    return new this(type, Logger._stylesMap[type])
+  static getLoggerInstance(type: LoggerType.Type, styles?: LoggerType.Styles) {
+    styles && (Logger.stylesMap[type] = styles)
+    return new this(Logger.stylesMap[type])
   }
 
-  static addLoggerType(type: string, styles: (keyof ChalkInstance)[]) {
-    if (type in Logger._stylesMap) {
-      throw new Error(`Type "${type}" already exists in Logger styles map.`)
+  static type(type: LoggerType.Type, styles?: LoggerType.Styles) {
+    if (type in Logger && styles) {
+      console.log(
+        chalk.yellow.underline(
+          `Logger type "${String(type)}" is preset. Add custom getter will override the preset.`,
+        ),
+      )
     }
-    Logger._stylesMap[type] = styles
+    const loggerInstance = Logger.getLoggerInstance(type, styles)
+    Object.defineProperty(Logger, type, {
+      get() {
+        return loggerInstance
+      },
+      configurable: true,
+      enumerable: true,
+    })
+    return loggerInstance
   }
 
   static get plain() {
-    return this.createLoggerInstance('plain')
+    return this.getLoggerInstance('plain')
   }
 
   static get info() {
-    return this.createLoggerInstance('info')
+    return this.getLoggerInstance('info')
   }
 
   static get warn() {
-    return this.createLoggerInstance('warn')
+    return this.getLoggerInstance('warn')
   }
 
   static get error() {
-    return this.createLoggerInstance('error')
+    return this.getLoggerInstance('error')
   }
 
   static get debug() {
-    return this.createLoggerInstance('debug')
+    return this.getLoggerInstance('debug')
   }
 
   static get success() {
-    return this.createLoggerInstance('success')
+    return this.getLoggerInstance('success')
   }
 
   static get failure() {
-    return this.createLoggerInstance('failure')
+    return this.getLoggerInstance('failure')
   }
 
   private setDividerProperties(
     type: 'prepend' | 'append' | 'single',
     char?: string,
     length?: number,
-    styles?: (keyof ChalkInstance)[],
+    styles?: LoggerType.Styles,
   ) {
     const prefix
       = type === 'prepend'
@@ -114,26 +116,18 @@ export class Logger {
   divider(
     char?: string,
     length?: number,
-    styles: (keyof ChalkInstance)[] = ['gray'],
+    styles: LoggerType.Styles = ['gray'],
   ) {
     this.setDividerProperties('single', char, length, styles)
     this.print()
   }
 
-  prependDivider(
-    char?: string,
-    length?: number,
-    styles?: (keyof ChalkInstance)[],
-  ) {
+  prependDivider(char?: string, length?: number, styles?: LoggerType.Styles) {
     this.setDividerProperties('prepend', char, length, styles)
     return this
   }
 
-  appendDivider(
-    char?: string,
-    length?: number,
-    styles?: (keyof ChalkInstance)[],
-  ) {
+  appendDivider(char?: string, length?: number, styles?: LoggerType.Styles) {
     this.setDividerProperties('append', char, length, styles)
     return this
   }
@@ -143,13 +137,13 @@ export class Logger {
     return this
   }
 
-  message(message: string, styles?: (keyof ChalkInstance)[]) {
+  message(message: string, styles?: LoggerType.Styles) {
     this._message = message
     styles && (this._messageStyles = styles)
     return this
   }
 
-  tag(tag: string, styles?: (keyof ChalkInstance)[]) {
+  tag(tag: string, styles?: LoggerType.Styles) {
     this._tag = tag
     styles && (this._tagStyles = styles)
     return this
