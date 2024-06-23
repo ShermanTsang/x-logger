@@ -205,6 +205,10 @@ export class Logger {
     const output = `${time} ${tag} ${message}`.trim()
     console.log(output)
 
+    if (this._data) {
+      console.log(this._data)
+    }
+
     if (this._appendDivider) {
       console.log(
         getStyledChalkInstance(
@@ -212,10 +216,6 @@ export class Logger {
           this._appendDividerChar.repeat(this._appendDividerLength),
         ),
       )
-    }
-
-    if (this._data) {
-      console.log(this._data)
     }
   }
 }
