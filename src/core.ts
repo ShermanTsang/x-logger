@@ -96,9 +96,9 @@ export class Logger {
 
   private setDividerProperties(
     type: 'prepend' | 'append' | 'single',
-    char?: string,
-    length?: number,
-    styles?: LoggerType.Styles,
+    char: string = '-',
+    length: number = 40,
+    styles: LoggerType.Styles = ['gray'],
   ) {
     const prefix
       = type === 'prepend'
@@ -113,11 +113,7 @@ export class Logger {
       = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`])
   }
 
-  divider(
-    char?: string,
-    length?: number,
-    styles: LoggerType.Styles = ['gray'],
-  ) {
+  divider(char?: string, length?: number, styles?: LoggerType.Styles) {
     this.setDividerProperties('single', char, length, styles)
     this.print()
   }
