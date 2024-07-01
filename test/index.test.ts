@@ -55,3 +55,7 @@ it('override preset logger type', () => {
     .prependDivider()
     .print()
 })
+
+it('set silent logger', () => {
+  logger.type('info').message('you can\'t see me').print(false)
+})

@@ -27,6 +27,7 @@ export class Logger {
   private _singleDividerStyles: LoggerType.Styles = []
   private _singleDividerChar: string = '-'
   private _singleDividerLength: number = 1
+  private _isVisible: boolean = true
 
   constructor(tagStyles: LoggerType.Styles) {
     this._tagStyles = tagStyles
@@ -128,8 +129,8 @@ export class Logger {
     return this
   }
 
-  time(isShow: boolean) {
-    this._displayTime = isShow
+  time(isVisible: boolean) {
+    this._displayTime = isVisible
     return this
   }
 
@@ -172,46 +173,49 @@ export class Logger {
     return getStyledChalkInstance(this._tagStyles, unifiedTag)
   }
 
-  print() {
-    if (this._singleDivider) {
-      console.log(
-        getStyledChalkInstance(
-          this._singleDividerStyles,
-          this._singleDividerChar.repeat(this._singleDividerLength),
-        ),
-      )
-      return
-    }
+  print(isVisible: boolean = true) {
+    this._isVisible = isVisible
+    if (this._isVisible) {
+      if (this._singleDivider) {
+        console.log(
+          getStyledChalkInstance(
+            this._singleDividerStyles,
+            this._singleDividerChar.repeat(this._singleDividerLength),
+          ),
+        )
+        return
+      }
 
-    const tag = this.formatTag()
-    const message = this.formatMessage()
-    const time = this._displayTime
-      ? chalk.gray(new Date().toLocaleTimeString())
-      : ''
+      const tag = this.formatTag()
+      const message = this.formatMessage()
+      const time = this._displayTime
+        ? chalk.gray(new Date().toLocaleTimeString())
+        : ''
 
-    if (this._prependDivider) {
-      console.log(
-        getStyledChalkInstance(
-          this._prependDividerStyles,
-          this._prependDividerChar.repeat(this._prependDividerLength),
-        ),
-      )
-    }
+      if (this._prependDivider) {
+        console.log(
+          getStyledChalkInstance(
+            this._prependDividerStyles,
+            this._prependDividerChar.repeat(this._prependDividerLength),
+          ),
+        )
+      }
 
-    const output = `${time} ${tag} ${message}`.trim()
-    console.log(output)
+      const output = `${time} ${tag} ${message}`.trim()
+      console.log(output)
 
-    if (this._data) {
-      console.log(this._data)
-    }
+      if (this._data) {
+        console.log(this._data)
+      }
 
-    if (this._appendDivider) {
-      console.log(
-        getStyledChalkInstance(
-          this._appendDividerStyles,
-          this._appendDividerChar.repeat(this._appendDividerLength),
-        ),
-      )
+      if (this._appendDivider) {
+        console.log(
+          getStyledChalkInstance(
+            this._appendDividerStyles,
+            this._appendDividerChar.repeat(this._appendDividerLength),
+          ),
+        )
+      }
     }
   }
 }
