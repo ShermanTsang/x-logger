@@ -1,7 +1,7 @@
 import type { ChalkInstance } from 'chalk'
 import type { Logger } from '../core.ts'
 
-export namespace LoggerType {
+export namespace Type {
   type PresetTypes =
     | 'info'
     | 'warn'

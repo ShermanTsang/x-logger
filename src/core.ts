@@ -1,8 +1,8 @@
 import type { ChalkInstance } from 'chalk'
 import chalk from 'chalk'
-import type { LoggerType } from './typings'
+import type { Type } from './typings'
 
-function getStyledChalkInstance(styles: LoggerType.Styles = [], text: string) {
+function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
   return styles.reduce((accumulator, currentStyle) => {
     return (chalk[currentStyle] as ChalkInstance)(accumulator)
   }, text)
@@ -10,30 +10,30 @@ function getStyledChalkInstance(styles: LoggerType.Styles = [], text: string) {
 
 export class Logger {
   private _message: string = ''
-  private _messageStyles: LoggerType.Styles = []
+  private _messageStyles: Type.Styles = []
   private _tag: string | null = null
-  private _tagStyles: LoggerType.Styles = []
+  private _tagStyles: Type.Styles = []
   private _data: any
   private _displayTime: boolean = false
   private _prependDivider: boolean = false
-  private _prependDividerStyles: LoggerType.Styles = []
+  private _prependDividerStyles: Type.Styles = []
   private _prependDividerLength: number = 1
   private _prependDividerChar: string = '-'
   private _appendDivider: boolean = false
-  private _appendDividerStyles: LoggerType.Styles = []
+  private _appendDividerStyles: Type.Styles = []
   private _appendDividerChar: string = '-'
   private _appendDividerLength: number = 1
   private _singleDivider: boolean = false
-  private _singleDividerStyles: LoggerType.Styles = []
+  private _singleDividerStyles: Type.Styles = []
   private _singleDividerChar: string = '-'
   private _singleDividerLength: number = 1
   private _isVisible: boolean = true
 
-  constructor(tagStyles: LoggerType.Styles) {
+  constructor(tagStyles: Type.Styles) {
     this._tagStyles = tagStyles
   }
 
-  static stylesMap: Record<LoggerType.Type | string, LoggerType.Styles> = {
+  static stylesMap: Record<Type.Type | string, Type.Styles> = {
     info: ['bgBlueBright'],
     warn: ['bgYellowBright'],
     error: ['bgRedBright'],
@@ -43,12 +43,12 @@ export class Logger {
     plain: ['white'],
   }
 
-  static getLoggerInstance(type: LoggerType.Type, styles?: LoggerType.Styles) {
+  static getLoggerInstance(type: Type.Type, styles?: Type.Styles) {
     styles && (Logger.stylesMap[type] = styles)
     return new this(Logger.stylesMap[type])
   }
 
-  static type(type: LoggerType.Type, styles?: LoggerType.Styles) {
+  static type(type: Type.Type, styles?: Type.Styles) {
     if (type in Logger && styles) {
       console.log(
         chalk.yellow.underline(
@@ -99,7 +99,7 @@ export class Logger {
     type: 'prepend' | 'append' | 'single',
     char: string = '-',
     length: number = 40,
-    styles: LoggerType.Styles = ['gray'],
+    styles: Type.Styles = ['gray'],
   ) {
     const prefix
       = type === 'prepend'
@@ -114,33 +114,33 @@ export class Logger {
       = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`])
   }
 
-  divider(char?: string, length?: number, styles?: LoggerType.Styles) {
+  divider(char?: string, length?: number, styles?: Type.Styles) {
     this.setDividerProperties('single', char, length, styles)
     this.print()
   }
 
-  prependDivider(char?: string, length?: number, styles?: LoggerType.Styles) {
+  prependDivider(char?: string, length?: number, styles?: Type.Styles) {
     this.setDividerProperties('prepend', char, length, styles)
     return this
   }
 
-  appendDivider(char?: string, length?: number, styles?: LoggerType.Styles) {
+  appendDivider(char?: string, length?: number, styles?: Type.Styles) {
     this.setDividerProperties('append', char, length, styles)
     return this
   }
 
-  time(isVisible: boolean) {
-    this._displayTime = isVisible
+  time(isDisplay: boolean = true) {
+    this._displayTime = isDisplay
     return this
   }
 
-  message(message: string, styles?: LoggerType.Styles) {
+  message(message: string, styles?: Type.Styles) {
     this._message = message
     styles && (this._messageStyles = styles)
     return this
   }
 
-  tag(tag: string, styles?: LoggerType.Styles) {
+  tag(tag: string, styles?: Type.Styles) {
     this._tag = tag
     styles && (this._tagStyles = styles)
     return this
