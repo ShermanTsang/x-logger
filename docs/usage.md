@@ -25,11 +25,18 @@ logger.plain.tag('plain title').message('This is a plain message').print();
 
 ## `Logger` class
 
-All functions are provided by the `Logger` class, but you don't need to create an instance of the `Logger` class
-white `new` EcmaScript syntax.
+All functions are provided by the `Logger` class.
+
+When you invoke `Logger` class and chain call `type` function, you have no need to create an instance of the `Logger`
+class white `new` EcmaScript syntax.
 
 ```typescript
 import {Logger} from '@shermant/logger';
+
+// You can use `Logger` instances sharing the same log type and other config options in this way.
+const logger = Logger.type('info').time().prependDivider('♥');
+logger.tag('love').message('the world').print();
+logger.tag('love').message('you').print();
 ```
 
 ## `logger` proxy
