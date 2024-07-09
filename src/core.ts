@@ -119,6 +119,11 @@ export class Logger {
     this.print()
   }
 
+  styles(styles: Type.Styles) {
+    this._messageStyles = styles
+    return this
+  }
+
   prependDivider(char?: string, length?: number, styles?: Type.Styles) {
     this.setDividerProperties('prepend', char, length, styles)
     return this
