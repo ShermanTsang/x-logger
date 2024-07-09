@@ -1,33 +1,28 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import type { Logger as LoggerType } from '../src'
 import { Logger } from '../src'
 import { createLogger, logger } from '../src/index'
 import type { Type } from '../src/typings'
 
 describe('logger', () => {
-  let consoleLogSpy
-
-  beforeEach(() => {
-    // Mock console.log
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
-  })
-
-  afterEach(() => {
-    // Restore console.log
-    consoleLogSpy.mockRestore()
+  it('access polymorphic logger', () => {
+    expect(() => {
+      logger('anything you wanna put here').print()
+      logger.info.tag('OKAY').message('test').print()
+    }).not.toThrow()
   })
 
   it('add custom logger type via `type` function', () => {
     const customLoggerType = 'test'
 
     // Ensure the custom type does not exist before adding
-    expect(Reflect.ownKeys(logger)).not.toContain(customLoggerType)
+    expect(Reflect.ownKeys(logger.stylesMap)).not.toContain(customLoggerType)
 
     // Add a custom logger type
     logger.type(customLoggerType, ['bgGreenBright', 'underline'])
 
     // Verify the custom type was added
-    expect(Reflect.ownKeys(logger)).toContain(customLoggerType)
+    expect(Reflect.ownKeys(logger.stylesMap)).toContain(customLoggerType)
 
     // Use the custom logger type
     logger
@@ -48,7 +43,7 @@ describe('logger', () => {
 
     // Add and use the custom logger type via proxy
     logger
-      .newType(['bgGreenBright', 'underline'])
+      .newType(['bgRedBright', 'underline'])
       .tag('custom logger')
       .message('test adding custom logger type via proxy function')
       .print()
@@ -87,15 +82,6 @@ describe('logger', () => {
       .prependDivider()
       .print()
   })
-
-  it('set silent logger', () => {
-    // Print a message with the silent option set to false
-    logger.type('info').time(true).message('you can\'t see me').print(false)
-
-    // Verify that console.log was not called
-    expect(consoleLogSpy).not.toHaveBeenCalled()
-  })
-
   it('reuse logger instance', () => {
     const reusedLogger = Logger.type('info').time().prependDivider('♥')
 

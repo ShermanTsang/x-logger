@@ -1,7 +1,7 @@
 import { Logger } from './core.ts'
 import type { Type } from './typings'
 
-export const loggerProxy = new Proxy(Logger, {
+export const typeProxyHandler = new Proxy(Logger, {
   get(target, prop, receiver) {
     if (!(prop in target)) {
       return function (...args: any[]) {
@@ -21,8 +21,8 @@ export const loggerProxy = new Proxy(Logger, {
   },
 }) as typeof Logger & Record<string, Logger>
 
-export function createLoggerWithCustomTypeProxy<
+export function createLoggerWithCustomType<
   T extends Record<string, (styles: Type.Style[]) => Logger>,
 >() {
-  return loggerProxy as unknown as typeof Logger & T
+  return typeProxyHandler as unknown as typeof Logger & T
 }

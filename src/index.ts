@@ -1,5 +1,3 @@
 export { Logger } from './core.ts'
-export {
-  loggerProxy as logger,
-  createLoggerWithCustomTypeProxy as createLogger,
-} from './proxy.ts'
+export { createLoggerWithCustomType as createLogger } from './wrapper.ts'
+export { accessor as logger } from './accessor.ts'
