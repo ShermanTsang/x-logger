@@ -1,11 +1,13 @@
 # API & Usage
 
-The basic usage involves using the logger proxy to log messages. Predefined log types are wrapped in static getters,
+The basic usage involves using the logger `accessor`(function-based proxy) to print messages.
+
+Predefined log types are wrapped in static getters,
 allowing direct use.
 
 ## `Logger.[TypeName]` static getter
 
-The basic usage of this package is to use the `logger` proxy to log messages.
+The basic usage of this package is to use the `logger` accessor to log messages.
 
 This package wraps preset log types in static getters, and you can use them directly.
 
@@ -39,11 +41,11 @@ logger.tag('love').message('the world').print();
 logger.tag('love').message('you').print();
 ```
 
-## `logger` proxy
+## `logger` accessor
 
-You are recommend to use the `logger` proxy to access the `Logger` class.
+You are recommend to use the `logger` accessor to use the `Logger` class.
 
-With the `logger` proxy, you can use the `Logger` class without creating an instance.
+With the `logger` accessor, you can use the `Logger` class without creating an instance.
 
 ```typescript
 import {logger} from '@shermant/logger';
@@ -189,4 +191,16 @@ If you want to display the log time, you can use the `time()` method.
 import {logger} from '@shermant/logger';
 
 logger.info.tag('info title').time().message('This is an info message').print();
+```
+
+## `styles()` method
+
+Use `styles()` to add styles to the log message.
+
+Note that the styles will only be applied to the log message without the tag part.
+
+```typescript
+import {logger} from '@shermant/logger';
+
+logger.info.tag('info title').styles(['bgRed', 'white']).message('This is an info message').print();
 ```
