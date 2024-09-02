@@ -15,6 +15,7 @@ export class Logger {
   private _tagStyles: Type.Styles = []
   private _data: any
   private _displayTime: boolean = false
+  private _displayData: boolean = true
   private _prependDivider: boolean = false
   private _prependDividerStyles: Type.Styles = []
   private _prependDividerLength: number = 1
@@ -151,8 +152,9 @@ export class Logger {
     return this
   }
 
-  data(data: any) {
+  data(data: any, displayData?: boolean) {
     this._data = data
+    displayData && (this._displayData = displayData)
     return this
   }
 
@@ -209,7 +211,7 @@ export class Logger {
       const output = `${time} ${tag} ${message}`.trim()
       console.log(output)
 
-      if (this._data) {
+      if (this._displayData && this._data) {
         console.log(this._data)
       }
 

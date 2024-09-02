@@ -204,3 +204,21 @@ import {logger} from '@shermant/logger';
 
 logger.info.tag('info title').styles(['bgRed', 'white']).message('This is an info message').print();
 ```
+
+## `data()` method
+
+Use `data()` method to print your data below the log message.
+
+The second parameter is a boolean value that controls whether to print the data in the log message, default value is
+`true`.
+
+```typescript
+logger.info.tag('info title').styles(['bgRed', 'white']).message('error data')
+    .data(
+        {
+            error: 'error message',
+            status: 500
+        },
+        false
+    ).print();
+```
