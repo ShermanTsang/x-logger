@@ -1,7 +1,7 @@
 // .vitepress/config.js
 export default {
   // site-level options
-  base: '/Logger-TypeScript/',
+  base: '/x-logger/',
   title: '@shermant/logger',
   description: 'A lightweight logger tool',
   lastUpdated: true,
