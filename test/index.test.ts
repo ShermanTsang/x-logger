@@ -82,11 +82,18 @@ describe('logger', () => {
       .prependDivider()
       .print()
   })
+
   it('reuse logger instance', () => {
     const reusedLogger = Logger.type('info').time().prependDivider('♥')
 
     // Use the reused logger instance to print multiple messages
     reusedLogger.tag('love').message('the world').print()
     reusedLogger.tag('love').message('you').print()
+  })
+
+  it('transform to string', () => {
+    const string = logger('this is [[string]]').toString()
+    expect(typeof string).toBe('string')
+    expect(string).toBe('this is [4m[33mstring[39m[24m')
   })
 })

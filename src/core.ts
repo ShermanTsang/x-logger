@@ -53,7 +53,7 @@ export class Logger {
     if (type in Logger && styles) {
       console.log(
         chalk.yellow.underline(
-          `Logger type "${String(type)}" is preset. Add custom getter will override the preset.`,
+                    `Logger type "${String(type)}" is preset. Add custom getter will override the preset.`,
         ),
       )
     }
@@ -98,21 +98,21 @@ export class Logger {
 
   private setDividerProperties(
     type: 'prepend' | 'append' | 'single',
-    char: string = '-',
-    length: number = 40,
-    styles: Type.Styles = ['gray'],
+        char: string = '-',
+        length: number = 40,
+        styles: Type.Styles = ['gray'],
   ) {
     const prefix
-      = type === 'prepend'
-        ? '_prependDivider'
-        : type === 'append'
-          ? '_appendDivider'
-          : '_singleDivider'
+            = type === 'prepend'
+              ? '_prependDivider'
+              : type === 'append'
+                ? '_appendDivider'
+                : '_singleDivider'
     this[`${prefix}`] = true
     this[`${prefix}Char`] = char || this[`${prefix}Char`]
     this[`${prefix}Styles`] = styles || this[`${prefix}Styles`]
     this[`${prefix}Length`]
-      = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`])
+            = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`])
   }
 
   divider(char?: string, length?: number, styles?: Type.Styles) {
@@ -224,5 +224,9 @@ export class Logger {
         )
       }
     }
+  }
+
+  toString() {
+    return this.formatMessage()
   }
 }

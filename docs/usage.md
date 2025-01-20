@@ -222,3 +222,13 @@ logger.info.tag('info title').styles(['bgRed', 'white']).message('error data')
         false
     ).print();
 ```
+
+## `toString()` method
+
+Use `toString()` method to get the formatted and rendered log message.
+
+```typescript
+import {logger} from '@shermant/logger';
+
+logger('This is an info [[message]]').toString();
+```
