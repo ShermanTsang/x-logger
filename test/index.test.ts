@@ -92,7 +92,14 @@ describe('logger', () => {
   })
 
   it('transform to string', () => {
-    const string = logger('this is [[string]]').toString()
+    const rawText = 'this is [[string]]'
+    const string = logger(rawText).toString()
+    expect(string !== rawText).toBe(true)
     expect(typeof string).toBe('string')
+  })
+
+  it('show only single divider', () => {
+    logger.info.divider('-')
+    expect(logger.info.prependDivider().toString().split('\n').length).toBe(1)
   })
 })

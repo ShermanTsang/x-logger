@@ -9,7 +9,7 @@ function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
 }
 
 export class Logger {
-  private _message: string = ''
+  private _message: string | null = null
   private _messageStyles: Type.Styles = []
   private _tag: string | null = null
   private _tagStyles: Type.Styles = []
@@ -159,7 +159,7 @@ export class Logger {
   }
 
   private formatMessage() {
-    let formattedMessage = this._message
+    let formattedMessage = this._message || ''
     if (formattedMessage) {
       formattedMessage = formattedMessage.replace(
         /\[\[(.+?)\]\]/g,
@@ -208,8 +208,10 @@ export class Logger {
         )
       }
 
-      const output = `${time} ${tag} ${message}`.trim()
-      console.log(output)
+      if (time || tag || message) {
+        const output = `${time} ${tag} ${message}`.trim()
+        console.log(output)
+      }
 
       if (this._displayData && this._data) {
         console.log(this._data)
