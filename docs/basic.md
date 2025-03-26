@@ -17,16 +17,17 @@ and supports the dynamic creation of new log types.
 - Log prepend and append dividers
 - Displaying log time
 - Dynamic creation of custom log types
+- Interactive spinner-based logging with `StreamLogger`
 
 ## Installation
 
 Install using any package manager: npm, pnpm, yarn, or bun:
 
 ```bash
+bun add @shermant/logger
 npm install @shermant/logger
 pnpm install @shermant/logger
 yarn add @shermant/logger
-bun add @shermant/logger
 ```
 
 ## Concept
@@ -51,12 +52,23 @@ strings: the background color and the text color.
 Below is the type definition of the `Style` type
 
 ```typescript
-import {ChalkInstance} from "chalk";
+import { ChalkInstance } from 'chalk'
 
 namespace LoggerType {
     // ignored content...
-    type Style = keyof ChalkInstance;
+    type Style = keyof ChalkInstance
     type Styles = Style[]
     // ignored content...
 }
 ```
+
+### StreamLogger
+
+The `StreamLogger` class provides interactive terminal logging with spinners. It's built on top of the Ora package and allows you to display loading states, success/failure indicators, and detailed progress messages in the terminal.
+
+Key features of `StreamLogger`:
+- Interactive spinners for indicating in-progress operations
+- Support for multiple states: start, stop, succeed, fail
+- Custom styling for text, details, and prefix elements
+- Ability to set delays between state changes
+- Chainable API for fluent configuration

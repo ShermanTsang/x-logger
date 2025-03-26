@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Logger as LoggerType } from '../src'
-import { Logger } from '../src'
+import { Logger, StreamLogger } from '../src'
 import { createLogger, logger } from '../src/index'
 import type { Type } from '../src/typings'
 
@@ -101,5 +101,21 @@ describe('logger', () => {
   it('show only single divider', () => {
     logger.info.divider('-')
     expect(logger.info.prependDivider().toString().split('\n').length).toBe(1)
+  })
+
+  it('should display streaming logger', async () => {
+    const streamLogger = new StreamLogger('❤️ test', ['underline'])
+
+    expect(streamLogger.state).toBe('start')
+
+    await streamLogger
+      .setText('changing', ['bgGreenBright', 'underline'])
+      .setDetail('you looks pretty', ['bgGreenBright', 'underline'])
+      .setDelay(1000)
+      .update()
+
+    await streamLogger
+      .setState('succeed')
+      .update()
   })
 })

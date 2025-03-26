@@ -1,6 +1,10 @@
 import type { ChalkInstance } from 'chalk'
 import chalk from 'chalk'
+import type { Color, Ora } from 'ora'
+import ora from 'ora'
 import type { Type } from './typings'
+import { logger } from './index.ts'
+import { sleep } from './utils.ts'
 
 function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
   return styles.reduce((accumulator, currentStyle) => {
@@ -35,7 +39,7 @@ export class Logger {
   }
 
   static stylesMap: Record<Type.Type | string, Type.Styles> = {
-    info: ['bgBlueBright'],
+    info: ['blueBright', 'underline'],
     warn: ['bgYellowBright'],
     error: ['bgRedBright'],
     debug: ['bgCyanBright'],
@@ -66,6 +70,10 @@ export class Logger {
       enumerable: true,
     })
     return loggerInstance
+  }
+
+  static get stream() {
+    return new StreamLogger()
   }
 
   static get plain() {
@@ -230,5 +238,162 @@ export class Logger {
 
   toString() {
     return this.formatMessage()
+  }
+}
+
+export class StreamLogger {
+  public state: 'start' | 'stop' | 'succeed' | 'fail' | undefined = undefined
+
+  private spinner: Ora | undefined = undefined
+  private dealy: number = 0
+  private text: string = ''
+  private color: Color = 'yellow'
+  private detail: string = ''
+  private prefixText: string | undefined = undefined
+  private textStyles: Type.Styles = []
+  private detailStyles: Type.Styles = []
+  private prefixTextStyles: Type.Styles = []
+
+  constructor(prefixText?: string, prefixTextStyles?: Type.Styles) {
+    this.prefixText = prefixText
+    prefixTextStyles && (this.prefixTextStyles = prefixTextStyles)
+    this.create()
+    return this
+  }
+
+  private create() {
+    this.spinner = ora()
+    this.spinner.start()
+    this.state = 'start'
+
+    if (this.prefixText) {
+      this.spinner.prefixText = this.decorateText(this.capitalize(this.prefixText), this.prefixTextStyles)
+    }
+
+    return this
+  }
+
+  private capitalize(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1)
+  }
+
+  private decorateText(text: string = '', styles?: Type.Styles) {
+    return logger(getStyledChalkInstance(styles, text)).toString()
+  }
+
+  setText(text: string = '', styles?: Type.Styles) {
+    if (!this.spinner) {
+      return this
+    }
+    this.text = text
+    styles && (this.textStyles = styles)
+    return this
+  }
+
+  setDetail(detail = '', styles?: Type.Styles) {
+    if (!this.spinner) {
+      return this
+    }
+    this.detail = detail
+    styles && (this.detailStyles = styles)
+    return this
+  }
+
+  setDelay(delay: number) {
+    if (!this.spinner) {
+      return this
+    }
+    this.dealy = delay
+    return this
+  }
+
+  async update(): Promise<void> {
+    if (!this.spinner) {
+      return
+    }
+
+    let finalText = `${this.decorateText(this.capitalize(this.text), this.textStyles)}`
+    if (this.detail.length > 0) {
+      finalText += `\n${this.decorateText(this.detail, this.detailStyles)}`
+    }
+    this.text = finalText
+
+    if (this.state) {
+      this.changeState(this.state, this.text)
+    }
+    else {
+      this.spinner.text = this.text
+    }
+
+    if (this.color && this.spinner) {
+      this.spinner.color = this.color
+    }
+
+    if (this.dealy > 0) {
+      await sleep(this.dealy)
+    }
+  }
+
+  setState(state: 'start' | 'stop' | 'succeed' | 'fail') {
+    this.state = state
+    return this
+  }
+
+  private changeState(state: 'start' | 'stop' | 'succeed' | 'fail' | 'destroy', text?: string) {
+    if (!this.spinner) {
+      return this
+    }
+
+    switch (state) {
+      case 'start':
+        this.spinner.start(text)
+        break
+      case 'stop':
+        this.stop()
+        break
+      case 'succeed':
+        this.succeed(text)
+        break
+      case 'destroy':
+        this.destory()
+        break
+      case 'fail':
+        this.fail(text)
+        break
+    }
+
+    this.state = undefined
+  }
+
+  private stop() {
+    if (!this.spinner) {
+      return this
+    }
+    this.spinner.stop()
+    return this
+  }
+
+  private destory() {
+    this.stop()
+    this.spinner = undefined
+    return this
+  }
+
+  private succeed(text: string = '') {
+    if (!this.spinner) {
+      return this
+    }
+    this.spinner.succeed(this.decorateText(text))
+    this.spinner = undefined
+    return this
+  }
+
+  private fail(text: string = '') {
+    if (!this.spinner) {
+      return this
+    }
+    this.spinner.fail(this.decorateText(text))
+    this.spinner = undefined
+    return this
   }
 }

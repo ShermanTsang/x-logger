@@ -1,11 +1,12 @@
 {
   "name": "@shermant/logger",
+  "type": "module",
   "version": "1.1.7",
+  "description": "",
   "author": "ShermanT",
+  "license": "ISC",
   "main": ".output/dist/index.js",
   "types": ".output/dist/index.d.ts",
-  "description": "",
-  "license": "ISC",
   "scripts": {
     "dev": "bun run ./src/index.ts",
     "test": "vitest --watch=false",
@@ -16,7 +17,10 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
-  "type": "module",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "ora": "^8.2.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^2.20.0",
     "@types/bun": "^1.1.4",
@@ -28,8 +32,5 @@
     "turndown": "^7.2.0",
     "vitepress": "^1.2.3",
     "vitest": "^1.6.0"
-  },
-  "dependencies": {
-    "chalk": "^5.3.0"
   }
 }
