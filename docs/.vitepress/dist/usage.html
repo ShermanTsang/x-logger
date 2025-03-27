@@ -1,140 +1,1235 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>API &amp; Usage | @shermant/logger</title>
     <meta name="description" content="A lightweight logger tool">
     <meta name="generator" content="VitePress v1.2.3">
     <link rel="preload stylesheet" href="/x-logger/assets/style.DENFJs5T.css" as="style">
-    
+
     <script type="module" src="/x-logger/assets/app.DWJvjMFf.js"></script>
-    <link rel="preload" href="/x-logger/assets/inter-roman-latin.Di8DUHzh.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="preload" href="/x-logger/assets/inter-roman-latin.Di8DUHzh.woff2" as="font" type="font/woff2"
+          crossorigin="">
     <link rel="modulepreload" href="/x-logger/assets/chunks/framework.DSpPDD5H.js">
     <link rel="modulepreload" href="/x-logger/assets/chunks/theme.BuBWytCi.js">
     <link rel="modulepreload" href="/x-logger/assets/usage.md.CX9bAmQW.lean.js">
-    <script id="check-dark-mode">(()=>{const e=localStorage.getItem("vitepress-theme-appearance")||"auto",a=window.matchMedia("(prefers-color-scheme: dark)").matches;(!e||e==="auto"?a:e==="dark")&&document.documentElement.classList.add("dark")})();</script>
-    <script id="check-mac-os">document.documentElement.classList.toggle("mac",/Mac|iPhone|iPod|iPad/i.test(navigator.platform));</script>
-  </head>
-  <body>
-    <div id="app"><div class="Layout" data-v-5d98c3a5><!--[--><!--]--><!--[--><span tabindex="-1" data-v-0f60ec36></span><a href="#VPContent" class="VPSkipLink visually-hidden" data-v-0f60ec36> Skip to content </a><!--]--><!----><header class="VPNav" data-v-5d98c3a5 data-v-ae24b3ad><div class="VPNavBar top" data-v-ae24b3ad data-v-ccf7ddec><div class="wrapper" data-v-ccf7ddec><div class="container" data-v-ccf7ddec><div class="title" data-v-ccf7ddec><div class="VPNavBarTitle" data-v-ccf7ddec data-v-ab179fa1><a class="title" href="/x-logger/" data-v-ab179fa1><!--[--><!--]--><!----><span data-v-ab179fa1>@shermant/logger</span><!--[--><!--]--></a></div></div><div class="content" data-v-ccf7ddec><div class="content-body" data-v-ccf7ddec><!--[--><!--]--><div class="VPNavBarSearch search" data-v-ccf7ddec><!----></div><nav aria-labelledby="main-nav-aria-label" class="VPNavBarMenu menu" data-v-ccf7ddec data-v-7f418b0f><span id="main-nav-aria-label" class="visually-hidden" data-v-7f418b0f>Main Navigation</span><!--[--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/x-logger/index.html" tabindex="0" data-v-7f418b0f data-v-9c663999><!--[--><span data-v-9c663999>Index</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/x-logger/basic.html" tabindex="0" data-v-7f418b0f data-v-9c663999><!--[--><span data-v-9c663999>Basic</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink active" href="/x-logger/usage.html" tabindex="0" data-v-7f418b0f data-v-9c663999><!--[--><span data-v-9c663999>Usage</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/x-logger/roadmap.html" tabindex="0" data-v-7f418b0f data-v-9c663999><!--[--><span data-v-9c663999>Roadmap</span><!--]--></a><!--]--><!--]--></nav><!----><div class="VPNavBarAppearance appearance" data-v-ccf7ddec data-v-e6aabb21><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title="Switch to dark theme" aria-checked="false" data-v-e6aabb21 data-v-d1f28634 data-v-1d5665e3><span class="check" data-v-1d5665e3><span class="icon" data-v-1d5665e3><!--[--><span class="vpi-sun sun" data-v-d1f28634></span><span class="vpi-moon moon" data-v-d1f28634></span><!--]--></span></span></button></div><!----><div class="VPFlyout VPNavBarExtra extra" data-v-ccf7ddec data-v-d0bd9dde data-v-b6c34ac9><button type="button" class="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation" data-v-b6c34ac9><span class="vpi-more-horizontal icon" data-v-b6c34ac9></span></button><div class="menu" data-v-b6c34ac9><div class="VPMenu" data-v-b6c34ac9 data-v-e7ea1737><!----><!--[--><!--[--><!----><div class="group" data-v-d0bd9dde><div class="item appearance" data-v-d0bd9dde><p class="label" data-v-d0bd9dde>Appearance</p><div class="appearance-action" data-v-d0bd9dde><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title="Switch to dark theme" aria-checked="false" data-v-d0bd9dde data-v-d1f28634 data-v-1d5665e3><span class="check" data-v-1d5665e3><span class="icon" data-v-1d5665e3><!--[--><span class="vpi-sun sun" data-v-d1f28634></span><span class="vpi-moon moon" data-v-d1f28634></span><!--]--></span></span></button></div></div></div><!----><!--]--><!--]--></div></div></div><!--[--><!--]--><button type="button" class="VPNavBarHamburger hamburger" aria-label="mobile navigation" aria-expanded="false" aria-controls="VPNavScreen" data-v-ccf7ddec data-v-e5dd9c1c><span class="container" data-v-e5dd9c1c><span class="top" data-v-e5dd9c1c></span><span class="middle" data-v-e5dd9c1c></span><span class="bottom" data-v-e5dd9c1c></span></span></button></div></div></div></div><div class="divider" data-v-ccf7ddec><div class="divider-line" data-v-ccf7ddec></div></div></div><!----></header><div class="VPLocalNav empty fixed" data-v-5d98c3a5 data-v-a6f0e41e><div class="container" data-v-a6f0e41e><!----><div class="VPLocalNavOutlineDropdown" style="--vp-vh:0px;" data-v-a6f0e41e data-v-17a5e62e><button data-v-17a5e62e>Return to top</button><!----></div></div></div><!----><div class="VPContent" id="VPContent" data-v-5d98c3a5 data-v-1428d186><div class="VPDoc has-aside" data-v-1428d186 data-v-39a288b8><!--[--><!--]--><div class="container" data-v-39a288b8><div class="aside" data-v-39a288b8><div class="aside-curtain" data-v-39a288b8></div><div class="aside-container" data-v-39a288b8><div class="aside-content" data-v-39a288b8><div class="VPDocAside" data-v-39a288b8 data-v-3f215769><!--[--><!--]--><!--[--><!--]--><nav aria-labelledby="doc-outline-aria-label" class="VPDocAsideOutline" data-v-3f215769 data-v-a5bbad30><div class="content" data-v-a5bbad30><div class="outline-marker" data-v-a5bbad30></div><div aria-level="2" class="outline-title" id="doc-outline-aria-label" role="heading" data-v-a5bbad30>On this page</div><ul class="VPDocOutlineItem root" data-v-a5bbad30 data-v-b933a997><!--[--><!--]--></ul></div></nav><!--[--><!--]--><div class="spacer" data-v-3f215769></div><!--[--><!--]--><!----><!--[--><!--]--><!--[--><!--]--></div></div></div></div><div class="content" data-v-39a288b8><div class="content-container" data-v-39a288b8><!--[--><!--]--><main class="main" data-v-39a288b8><div style="position:relative;" class="vp-doc _x-logger_usage" data-v-39a288b8><div><h1 id="api-usage" tabindex="-1">API &amp; Usage <a class="header-anchor" href="#api-usage" aria-label="Permalink to &quot;API &amp; Usage&quot;">​</a></h1><p>The basic usage involves using the logger <code>accessor</code>(function-based proxy) to print messages.</p><p>Predefined log types are wrapped in static getters, allowing direct use.</p><h2 id="logger-typename-static-getter" tabindex="-1"><code>Logger.[TypeName]</code> static getter <a class="header-anchor" href="#logger-typename-static-getter" aria-label="Permalink to &quot;`Logger.[TypeName]` static getter&quot;">​</a></h2><p>The basic usage of this package is to use the <code>logger</code> accessor to log messages.</p><p>This package wraps preset log types in static getters, and you can use them directly.</p><p>Each of them will return a <code>Logger</code> instance with the corresponding log type, you can continue to use chain calling .</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+    <script id="check-dark-mode">(() => {
+        const e = localStorage.getItem("vitepress-theme-appearance") || "auto",
+            a = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        (!e || e === "auto" ? a : e === "dark") && document.documentElement.classList.add("dark")
+    })();</script>
+    <script id="check-mac-os">document.documentElement.classList.toggle("mac", /Mac|iPhone|iPod|iPad/i.test(navigator.platform));</script>
+</head>
+<body>
+<div id="app">
+    <div class="Layout" data-v-5d98c3a5><!--[--><!--]--><!--[--><span tabindex="-1" data-v-0f60ec36></span><a
+            href="#VPContent" class="VPSkipLink visually-hidden" data-v-0f60ec36> Skip to content </a><!--]--><!---->
+        <header class="VPNav" data-v-5d98c3a5 data-v-ae24b3ad>
+            <div class="VPNavBar top" data-v-ae24b3ad data-v-ccf7ddec>
+                <div class="wrapper" data-v-ccf7ddec>
+                    <div class="container" data-v-ccf7ddec>
+                        <div class="title" data-v-ccf7ddec>
+                            <div class="VPNavBarTitle" data-v-ccf7ddec data-v-ab179fa1><a class="title"
+                                                                                          href="/x-logger/"
+                                                                                          data-v-ab179fa1><!--[-->
+                                <!--]--><!----><span data-v-ab179fa1>@shermant/logger</span><!--[--><!--]--></a></div>
+                        </div>
+                        <div class="content" data-v-ccf7ddec>
+                            <div class="content-body" data-v-ccf7ddec><!--[--><!--]-->
+                                <div class="VPNavBarSearch search" data-v-ccf7ddec><!----></div>
+                                <nav aria-labelledby="main-nav-aria-label" class="VPNavBarMenu menu" data-v-ccf7ddec
+                                     data-v-7f418b0f><span id="main-nav-aria-label" class="visually-hidden"
+                                                           data-v-7f418b0f>Main Navigation</span><!--[--><!--[--><a
+                                        class="VPLink link VPNavBarMenuLink" href="/x-logger/index.html" tabindex="0"
+                                        data-v-7f418b0f data-v-9c663999><!--[--><span data-v-9c663999>Index</span>
+                                    <!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink"
+                                                                   href="/x-logger/basic.html" tabindex="0"
+                                                                   data-v-7f418b0f data-v-9c663999><!--[--><span
+                                        data-v-9c663999>Basic</span><!--]--></a><!--]--><!--[--><a
+                                        class="VPLink link VPNavBarMenuLink active" href="/x-logger/usage.html"
+                                        tabindex="0" data-v-7f418b0f data-v-9c663999><!--[--><span
+                                        data-v-9c663999>Usage</span><!--]--></a><!--]--><!--[--><a
+                                        class="VPLink link VPNavBarMenuLink" href="/x-logger/roadmap.html" tabindex="0"
+                                        data-v-7f418b0f data-v-9c663999><!--[--><span data-v-9c663999>Roadmap</span>
+                                    <!--]--></a><!--]--><!--]--></nav><!---->
+                                <div class="VPNavBarAppearance appearance" data-v-ccf7ddec data-v-e6aabb21>
+                                    <button class="VPSwitch VPSwitchAppearance" type="button" role="switch"
+                                            title="Switch to dark theme" aria-checked="false" data-v-e6aabb21
+                                            data-v-d1f28634 data-v-1d5665e3><span class="check" data-v-1d5665e3><span
+                                            class="icon" data-v-1d5665e3><!--[--><span class="vpi-sun sun"
+                                                                                       data-v-d1f28634></span><span
+                                            class="vpi-moon moon" data-v-d1f28634></span><!--]--></span></span></button>
+                                </div><!---->
+                                <div class="VPFlyout VPNavBarExtra extra" data-v-ccf7ddec data-v-d0bd9dde
+                                     data-v-b6c34ac9>
+                                    <button type="button" class="button" aria-haspopup="true" aria-expanded="false"
+                                            aria-label="extra navigation" data-v-b6c34ac9><span
+                                            class="vpi-more-horizontal icon" data-v-b6c34ac9></span></button>
+                                    <div class="menu" data-v-b6c34ac9>
+                                        <div class="VPMenu" data-v-b6c34ac9 data-v-e7ea1737><!----><!--[--><!--[-->
+                                            <!---->
+                                            <div class="group" data-v-d0bd9dde>
+                                                <div class="item appearance" data-v-d0bd9dde><p class="label"
+                                                                                                data-v-d0bd9dde>
+                                                    Appearance</p>
+                                                    <div class="appearance-action" data-v-d0bd9dde>
+                                                        <button class="VPSwitch VPSwitchAppearance" type="button"
+                                                                role="switch" title="Switch to dark theme"
+                                                                aria-checked="false" data-v-d0bd9dde data-v-d1f28634
+                                                                data-v-1d5665e3><span class="check"
+                                                                                      data-v-1d5665e3><span class="icon"
+                                                                                                            data-v-1d5665e3><!--[--><span
+                                                                class="vpi-sun sun" data-v-d1f28634></span><span
+                                                                class="vpi-moon moon" data-v-d1f28634></span>
+                                                            <!--]--></span></span></button>
+                                                    </div>
+                                                </div>
+                                            </div><!----><!--]--><!--]--></div>
+                                    </div>
+                                </div><!--[--><!--]-->
+                                <button type="button" class="VPNavBarHamburger hamburger" aria-label="mobile navigation"
+                                        aria-expanded="false" aria-controls="VPNavScreen" data-v-ccf7ddec
+                                        data-v-e5dd9c1c><span class="container" data-v-e5dd9c1c><span class="top"
+                                                                                                      data-v-e5dd9c1c></span><span
+                                        class="middle" data-v-e5dd9c1c></span><span class="bottom"
+                                                                                    data-v-e5dd9c1c></span></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="divider" data-v-ccf7ddec>
+                    <div class="divider-line" data-v-ccf7ddec></div>
+                </div>
+            </div><!----></header>
+        <div class="VPLocalNav empty fixed" data-v-5d98c3a5 data-v-a6f0e41e>
+            <div class="container" data-v-a6f0e41e><!---->
+                <div class="VPLocalNavOutlineDropdown" style="--vp-vh:0px;" data-v-a6f0e41e data-v-17a5e62e>
+                    <button data-v-17a5e62e>Return to top</button><!----></div>
+            </div>
+        </div><!---->
+        <div class="VPContent" id="VPContent" data-v-5d98c3a5 data-v-1428d186>
+            <div class="VPDoc has-aside" data-v-1428d186 data-v-39a288b8><!--[--><!--]-->
+                <div class="container" data-v-39a288b8>
+                    <div class="aside" data-v-39a288b8>
+                        <div class="aside-curtain" data-v-39a288b8></div>
+                        <div class="aside-container" data-v-39a288b8>
+                            <div class="aside-content" data-v-39a288b8>
+                                <div class="VPDocAside" data-v-39a288b8 data-v-3f215769><!--[--><!--]--><!--[--><!--]-->
+                                    <nav aria-labelledby="doc-outline-aria-label" class="VPDocAsideOutline"
+                                         data-v-3f215769 data-v-a5bbad30>
+                                        <div class="content" data-v-a5bbad30>
+                                            <div class="outline-marker" data-v-a5bbad30></div>
+                                            <div aria-level="2" class="outline-title" id="doc-outline-aria-label"
+                                                 role="heading" data-v-a5bbad30>On this page
+                                            </div>
+                                            <ul class="VPDocOutlineItem root" data-v-a5bbad30 data-v-b933a997><!--[-->
+                                                <!--]--></ul>
+                                        </div>
+                                    </nav><!--[--><!--]-->
+                                    <div class="spacer" data-v-3f215769></div><!--[--><!--]--><!----><!--[--><!--]-->
+                                    <!--[--><!--]--></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content" data-v-39a288b8>
+                        <div class="content-container" data-v-39a288b8><!--[--><!--]-->
+                            <main class="main" data-v-39a288b8>
+                                <div style="position:relative;" class="vp-doc _x-logger_usage" data-v-39a288b8>
+                                    <div><h1 id="api-usage" tabindex="-1">API &amp; Usage <a class="header-anchor"
+                                                                                             href="#api-usage"
+                                                                                             aria-label="Permalink to &quot;API &amp; Usage&quot;">​</a>
+                                    </h1>
+                                        <p>The basic usage involves using the logger <code>accessor</code>(function-based
+                                            proxy) to print messages.</p>
+                                        <p>Predefined log types are wrapped in static getters, allowing direct use.</p>
+                                        <h2 id="logger-typename-static-getter" tabindex="-1">
+                                            <code>Logger.[TypeName]</code> static getter <a class="header-anchor"
+                                                                                            href="#logger-typename-static-getter"
+                                                                                            aria-label="Permalink to &quot;`Logger.[TypeName]` static getter&quot;">​</a>
+                                        </h2>
+                                        <p>The basic usage of this package is to use the <code>logger</code> accessor to
+                                            log messages.</p>
+                                        <p>This package wraps preset log types in static getters, and you can use them
+                                            directly.</p>
+                                        <p>Each of them will return a <code>Logger</code> instance with the
+                                            corresponding log type, you can continue to use chain calling .</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.warn.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;warn title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a warning text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.error.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;error title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an error text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.debug.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;debug title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a debug text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.success.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;success title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a success text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.failure.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;failure title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a failure text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.plain.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;plain title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a plain text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="logger-class" tabindex="-1"><code>Logger</code> class <a class="header-anchor" href="#logger-class" aria-label="Permalink to &quot;`Logger` class&quot;">​</a></h2><p>All functions are provided by the <code>Logger</code> class.</p><p>When you invoke <code>Logger</code> class and chain call <code>type</code> function, you have no need to create an instance of the <code>Logger</code> class white <code>new</code> EcmaScript syntax.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {Logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.warn.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;warn title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a warning text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.error.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;error title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an error text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.debug.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;debug title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a debug text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.success.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;success title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a success text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.failure.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;failure title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a failure text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.plain.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;plain title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a plain text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="logger-class" tabindex="-1"><code>Logger</code> class <a
+                                                class="header-anchor" href="#logger-class"
+                                                aria-label="Permalink to &quot;`Logger` class&quot;">​</a></h2>
+                                        <p>All functions are provided by the <code>Logger</code> class.</p>
+                                        <p>When you invoke <code>Logger</code> class and chain call <code>type</code>
+                                            function, you have no need to create an instance of the <code>Logger</code>
+                                            class white <code>new</code> EcmaScript syntax.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {Logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// You can use `Logger` instances sharing the same log type and other config options in this way.</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> logger</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">time</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prependDivider</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;♥&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;love&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;the world&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;love&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;you&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="logger-accessor" tabindex="-1"><code>logger</code> accessor <a class="header-anchor" href="#logger-accessor" aria-label="Permalink to &quot;`logger` accessor&quot;">​</a></h2><p>You are recommend to use the <code>logger</code> accessor to use the <code>Logger</code> class.</p><p>With the <code>logger</code> accessor, you can use the <code>Logger</code> class without creating an instance.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span></code></pre></div><h2 id="logger-createlogger-function" tabindex="-1"><code>logger.createLogger</code> function <a class="header-anchor" href="#logger-createlogger-function" aria-label="Permalink to &quot;`logger.createLogger` function&quot;">​</a></h2><p>You can also use the <code>createLogger</code> function to predefined a new logger instance with a custom log type.</p><p>To implement this, you need to pass a generic type to the <code>createLogger</code> function. The generic type is an object that contains the new log type name and the <code>LoggerType.CreateCustomType</code> type.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> logger</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> createLogger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;{</span></span>
-<span class="line"><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">    newType</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> LoggerType</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">CreateCustomType</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> logger</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">time</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prependDivider</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;♥&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;love&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;the world&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;love&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;you&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="logger-accessor" tabindex="-1"><code>logger</code> accessor <a
+                                                class="header-anchor" href="#logger-accessor"
+                                                aria-label="Permalink to &quot;`logger` accessor&quot;">​</a></h2>
+                                        <p>You are recommend to use the <code>logger</code> accessor to use the <code>Logger</code>
+                                            class.</p>
+                                        <p>With the <code>logger</code> accessor, you can use the <code>Logger</code>
+                                            class without creating an instance.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span></code></pre>
+                                        </div>
+                                        <h2 id="logger-createlogger-function" tabindex="-1">
+                                            <code>logger.createLogger</code> function <a class="header-anchor"
+                                                                                         href="#logger-createlogger-function"
+                                                                                         aria-label="Permalink to &quot;`logger.createLogger` function&quot;">​</a>
+                                        </h2>
+                                        <p>You can also use the <code>createLogger</code> function to predefined a new
+                                            logger instance with a custom log type.</p>
+                                        <p>To implement this, you need to pass a generic type to the
+                                            <code>createLogger</code> function. The generic type is an object that
+                                            contains the new log type name and the
+                                            <code>LoggerType.CreateCustomType</code> type.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span
+                                                    style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> logger</span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> createLogger</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;{</span></span>
+<span class="line"><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">    newType</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> LoggerType</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">CreateCustomType</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}&gt;()</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">newType</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgGreenBright&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;underline&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom logger&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;test adding custom logger type via type function&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><p>Next time, use <code>newType</code> with the <code>type</code> function.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;newType&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom logger&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;The next time you can use `newType` with `type` function&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><p>To use newType directly, cast it to the Logger type. Note that casting to unknown first will disable type prompting and checking.</p><p>However, you need to cast it to <code>unknown</code> type first that will make you lose the type prompting and checking service with <code>Logger</code> class.</p><p>This is not recommend code style</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> newType</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> logger.newType </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">as</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> unknown</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> as</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Logger</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">newType</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgGreenBright&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;underline&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom logger&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;test adding custom logger type via type function&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <p>Next time, use <code>newType</code> with the <code>type</code> function.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;newType&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom logger&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;The next time you can use `newType` with `type` function&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <p>To use newType directly, cast it to the Logger type. Note that casting to
+                                            unknown first will disable type prompting and checking.</p>
+                                        <p>However, you need to cast it to <code>unknown</code> type first that will
+                                            make you lose the type prompting and checking service with
+                                            <code>Logger</code> class.</p>
+                                        <p>This is not recommend code style</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span
+                                                    style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> newType</span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> logger.newType </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">as</span><span
+                                                    style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> unknown</span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> as</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Logger</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">newType</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom logger&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Also, you can use `newType` directly, but not recommend&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="print-method" tabindex="-1"><code>print()</code> method <a class="header-anchor" href="#print-method" aria-label="Permalink to &quot;`print()` method&quot;">​</a></h2><p>Use print() to output the log text to the console. You can pass a boolean value to control whether the log text is output.</p><h2 id="type-method" tabindex="-1"><code>type()</code> method <a class="header-anchor" href="#type-method" aria-label="Permalink to &quot;`type()` method&quot;">​</a></h2><p><code>type</code> is a static function that allows you to create a new log type.</p><h3 id="specify-log-type" tabindex="-1">Specify log type <a class="header-anchor" href="#specify-log-type" aria-label="Permalink to &quot;Specify log type&quot;">​</a></h3><p>Use <code>type(string, [styles])</code> to specify the log type, or you can create custom log type.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// You can use the `type` method to specify the log type</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;anyType&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;type&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h3 id="override-preset-style" tabindex="-1">Override Preset Style <a class="header-anchor" href="#override-preset-style" aria-label="Permalink to &quot;Override Preset Style&quot;">​</a></h3><p>You can override the preset style by using the <code>style</code> method. The <code>style</code> method takes an array of two strings: the background color and the text color.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom logger&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Also, you can use `newType` directly, but not recommend&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="print-method" tabindex="-1"><code>print()</code> method <a
+                                                class="header-anchor" href="#print-method"
+                                                aria-label="Permalink to &quot;`print()` method&quot;">​</a></h2>
+                                        <p>Use print() to output the log text to the console. You can pass a boolean
+                                            value to control whether the log text is output.</p>
+                                        <h2 id="type-method" tabindex="-1"><code>type()</code> method <a
+                                                class="header-anchor" href="#type-method"
+                                                aria-label="Permalink to &quot;`type()` method&quot;">​</a></h2>
+                                        <p><code>type</code> is a static function that allows you to create a new log
+                                            type.</p>
+                                        <h3 id="specify-log-type" tabindex="-1">Specify log type <a
+                                                class="header-anchor" href="#specify-log-type"
+                                                aria-label="Permalink to &quot;Specify log type&quot;">​</a></h3>
+                                        <p>Use <code>type(string, [styles])</code> to specify the log type, or you can
+                                            create custom log type.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// You can use the `type` method to specify the log type</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;anyType&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;type&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h3 id="override-preset-style" tabindex="-1">Override Preset Style <a
+                                                class="header-anchor" href="#override-preset-style"
+                                                aria-label="Permalink to &quot;Override Preset Style&quot;">​</a></h3>
+                                        <p>You can override the preset style by using the <code>style</code> method. The
+                                            <code>style</code> method takes an array of two strings: the background
+                                            color and the text color.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a red info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h3 id="add-custom-log-types" tabindex="-1">Add custom log types <a class="header-anchor" href="#add-custom-log-types" aria-label="Permalink to &quot;Add custom log types&quot;">​</a></h3><p>When you use the <code>type</code> method to create a new log type, you need to pass two arguments: the type <code>name</code> and the <code>style</code>.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a red info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h3 id="add-custom-log-types" tabindex="-1">Add custom log types <a
+                                                class="header-anchor" href="#add-custom-log-types"
+                                                aria-label="Permalink to &quot;Add custom log types&quot;">​</a></h3>
+                                        <p>When you use the <code>type</code> method to create a new log type, you need
+                                            to pass two arguments: the type <code>name</code> and the <code>style</code>.
+                                        </p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// The instance will automatically register a type named `myCustomType`</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;myCustomType&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;myCustomType&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Then, you can use `myCustomType` to log messages</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;myCustomType&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a custom text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="prefix-method" tabindex="-1"><code>prefix()</code> method <a class="header-anchor" href="#prefix-method" aria-label="Permalink to &quot;`prefix()` method&quot;">​</a></h2><p>Use <code>prefix(string)</code> to add a prefix to the log text, and the prefix will be displayed in the log text.</p><p>In the future, you can use <code>prefix</code> attribute to filter log messages.</p><h2 id="text-method" tabindex="-1"><code>text()</code> method <a class="header-anchor" href="#text-method" aria-label="Permalink to &quot;`text()` method&quot;">​</a></h2><p>Use <code>text(string)</code> to add a text to the log text.</p><h3 id="emphasize-key-information" tabindex="-1">Emphasize key information <a class="header-anchor" href="#emphasize-key-information" aria-label="Permalink to &quot;Emphasize key information&quot;">​</a></h3><p>With <code>[[key infomation]]}</code> syntax, you can emphasize key information in the log text.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">type</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;myCustomType&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;custom&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a custom text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="prefix-method" tabindex="-1"><code>prefix()</code> method <a
+                                                class="header-anchor" href="#prefix-method"
+                                                aria-label="Permalink to &quot;`prefix()` method&quot;">​</a></h2>
+                                        <p>Use <code>prefix(string)</code> to add a prefix to the log text, and the
+                                            prefix will be displayed in the log text.</p>
+                                        <p>In the future, you can use <code>prefix</code> attribute to filter log
+                                            messages.</p>
+                                        <h2 id="text-method" tabindex="-1"><code>text()</code> method <a
+                                                class="header-anchor" href="#text-method"
+                                                aria-label="Permalink to &quot;`text()` method&quot;">​</a></h2>
+                                        <p>Use <code>text(string)</code> to add a text to the log text.</p>
+                                        <h3 id="emphasize-key-information" tabindex="-1">Emphasize key information <a
+                                                class="header-anchor" href="#emphasize-key-information"
+                                                aria-label="Permalink to &quot;Emphasize key information&quot;">​</a>
+                                        </h3>
+                                        <p>With <code>[[key infomation]]}</code> syntax, you can emphasize key
+                                            information in the log text.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text with [[key information]]&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><p>Then, the text <code>formatter</code> will use <code>chalk.yellow.underline</code> style to decorate the key information.</p><p>Later, you are able to customize the style and the matched sign of the key information.</p><h2 id="prependdivider-appenddivider-method" tabindex="-1"><code>prependDivider()</code> &amp; <code>appendDivider()</code> method <a class="header-anchor" href="#prependdivider-appenddivider-method" aria-label="Permalink to &quot;`prependDivider()` &amp; `appendDivider()` method&quot;">​</a></h2><p>Use <code>prependDivider()</code> to add a divider before the log text.</p><p>Use <code>appendDivider()</code> to add a divider after the log text.</p><p>Both of them receive three optional arguments: <code>char</code>, <code>length</code>, and <code>styles</code>.</p><p>The default value of <code>char</code> is <code>-</code>, the default value of <code>length</code> is <code>80</code>, and the default value of <code>styles</code> is <code>[&#39;bgWhite&#39;, &#39;black&#39;]</code>.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text with [[key information]]&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <p>Then, the text <code>formatter</code> will use
+                                            <code>chalk.yellow.underline</code> style to decorate the key information.
+                                        </p>
+                                        <p>Later, you are able to customize the style and the matched sign of the key
+                                            information.</p>
+                                        <h2 id="prependdivider-appenddivider-method" tabindex="-1"><code>prependDivider()</code>
+                                            &amp; <code>appendDivider()</code> method <a class="header-anchor"
+                                                                                         href="#prependdivider-appenddivider-method"
+                                                                                         aria-label="Permalink to &quot;`prependDivider()` &amp; `appendDivider()` method&quot;">​</a>
+                                        </h2>
+                                        <p>Use <code>prependDivider()</code> to add a divider before the log text.</p>
+                                        <p>Use <code>appendDivider()</code> to add a divider after the log text.</p>
+                                        <p>Both of them receive three optional arguments: <code>char</code>, <code>length</code>,
+                                            and <code>styles</code>.</p>
+                                        <p>The default value of <code>char</code> is <code>-</code>, the default value
+                                            of <code>length</code> is <code>80</code>, and the default value of <code>styles</code>
+                                            is <code>[&#39;bgWhite&#39;, &#39;black&#39;]</code>.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prependDivider</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">appendDivider</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="time-method" tabindex="-1"><code>time()</code> method <a class="header-anchor" href="#time-method" aria-label="Permalink to &quot;`time()` method&quot;">​</a></h2><p>If you want to display the log time, you can use the <code>time()</code> method.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prependDivider</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">appendDivider</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="time-method" tabindex="-1"><code>time()</code> method <a
+                                                class="header-anchor" href="#time-method"
+                                                aria-label="Permalink to &quot;`time()` method&quot;">​</a></h2>
+                                        <p>If you want to display the log time, you can use the <code>time()</code>
+                                            method.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">time</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="styles-method" tabindex="-1"><code>styles()</code> method <a class="header-anchor" href="#styles-method" aria-label="Permalink to &quot;`styles()` method&quot;">​</a></h2><p>Use <code>styles()</code> to add styles to the log text.</p><p>Note that the styles will only be applied to the log text without the prefix part.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">time</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="styles-method" tabindex="-1"><code>styles()</code> method <a
+                                                class="header-anchor" href="#styles-method"
+                                                aria-label="Permalink to &quot;`styles()` method&quot;">​</a></h2>
+                                        <p>Use <code>styles()</code> to add styles to the log text.</p>
+                                        <p>Note that the styles will only be applied to the log text without the prefix
+                                            part.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">styles</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="detail-method" tabindex="-1"><code>detail()</code> method <a class="header-anchor" href="#detail-method" aria-label="Permalink to &quot;`detail()` method&quot;">​</a></h2><p>Use <code>detail()</code> to add a detail to the log text.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">styles</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="detail-method" tabindex="-1"><code>detail()</code> method <a
+                                                class="header-anchor" href="#detail-method"
+                                                aria-label="Permalink to &quot;`detail()` method&quot;">​</a></h2>
+                                        <p>Use <code>detail()</code> to add a detail to the log text.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">detail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a detail&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><p>The detail will be displayed below the main log text.</p><h2 id="data-method" tabindex="-1"><code>data()</code> method <a class="header-anchor" href="#data-method" aria-label="Permalink to &quot;`data()` method&quot;">​</a></h2><p>Use <code>data()</code> method to print your data below the log text.</p><p>The second parameter is a boolean value that controls whether to print the data in the log text, default value is <code>true</code>.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">styles</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;error data&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">data</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">detail</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is a detail&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <p>The detail will be displayed below the main log text.</p>
+                                        <h2 id="data-method" tabindex="-1"><code>data()</code> method <a
+                                                class="header-anchor" href="#data-method"
+                                                aria-label="Permalink to &quot;`data()` method&quot;">​</a></h2>
+                                        <p>Use <code>data()</code> method to print your data below the log text.</p>
+                                        <p>The second parameter is a boolean value that controls whether to print the
+                                            data in the log text, default value is <code>true</code>.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">logger.info.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">prefix</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;info title&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">styles</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">([</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bgRed&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;white&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]).</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;error data&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    .</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">data</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        {</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">            error: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;error text&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">            status: </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">500</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">            error: </span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;error text&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">            status: </span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">500</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        },</span></span>
 <span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">        false</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    ).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="tostring-method" tabindex="-1"><code>toString()</code> method <a class="header-anchor" href="#tostring-method" aria-label="Permalink to &quot;`toString()` method&quot;">​</a></h2><p>Use <code>toString()</code> method to get the formatted and rendered log text.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    ).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">print</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="tostring-method" tabindex="-1"><code>toString()</code> method <a
+                                                class="header-anchor" href="#tostring-method"
+                                                aria-label="Permalink to &quot;`toString()` method&quot;">​</a></h2>
+                                        <p>Use <code>toString()</code> method to get the formatted and rendered log
+                                            text.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {logger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">logger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info [[text]]&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">toString</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h2 id="streamlogger-class" tabindex="-1"><code>StreamLogger</code> class <a class="header-anchor" href="#streamlogger-class" aria-label="Permalink to &quot;`StreamLogger` class&quot;">​</a></h2><p>The <code>StreamLogger</code> class provides an interactive terminal logging experience with spinners based on the Ora package. It&#39;s useful for displaying loading states, progress indicators, and completion states in the terminal.</p><h3 id="basic-usage" tabindex="-1">Basic Usage <a class="header-anchor" href="#basic-usage" aria-label="Permalink to &quot;Basic Usage&quot;">​</a></h3><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {StreamLogger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">logger</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;This is an info [[text]]&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">toString</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h2 id="streamlogger-class" tabindex="-1"><code>StreamLogger</code> class <a
+                                                class="header-anchor" href="#streamlogger-class"
+                                                aria-label="Permalink to &quot;`StreamLogger` class&quot;">​</a></h2>
+                                        <p>The <code>StreamLogger</code> class provides an interactive terminal logging
+                                            experience with spinners based on the Ora package. It&#39;s useful for
+                                            displaying loading states, progress indicators, and completion states in the
+                                            terminal.</p>
+                                        <h3 id="basic-usage" tabindex="-1">Basic Usage <a class="header-anchor"
+                                                                                          href="#basic-usage"
+                                                                                          aria-label="Permalink to &quot;Basic Usage&quot;">​</a>
+                                        </h3>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {StreamLogger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Create a new StreamLogger instance with optional prefix text</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> streamLogger</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;loading&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;cyan&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">const</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> streamLogger</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;loading&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;cyan&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Set main text and styles</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setText</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Processing data&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bold&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Processing data&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bold&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Set detail text (displayed on a new line)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setDetail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;File: data.json&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">detail</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;File: data.json&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Update the spinner to apply changes</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span
+        style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Update the spinner to apply changes</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">await</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// After some operation completes, update state</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setState</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;succeed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setText</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Data processed successfully&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h3 id="constructor" tabindex="-1">Constructor <a class="header-anchor" href="#constructor" aria-label="Permalink to &quot;Constructor&quot;">​</a></h3><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(prefixText </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> :</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> string, prefixMessagestyles </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> :</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Type.Styles)</span></span></code></pre></div><p>Creates a new StreamLogger instance with an optional prefix text and styles. The spinner starts automatically upon creation.</p><h3 id="methods" tabindex="-1">Methods <a class="header-anchor" href="#methods" aria-label="Permalink to &quot;Methods&quot;">​</a></h3><h4 id="settext-text-string-styles-type-styles" tabindex="-1"><code>setText(text: string, styles?: Type.Styles)</code> <a class="header-anchor" href="#settext-text-string-styles-type-styles" aria-label="Permalink to &quot;`setText(text: string, styles?: Type.Styles)`&quot;">​</a></h4><p>Sets the main text of the spinner. The text will be displayed after capitalization and styling.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setText</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Loading resources&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bold&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;blue&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span></code></pre></div><h4 id="setdetail-detail-string-styles-type-styles" tabindex="-1"><code>setDetail(detail: string, styles?: Type.Styles)</code> <a class="header-anchor" href="#setdetail-detail-string-styles-type-styles" aria-label="Permalink to &quot;`setDetail(detail: string, styles?: Type.Styles)`&quot;">​</a></h4><p>Sets the detail text that will be displayed on a new line below the main text.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setDetail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Processing file 1 of 10&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span></code></pre></div><h4 id="setdelay-delay-number" tabindex="-1"><code>setDelay(delay: number)</code> <a class="header-anchor" href="#setdelay-delay-number" aria-label="Permalink to &quot;`setDelay(delay: number)`&quot;">​</a></h4><p>Sets a delay (in milliseconds) before the spinner updates to its next state.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setDelay</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">2000</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre></div><h4 id="setstate-state-start-stop-succeed-fail" tabindex="-1"><code>setState(state: &#39;start&#39; | &#39;stop&#39; | &#39;succeed&#39; | &#39;fail&#39;)</code> <a class="header-anchor" href="#setstate-state-start-stop-succeed-fail" aria-label="Permalink to &quot;`setState(state: &#39;start&#39; | &#39;stop&#39; | &#39;succeed&#39; | &#39;fail&#39;)`&quot;">​</a></h4><p>Sets the spinner&#39;s state. The actual state change will occur when <code>update()</code> is called.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setState</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;succeed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre></div><h4 id="update-promise-void" tabindex="-1"><code>update(): Promise&lt;void&gt;</code> <a class="header-anchor" href="#update-promise-void" aria-label="Permalink to &quot;`update(): Promise&lt;void&gt;`&quot;">​</a></h4><p>Updates the spinner with the current configuration. This method must be called after changing any settings to apply them.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre></div><h4 id="succeed-text-string" tabindex="-1"><code>succeed(text?: string)</code> <a class="header-anchor" href="#succeed-text-string" aria-label="Permalink to &quot;`succeed(text?: string)`&quot;">​</a></h4><p>Immediately displays a success indicator and stops the spinner. The optional text parameter will override the current text.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">succeed</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Operation completed successfully&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre></div><h4 id="fail-text-string" tabindex="-1"><code>fail(text?: string)</code> <a class="header-anchor" href="#fail-text-string" aria-label="Permalink to &quot;`fail(text?: string)`&quot;">​</a></h4><p>Immediately displays a failure indicator and stops the spinner. The optional text parameter will override the current text.</p><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">fail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Operation failed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre></div><h3 id="example-use-cases" tabindex="-1">Example Use Cases <a class="header-anchor" href="#example-use-cases" aria-label="Permalink to &quot;Example Use Cases&quot;">​</a></h3><h4 id="file-processing" tabindex="-1">File Processing <a class="header-anchor" href="#file-processing" aria-label="Permalink to &quot;File Processing&quot;">​</a></h4><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {StreamLogger} </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">state</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;succeed&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Data processed successfully&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">await</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h3 id="constructor" tabindex="-1">Constructor <a class="header-anchor"
+                                                                                          href="#constructor"
+                                                                                          aria-label="Permalink to &quot;Constructor&quot;">​</a>
+                                        </h3>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">new</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(prefixText </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> :</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> string, prefixMessagestyles </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">?</span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> :</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Type.Styles)</span></span></code></pre>
+                                        </div>
+                                        <p>Creates a new StreamLogger instance with an optional prefix text and styles.
+                                            The spinner starts automatically upon creation.</p>
+                                        <h3 id="methods" tabindex="-1">Methods <a class="header-anchor" href="#methods"
+                                                                                  aria-label="Permalink to &quot;Methods&quot;">​</a>
+                                        </h3><h4 id="settext-text-string-styles-type-styles" tabindex="-1"><code>text(text:
+                                            string, styles?: Type.Styles)</code> <a class="header-anchor"
+                                                                                    href="#settext-text-string-styles-type-styles"
+                                                                                    aria-label="Permalink to &quot;`text(text: string, styles?: Type.Styles)`&quot;">​</a>
+                                        </h4>
+                                        <p>Sets the main text of the spinner. The text will be displayed after
+                                            capitalization and styling.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Loading resources&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;bold&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;blue&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span></code></pre>
+                                        </div>
+                                        <h4 id="setdetail-detail-string-styles-type-styles" tabindex="-1"><code>detail(detail:
+                                            string, styles?: Type.Styles)</code> <a class="header-anchor"
+                                                                                    href="#setdetail-detail-string-styles-type-styles"
+                                                                                    aria-label="Permalink to &quot;`detail(detail: string, styles?: Type.Styles)`&quot;">​</a>
+                                        </h4>
+                                        <p>Sets the detail text that will be displayed on a new line below the main
+                                            text.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">detail</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Processing file 1 of 10&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span></code></pre>
+                                        </div>
+                                        <h4 id="setdelay-delay-number" tabindex="-1"><code>delay(delay:
+                                            number)</code> <a class="header-anchor" href="#setdelay-delay-number"
+                                                              aria-label="Permalink to &quot;`delay(delay: number)`&quot;">​</a>
+                                        </h4>
+                                        <p>Sets a delay (in milliseconds) before the spinner updates to its next
+                                            state.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">delay</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">2000</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre>
+                                        </div>
+                                        <h4 id="setstate-state-start-stop-succeed-fail" tabindex="-1"><code>state(state:
+                                            &#39;start&#39; | &#39;stop&#39; | &#39;succeed&#39; |
+                                            &#39;fail&#39;)</code> <a class="header-anchor"
+                                                                      href="#setstate-state-start-stop-succeed-fail"
+                                                                      aria-label="Permalink to &quot;`state(state: &#39;start&#39; | &#39;stop&#39; | &#39;succeed&#39; | &#39;fail&#39;)`&quot;">​</a>
+                                        </h4>
+                                        <p>Sets the spinner&#39;s state. The actual state change will occur when <code>update()</code>
+                                            is called.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">state</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;succeed&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre>
+                                        </div>
+                                        <h4 id="update-promise-void" tabindex="-1"><code>update():
+                                            Promise&lt;void&gt;</code> <a class="header-anchor"
+                                                                          href="#update-promise-void"
+                                                                          aria-label="Permalink to &quot;`update(): Promise&lt;void&gt;`&quot;">​</a>
+                                        </h4>
+                                        <p>Updates the spinner with the current configuration. This method must be
+                                            called after changing any settings to apply them.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">await</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span></code></pre>
+                                        </div>
+                                        <h4 id="succeed-text-string" tabindex="-1"><code>succeed(text?: string)</code>
+                                            <a class="header-anchor" href="#succeed-text-string"
+                                               aria-label="Permalink to &quot;`succeed(text?: string)`&quot;">​</a></h4>
+                                        <p>Immediately displays a success indicator and stops the spinner. The optional
+                                            text parameter will override the current text.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">succeed</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Operation completed successfully&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre>
+                                        </div>
+                                        <h4 id="fail-text-string" tabindex="-1"><code>fail(text?: string)</code> <a
+                                                class="header-anchor" href="#fail-text-string"
+                                                aria-label="Permalink to &quot;`fail(text?: string)`&quot;">​</a></h4>
+                                        <p>Immediately displays a failure indicator and stops the spinner. The optional
+                                            text parameter will override the current text.</p>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">streamLogger.</span><span
+                                                    style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">fail</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Operation failed&#39;</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span></code></pre>
+                                        </div>
+                                        <h3 id="example-use-cases" tabindex="-1">Example Use Cases <a
+                                                class="header-anchor" href="#example-use-cases"
+                                                aria-label="Permalink to &quot;Example Use Cases&quot;">​</a></h3><h4
+                                                id="file-processing" tabindex="-1">File Processing <a
+                                                class="header-anchor" href="#file-processing"
+                                                aria-label="Permalink to &quot;File Processing&quot;">​</a></h4>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {StreamLogger} </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">async</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> function</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> processFiles</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">files</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> string</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[]) {</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> streamLogger</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Processing&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;cyan&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">async</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> function</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> processFiles</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">files</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> string</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[]) {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    const</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> streamLogger</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Processing&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;cyan&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    for</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">let</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> i </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 0</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; i </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&lt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> files.</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">length</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; i</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">++</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setText</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`Processing file ${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">i</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> +</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}/${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">files</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">length</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setDetail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(files[i], [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    for</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">let</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> i </span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 0</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; i </span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&lt;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> files.</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">length</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; i</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">++</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`Processing file ${</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">i</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> +</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 1</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}/${</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">files</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">length</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">detail</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(files[i], [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        await</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        // Simulate processing</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        await</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> Promise</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">resolve</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =&gt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> setTimeout</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(resolve, </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1000</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">))</span></span>
+<span class="line"><span
+        style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        // Simulate processing</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        await</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> Promise</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">resolve</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =&gt;</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> setTimeout</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(resolve, </span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">1000</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">))</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setState</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;succeed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setText</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;All files processed&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><h4 id="api-request" tabindex="-1">API Request <a class="header-anchor" href="#api-request" aria-label="Permalink to &quot;API Request&quot;">​</a></h4><div class="language-typescript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">typescript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { StreamLogger } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">state</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;succeed&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">).</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;All files processed&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    await</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre>
+                                        </div>
+                                        <h4 id="api-request" tabindex="-1">API Request <a class="header-anchor"
+                                                                                          href="#api-request"
+                                                                                          aria-label="Permalink to &quot;API Request&quot;">​</a>
+                                        </h4>
+                                        <div class="language-typescript vp-adaptive-theme">
+                                            <button title="Copy Code" class="copy"></button>
+                                            <span class="lang">typescript</span>
+                                            <pre class="shiki shiki-themes github-light github-dark vp-code"
+                                                 tabindex="0"><code><span class="line"><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">import</span><span
+                                                    style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { StreamLogger } </span><span
+                                                    style="--shiki-light:#D73A49;--shiki-dark:#F97583;">from</span><span
+                                                    style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;"> &#39;@shermant/logger&#39;</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">async</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> function</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> fetchData</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">url</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> string</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> streamLogger</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;API&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;magenta&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">async</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> function</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> fetchData</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">url</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;">:</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> string</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  const</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> streamLogger</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StreamLogger</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;API&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;magenta&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setText</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Sending request&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">setDetail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(url, [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    await</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  try</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">text</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Sending request&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">detail</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(url, [</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;dim&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">])</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    await</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">update</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // Simulate API call</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> response</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> await</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> fetch</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(url)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    const</span><span
+        style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> response</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> =</span><span
+        style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> await</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> fetch</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(url)</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (response.ok) {</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">      streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">succeed</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Data retrieved successfully&#39;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    if</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (response.ok) {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">      streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">succeed</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&#39;Data retrieved successfully&#39;</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    else</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">      streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">fail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`Error: ${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">response</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">status</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    else</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">      streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">fail</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`Error: ${</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">response</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">status</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
 <span class="line"></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> response</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> response</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  catch</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (error) {</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">fail</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`Request failed: ${</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">error</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">text</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    throw</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> error</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  catch</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (error) {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    streamLogger.</span><span
+        style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">fail</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">`Request failed: ${</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">error</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">.</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">text</span><span
+        style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">}`</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">)</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    throw</span><span
+        style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> error</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div></div></div></main><footer class="VPDocFooter" data-v-39a288b8 data-v-d4a0bba5><!--[--><!--]--><div class="edit-info" data-v-d4a0bba5><!----><div class="last-updated" data-v-d4a0bba5><p class="VPLastUpdated" data-v-d4a0bba5 data-v-7e05ebdb>Last updated: <time datetime="2025-03-27T06:50:04.000Z" data-v-7e05ebdb></time></p></div></div><!----></footer><!--[--><!--]--></div></div></div><!--[--><!--]--></div></div><!----><!--[--><!--]--></div></div>
-    <script>window.__VP_HASH_MAP__=JSON.parse("{\"roadmap.md\":\"DgTErO4Y\",\"basic.md\":\"CJQjznpw\",\"index.md\":\"t3KTqUfp\",\"usage.md\":\"CX9bAmQW\"}");window.__VP_SITE_DATA__=JSON.parse("{\"lang\":\"en-US\",\"dir\":\"ltr\",\"title\":\"@shermant/logger\",\"description\":\"A lightweight logger tool\",\"base\":\"/x-logger/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"nav\":[{\"text\":\"Index\",\"link\":\"/index\"},{\"text\":\"Basic\",\"link\":\"/basic\"},{\"text\":\"Usage\",\"link\":\"/usage\"},{\"text\":\"Roadmap\",\"link\":\"/roadmap\"}]},\"locales\":{},\"scrollOffset\":134,\"cleanUrls\":false}");</script>
-    
-  </body>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </main>
+                            <footer class="VPDocFooter" data-v-39a288b8 data-v-d4a0bba5><!--[--><!--]-->
+                                <div class="edit-info" data-v-d4a0bba5><!---->
+                                    <div class="last-updated" data-v-d4a0bba5>
+                                        <p class="VPLastUpdated" data-v-d4a0bba5 data-v-7e05ebdb>Last updated:
+                                            <time datetime="2025-03-27T06:50:04.000Z" data-v-7e05ebdb></time>
+                                        </p>
+                                    </div>
+                                </div><!----></footer><!--[--><!--]--></div>
+                    </div>
+                </div><!--[--><!--]--></div>
+        </div><!----><!--[--><!--]--></div>
+</div>
+<script>window.__VP_HASH_MAP__ = JSON.parse("{\"roadmap.md\":\"DgTErO4Y\",\"basic.md\":\"CJQjznpw\",\"index.md\":\"t3KTqUfp\",\"usage.md\":\"CX9bAmQW\"}");
+window.__VP_SITE_DATA__ = JSON.parse("{\"lang\":\"en-US\",\"dir\":\"ltr\",\"title\":\"@shermant/logger\",\"description\":\"A lightweight logger tool\",\"base\":\"/x-logger/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"nav\":[{\"text\":\"Index\",\"link\":\"/index\"},{\"text\":\"Basic\",\"link\":\"/basic\"},{\"text\":\"Usage\",\"link\":\"/usage\"},{\"text\":\"Roadmap\",\"link\":\"/roadmap\"}]},\"locales\":{},\"scrollOffset\":134,\"cleanUrls\":false}");</script>
+
+</body>
 </html>

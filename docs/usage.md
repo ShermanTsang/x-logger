@@ -258,23 +258,23 @@ import {StreamLogger} from '@shermant/logger'
 const streamLogger = new StreamLogger('loading', ['cyan'])
 
 // Set main text and styles
-streamLogger.setText('Processing data', ['bold'])
+streamLogger.text('Processing data', ['bold'])
 
 // Set detail text (displayed on a new line)
-streamLogger.setDetail('File: data.json', ['dim'])
+streamLogger.detail('File: data.json', ['dim'])
 
 // Update the spinner to apply changes
 await streamLogger.update()
 
 // After some operation completes, update state
-streamLogger.setState('succeed').setText('Data processed successfully')
+streamLogger.state('succeed').text('Data processed successfully')
 await streamLogger.update()
 ```
 
 ### Constructor
 
 ```typescript
-new StreamLogger(prefixText ? : string, prefixMessagestyles ? : Type.Styles)
+new StreamLogger(prefix ? : string, prefixStyles ? : Type.Styles)
 ```
 
 Creates a new StreamLogger instance with an optional prefix text and styles. The spinner starts automatically upon
@@ -282,36 +282,36 @@ creation.
 
 ### Methods
 
-#### `setText(text: string, styles?: Type.Styles)`
+#### `text(text: string, styles?: Type.Styles)`
 
 Sets the main text of the spinner. The text will be displayed after capitalization and styling.
 
 ```typescript
-streamLogger.setText('Loading resources', ['bold', 'blue'])
+streamLogger.text('Loading resources', ['bold', 'blue'])
 ```
 
-#### `setDetail(detail: string, styles?: Type.Styles)`
+#### `detail(detail: string, styles?: Type.Styles)`
 
 Sets the detail text that will be displayed on a new line below the main text.
 
 ```typescript
-streamLogger.setDetail('Processing file 1 of 10', ['dim'])
+streamLogger.detail('Processing file 1 of 10', ['dim'])
 ```
 
-#### `setDelay(delay: number)`
+#### `delay(delay: number)`
 
 Sets a delay (in milliseconds) before the spinner updates to its next state.
 
 ```typescript
-streamLogger.setDelay(2000)
+streamLogger.delay(2000)
 ```
 
-#### `setState(state: 'start' | 'stop' | 'succeed' | 'fail')`
+#### `state(state: 'start' | 'stop' | 'succeed' | 'fail')`
 
 Sets the spinner's state. The actual state change will occur when `update()` is called.
 
 ```typescript
-streamLogger.setState('succeed')
+streamLogger.state('succeed')
 ```
 
 #### `update(): Promise<void>`
@@ -352,15 +352,15 @@ async function processFiles(files: string[]) {
     const streamLogger = new StreamLogger('Processing', ['cyan'])
 
     for (let i = 0; i < files.length; i++) {
-        streamLogger.setText(`Processing file ${i + 1}/${files.length}`)
-        streamLogger.setDetail(files[i], ['dim'])
+        streamLogger.text(`Processing file ${i + 1}/${files.length}`)
+        streamLogger.detail(files[i], ['dim'])
         await streamLogger.update()
 
         // Simulate processing
         await new Promise(resolve => setTimeout(resolve, 1000))
     }
 
-    streamLogger.setState('succeed').setText('All files processed')
+    streamLogger.state('succeed').text('All files processed')
     await streamLogger.update()
 }
 ```
@@ -374,8 +374,8 @@ async function fetchData(url: string) {
   const streamLogger = new StreamLogger('API', ['magenta'])
 
   try {
-    streamLogger.setText('Sending request')
-    streamLogger.setDetail(url, ['dim'])
+    streamLogger.text('Sending request')
+    streamLogger.detail(url, ['dim'])
     await streamLogger.update()
 
     // Simulate API call

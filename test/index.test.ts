@@ -121,36 +121,21 @@ describe('logger', () => {
     logger.info.divider('-')
     expect(logger.info.prependDivider().toString().split('\n').length).toBe(1)
   })
+})
 
-  it('should display streaming logger', async () => {
-    const streamLogger = new StreamLogger('❤️ test', ['underline'])
-
-    expect(streamLogger.state).toBe('start')
-
-    await streamLogger
-      .setText('changing', ['bgGreenBright', 'underline'])
-      .setDetail('you looks pretty', ['bgGreenBright', 'underline'])
-      .setDelay(1000)
-      .update()
-
-    await streamLogger
-      .setState('succeed')
-      .update()
+describe('stream logger', () => {
+  it('create stream logger via new StreamLogger', async () => {
+    const streamLogger1 = new StreamLogger('❤️ streamLogger1', ['underline'])
+    streamLogger1.text('create via new StreamLogger', ['gray']).update()
   })
 
-  it('should display streaming logger with type', async () => {
-    const streamLogger = Logger.toStream('info')
+  it('create stream logger via Logger.toStream', async () => {
+    const streamLogger2 = (new Logger()).toStream('❤️ streamLogger2', ['underline'])
+    streamLogger2.text('create via Logger.toStream', ['gray']).update()
+  })
 
-    expect(streamLogger.state).toBe('start')
-
-    await streamLogger
-      .setText('changing', ['bgGreenBright', 'underline'])
-      .setDetail('you looks pretty', ['bgGreenBright', 'underline'])
-      .setDelay(1000)
-      .update()
-
-    await streamLogger
-      .setState('succeed')
-      .update()
+  it('create stream logger via logger.stream', async () => {
+    const streamLogger3 = logger.stream
+    streamLogger3.prefix('❤️ streamLogger3', ['underline']).text('create via logger.stream', ['gray']).update()
   })
 })

@@ -1,9 +1,8 @@
 import type { ChalkInstance } from 'chalk'
 import chalk from 'chalk'
-import type { Color, Ora } from 'ora'
+import type { Ora } from 'ora'
 import ora from 'ora'
 import type { Type } from './typings'
-import { logger } from './index.ts'
 import { sleep } from './utils.ts'
 
 function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
@@ -16,15 +15,16 @@ function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
 }
 
 export class Logger {
-  private _text: string | null = null
-  private _textStyles: Type.Styles = []
-  private _detail: string | null = null
-  private _detailStyles: Type.Styles = []
-  private _prefix: string | null = null
-  private _prefixStyles: Type.Styles = []
-  private _data: any
-  private _displayTime: boolean = false
-  private _displayData: boolean = true
+  protected _text: string | null = null
+  protected _textStyles: Type.Styles = []
+  protected _detail: string | null = null
+  protected _detailStyles: Type.Styles = []
+  protected _prefix: string | null = null
+  protected _prefixStyles: Type.Styles = []
+  protected _data: any
+  protected _displayTime: boolean = false
+  protected _loggerType: 'normal' | 'stream' = 'normal'
+
   private _prependDivider: boolean = false
   private _prependDividerStyles: Type.Styles = []
   private _prependDividerLength: number = 1
@@ -39,8 +39,8 @@ export class Logger {
   private _singleDividerLength: number = 1
   private _isVisible: boolean = true
 
-  constructor(prefixStyles: Type.Styles) {
-    this._prefixStyles = prefixStyles
+  constructor(prefixStyles?: Type.Styles) {
+    prefixStyles && (this._prefixStyles = prefixStyles)
   }
 
   static stylesMap: Record<Type.Type | string, Type.Styles> = {
@@ -81,9 +81,18 @@ export class Logger {
     return new StreamLogger()
   }
 
-  static toStream(type: Type.Type) {
-    const styles = Logger.stylesMap[type] || Logger.stylesMap.info
-    return new StreamLogger(undefined, styles)
+  toStream(prefix?: string, prefixStyles?: Type.Styles) {
+    const streamLogger = new StreamLogger(prefix, prefixStyles)
+    if (this._text) {
+      streamLogger.text(this._text, this._textStyles)
+    }
+    if (this._detail) {
+      streamLogger.detail(this._detail, this._detailStyles)
+    }
+    if (this._data) {
+      streamLogger.data(this._data)
+    }
+    return streamLogger
   }
 
   static get plain() {
@@ -176,93 +185,76 @@ export class Logger {
     return this
   }
 
-  data(data: any, displayData?: boolean) {
+  data(data: any) {
     this._data = data
-    displayData && (this._displayData = displayData)
     return this
   }
 
-  private formatText() {
-    let formattedText = this._text || ''
-    if (formattedText) {
-      formattedText = formattedText.replace(
+  protected decorateText(content: string, styles?: Type.Styles) {
+    let formattedContent = content || ''
+    if (formattedContent) {
+      formattedContent = formattedContent.replace(
         /\[\[(.+?)\]\]/g,
         chalk.underline.yellow('$1'),
       )
     }
-    return getStyledChalkInstance(this._textStyles, formattedText)
+    return getStyledChalkInstance(styles, formattedContent)
   }
 
-  private formatDetail() {
-    let formattedDetail = this._detail || ''
-    if (formattedDetail) {
-      formattedDetail = formattedDetail.replace(
-        /\[\[(.+?)\]\]/g,
-        chalk.underline.yellow('$1'),
-      )
-    }
-    return getStyledChalkInstance(this._detailStyles, formattedDetail)
-  }
+  protected getMainOutput() {
+    const formattedPrefix = this._prefix ? this.decorateText(this._prefix, this._prefixStyles) : ''
+    const formattedText = this._text ? this.decorateText(this._text, this._textStyles) : ''
+    const formattedDetail = this._detail ? `\n${this.decorateText(this._detail, this._detailStyles)}` : ''
+    const formattedData = this._data ? `\n${this._data}` : '111'
 
-  private formatPrefix() {
-    if (!this._prefix) {
-      return ''
+    const formattedTime = this._displayTime ? chalk.gray(new Date().toLocaleTimeString()) : ''
+
+    if (formattedTime || formattedText || formattedDetail || formattedData || (this._loggerType === 'normal' && formattedPrefix)) {
+      return `${formattedTime}${this._loggerType === 'normal' ? formattedPrefix : ''}${formattedText}${formattedDetail}${formattedData}`
     }
 
-    const prefix = this._prefix.trim()
-    const unifiedPrefix = ` ${prefix.charAt(0).toUpperCase()}${prefix.slice(1)} `
-
-    return getStyledChalkInstance(this._prefixStyles, unifiedPrefix)
+    return ''
   }
 
   print(isVisible: boolean = true) {
     this._isVisible = isVisible
-    if (this._isVisible) {
-      if (this._singleDivider) {
-        console.log(
-          getStyledChalkInstance(
-            this._singleDividerStyles,
-            this._singleDividerChar.repeat(this._singleDividerLength),
-          ),
-        )
-        return
-      }
-
-      const prefix = this.formatPrefix()
-      const text = this.formatText()
-      const detail = this.formatDetail()
-      const time = this._displayTime
-        ? chalk.gray(new Date().toLocaleTimeString())
-        : ''
-
-      if (this._prependDivider) {
-        console.log(
-          getStyledChalkInstance(
-            this._prependDividerStyles,
-            this._prependDividerChar.repeat(this._prependDividerLength),
-          ),
-        )
-      }
-
-      if (time || prefix || text || detail) {
-        const output = `${time} ${prefix} ${text}
-${detail}`.trim()
-        console.log(output)
-      }
-
-      if (this._displayData && this._data) {
-        console.log(this._data)
-      }
-
-      if (this._appendDivider) {
-        console.log(
-          getStyledChalkInstance(
-            this._appendDividerStyles,
-            this._appendDividerChar.repeat(this._appendDividerLength),
-          ),
-        )
-      }
+    if (!this._isVisible) {
+      return
     }
+
+    if (this._singleDivider) {
+      console.log(
+        getStyledChalkInstance(
+          this._singleDividerStyles,
+          this._singleDividerChar.repeat(this._singleDividerLength),
+        ),
+      )
+      return
+    }
+
+    if (this._prependDivider) {
+      console.log(
+        getStyledChalkInstance(
+          this._prependDividerStyles,
+          this._prependDividerChar.repeat(this._prependDividerLength),
+        ),
+      )
+    }
+
+    console.log(this.getMainOutput())
+
+    if (this._appendDivider) {
+      console.log(
+        getStyledChalkInstance(
+          this._appendDividerStyles,
+          this._appendDividerChar.repeat(this._appendDividerLength),
+        ),
+      )
+    }
+  }
+
+  protected capitalize(text: string) {
+    return text.charAt(0).toUpperCase() + text.slice(1)
   }
 
   get [Symbol.toStringTag]() {
@@ -270,7 +262,7 @@ ${detail}`.trim()
   }
 
   toString() {
-    return this.formatText()
+    return this.toObject.toString()
   }
 
   toObject() {
@@ -278,209 +270,129 @@ ${detail}`.trim()
   }
 }
 
-export class StreamLogger {
-  public state: 'start' | 'stop' | 'succeed' | 'fail' | undefined = undefined
+export class StreamLogger extends Logger {
+  protected _state: 'start' | 'stop' | 'succeed' | 'fail' | undefined = undefined
+  protected _spinner: Ora | undefined = undefined
+  protected _delay: number = 0
+  declare _prefix
+  declare _prefixStyles
+  declare _text
+  declare _detail
+  declare _textStyles
+  declare _detailStyles
+  declare _loggerType: 'normal' | 'stream'
 
-  private spinner: Ora | undefined = undefined
-  private delay: number = 0
-  private text: string = ''
-  private color: Color = 'yellow'
-  private detail: string = ''
-  private prefixText: string | undefined = undefined
-  private textStyles: Type.Styles = []
-  private detailStyles: Type.Styles = []
-  private prefixTextStyles: Type.Styles = []
+  constructor(prefix?: string, prefixStyles?: Type.Styles) {
+    super(prefixStyles || [])
 
-  constructor(prefixText?: string, prefixTextStyles?: Type.Styles) {
-    this.prefixText = prefixText
-    prefixTextStyles && (this.prefixTextStyles = prefixTextStyles)
-    this.create()
-    return this
-  }
+    this._loggerType = 'stream'
 
-  private create() {
-    this.spinner = ora()
-    this.spinner.start()
-    this.state = 'start'
+    this._spinner = ora()
+    this._spinner.start()
+    this._state = 'start'
 
-    if (this.prefixText) {
-      this.spinner.prefixText = this.decorateText(this.capitalize(this.prefixText), this.prefixTextStyles)
-    }
+    prefix && this.prefix(prefix, prefixStyles)
 
     return this
   }
 
-  private capitalize(text: string) {
-    return text.charAt(0).toUpperCase() + text.slice(1)
-  }
-
-  private decorateText(text: string = '', styles?: Type.Styles) {
-    return logger(getStyledChalkInstance(styles || this.textStyles, text)).toString()
-  }
-
-  /**
-   * Sets the text for the spinner
-   * @param text Text to display
-   * @param styles Optional styling for the text
-   * @returns This StreamLogger instance for chaining
-   */
-  setText(text: string = '', styles?: Type.Styles) {
-    if (!this.spinner) {
+  prefix(prefix: string, styles?: Type.Styles) {
+    if (!this._spinner) {
       return this
     }
-    this.text = text
-    styles && (this.textStyles = styles)
+    this._prefix = prefix
+
+    styles && (this._prefixStyles = styles)
+
+    this._spinner.prefixText = this.decorateText(this._prefix, this._prefixStyles)
     return this
   }
 
-  /**
-   * Sets the detail text displayed below the main spinner text
-   * @param detail Detail text to display
-   * @param styles Optional styling for the detail text
-   * @returns This StreamLogger instance for chaining
-   */
-  setDetail(detail = '', styles?: Type.Styles) {
-    if (!this.spinner) {
+  text(text: string = '', styles?: Type.Styles) {
+    if (!this._spinner) {
       return this
     }
-    this.detail = detail
-    styles && (this.detailStyles = styles)
+    this._text = text
+    styles && (this._textStyles = styles)
     return this
   }
 
-  /**
-   * Sets a delay before updating the spinner
-   * @param delay Delay in milliseconds
-   * @returns This StreamLogger instance for chaining
-   */
-  setDelay(delay: number) {
-    if (!this.spinner) {
+  detail(detail = '', styles?: Type.Styles) {
+    if (!this._spinner) {
       return this
     }
-    this.delay = delay
+    this._detail = detail
+    styles && (this._detailStyles = styles)
     return this
   }
 
-  /**
-   * Updates the spinner with current text and detail
-   * @returns Promise that resolves after the delay (if any)
-   */
-  async update(): Promise<void> {
-    if (!this.spinner) {
+  delay(delay: number) {
+    if (!this._spinner) {
+      return this
+    }
+    this._delay = delay
+    return this
+  }
+
+  state(state: 'start' | 'stop' | 'succeed' | 'fail') {
+    this._state = state
+    return this
+  }
+
+  update(): void {
+    if (!this._spinner) {
       return
     }
 
-    let finalText = `${this.decorateText(this.capitalize(this.text), this.textStyles)}`
-    if (this.detail.length > 0) {
-      finalText += `\n${this.decorateText(this.detail, this.detailStyles)}`
-    }
-    this.text = finalText
-
-    if (this.state) {
-      this.changeState(this.state, this.text)
+    if (this._state) {
+      this.updateState(this._state)
     }
     else {
-      this.spinner.text = this.text
-    }
-
-    if (this.color && this.spinner) {
-      this.spinner.color = this.color
-    }
-
-    if (this.delay > 0) {
-      await sleep(this.delay)
+      this._spinner.text = this.getMainOutput()
     }
   }
 
-  /**
-   * Sets the state of the spinner
-   * @param state State to set (start, stop, succeed, fail)
-   * @returns This StreamLogger instance for chaining
-   */
-  setState(state: 'start' | 'stop' | 'succeed' | 'fail') {
-    this.state = state
-    return this
-  }
-
-  /**
-   * Sets the color of the spinner
-   * @param color Color to set the spinner to
-   * @returns This StreamLogger instance for chaining
-   */
-  setColor(color: Color) {
-    this.color = color
-    if (this.spinner) {
-      this.spinner.color = color
+  async asyncUpdate(delay?: number): Promise<void> {
+    this.update()
+    const _delay = this._delay || delay
+    if (_delay) {
+      await sleep(_delay)
+      this._delay && (this._delay = 0)
     }
-    return this
   }
 
-  /**
-   * Apply Logger type styles to this StreamLogger
-   * @param type The logger type to use for styling
-   * @returns This StreamLogger instance for chaining
-   */
-  withType(type: Type.Type) {
-    const styles = Logger.stylesMap[type] || Logger.stylesMap.info
-    this.textStyles = styles
-    return this
-  }
-
-  private changeState(state: 'start' | 'stop' | 'succeed' | 'fail' | 'destroy', text?: string) {
-    if (!this.spinner) {
+  private updateState(state: Type.StreamLoggerState) {
+    if (!this._spinner) {
       return this
     }
 
     switch (state) {
       case 'start':
-        this.spinner.start(text)
+        this._spinner.start(this.getMainOutput())
         break
       case 'stop':
-        this.stop()
+        if (!this._spinner) {
+          return this
+        }
+        this._spinner.stop()
+        this._spinner = undefined
         break
       case 'succeed':
-        this.succeed(text)
-        break
-      case 'destroy':
-        this.destroy()
+        if (!this._spinner) {
+          return this
+        }
+        this._spinner.succeed(this.getMainOutput())
+        this._spinner = undefined
         break
       case 'fail':
-        this.fail(text)
+        if (!this._spinner) {
+          return this
+        }
+        this._spinner.fail(this.getMainOutput())
+        this._spinner = undefined
         break
     }
 
-    this.state = undefined
-  }
-
-  private stop() {
-    if (!this.spinner) {
-      return this
-    }
-    this.spinner.stop()
-    return this
-  }
-
-  private destroy() {
-    this.stop()
-    this.spinner = undefined
-    return this
-  }
-
-  private succeed(text: string = '') {
-    if (!this.spinner) {
-      return this
-    }
-    this.spinner.succeed(this.decorateText(text))
-    this.spinner = undefined
-    return this
-  }
-
-  private fail(text: string = '') {
-    if (!this.spinner) {
-      return this
-    }
-    this.spinner.fail(this.decorateText(text))
-    this.spinner = undefined
-    return this
+    this._state = undefined
   }
 }
