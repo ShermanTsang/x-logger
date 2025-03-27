@@ -7,6 +7,8 @@ and supports the dynamic creation of new log types.
 ![Build Status](https://github.com/ShermanTsang/Logger-TypeScript/actions/workflows/npm-publish.yml/badge.svg)
 ![npm](https://img.shields.io/npm/dt/@shermant/logger)
 
+English | [简体中文](./README.zh-CN.md)
+
 # Features
 
 - Multiple predefined log types (info, warn, error, debug, success, failure, plain)
@@ -15,6 +17,7 @@ and supports the dynamic creation of new log types.
 - Log prepend and append dividers
 - Displaying log time
 - Dynamic creation of custom log types
+- Interactive spinner-based logging with `StreamLogger`
 
 ## Docs
 
