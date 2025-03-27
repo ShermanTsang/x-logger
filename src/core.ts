@@ -18,6 +18,8 @@ function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
 export class Logger {
   private _text: string | null = null
   private _textStyles: Type.Styles = []
+  private _detail: string | null = null
+  private _detailStyles: Type.Styles = []
   private _prefix: string | null = null
   private _prefixStyles: Type.Styles = []
   private _data: any
@@ -162,6 +164,12 @@ export class Logger {
     return this
   }
 
+  detail(detail: string, styles?: Type.Styles) {
+    this._detail = detail
+    styles && (this._detailStyles = styles)
+    return this
+  }
+
   prefix(prefix: string, styles?: Type.Styles) {
     this._prefix = prefix
     styles && (this._prefixStyles = styles)
@@ -183,6 +191,17 @@ export class Logger {
       )
     }
     return getStyledChalkInstance(this._textStyles, formattedText)
+  }
+
+  private formatDetail() {
+    let formattedDetail = this._detail || ''
+    if (formattedDetail) {
+      formattedDetail = formattedDetail.replace(
+        /\[\[(.+?)\]\]/g,
+        chalk.underline.yellow('$1'),
+      )
+    }
+    return getStyledChalkInstance(this._detailStyles, formattedDetail)
   }
 
   private formatPrefix() {
@@ -211,6 +230,7 @@ export class Logger {
 
       const prefix = this.formatPrefix()
       const text = this.formatText()
+      const detail = this.formatDetail()
       const time = this._displayTime
         ? chalk.gray(new Date().toLocaleTimeString())
         : ''
@@ -224,8 +244,9 @@ export class Logger {
         )
       }
 
-      if (time || prefix || text) {
-        const output = `${time} ${prefix} ${text}`.trim()
+      if (time || prefix || text || detail) {
+        const output = `${time} ${prefix} ${text}
+${detail}`.trim()
         console.log(output)
       }
 

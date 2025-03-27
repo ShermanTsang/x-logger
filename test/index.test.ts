@@ -83,6 +83,15 @@ describe('logger', () => {
       .print()
   })
 
+  it('show logger detail', () => {
+    expect(() => logger.info
+      .prefix('notice', ['bgRed'])
+      .text('this is [[text]]')
+      .detail('[[detail]]')
+      .print(),
+    ).not.toThrow()
+  })
+
   it('reuse logger instance', () => {
     const reusedLogger = Logger.type('info').time().prependDivider('♥')
 

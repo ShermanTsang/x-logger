@@ -204,6 +204,18 @@ import {logger} from '@shermant/logger'
 logger.info.prefix('info title').styles(['bgRed', 'white']).text('This is an info text').print()
 ```
 
+## `detail()` method
+
+Use `detail()` to add a detail to the log text.
+
+```typescript
+import {logger} from '@shermant/logger'
+
+logger.info.prefix('info title').detail('This is a detail').text('This is an info text').print()
+```
+
+The detail will be displayed below the main log text.
+
 ## `data()` method
 
 Use `data()` method to print your data below the log text.
