@@ -265,8 +265,16 @@ ${detail}`.trim()
     }
   }
 
+  get [Symbol.toStringTag]() {
+    return 'ShermanLoggerClass'
+  }
+
   toString() {
     return this.formatText()
+  }
+
+  toObject() {
+    return this
   }
 }
 
