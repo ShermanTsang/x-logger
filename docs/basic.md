@@ -43,16 +43,16 @@ You can use them directly to log messages, and every log type has a correspondin
 ### Style
 
 This package uses the chalk package to style log messages. Any style provided by chalk can be used to customize log
-message styles. Use the style method to customize the log message style. The style method takes an array of two strings:
+text styles. Use the style method to customize the log text style. The style method takes an array of two strings:
 the background color and the text color.
 
-Therefore, you can use the `style` method to customize the log message style. The `style` method takes an array of two
+Therefore, you can use the `style` method to customize the log text style. The `style` method takes an array of two
 strings: the background color and the text color.
 
 Below is the type definition of the `Style` type
 
 ```typescript
-import { ChalkInstance } from 'chalk'
+import {ChalkInstance} from 'chalk'
 
 namespace LoggerType {
     // ignored content...
@@ -64,9 +64,11 @@ namespace LoggerType {
 
 ### StreamLogger
 
-The `StreamLogger` class provides interactive terminal logging with spinners. It's built on top of the Ora package and allows you to display loading states, success/failure indicators, and detailed progress messages in the terminal.
+The `StreamLogger` class provides interactive terminal logging with spinners. It's built on top of the Ora package and
+allows you to display loading states, success/failure indicators, and detailed progress messages in the terminal.
 
 Key features of `StreamLogger`:
+
 - Interactive spinners for indicating in-progress operations
 - Support for multiple states: start, stop, succeed, fail
 - Custom styling for text, details, and prefix elements

@@ -8,7 +8,7 @@ describe('logger', () => {
   it('access polymorphic logger', () => {
     expect(() => {
       logger('anything you wanna put here').print()
-      logger.info.prefix('OKAY').message('test').print()
+      logger.info.prefix('OKAY').text('test').print()
     }).not.toThrow()
   })
 
@@ -28,7 +28,7 @@ describe('logger', () => {
     logger
       .type(customLoggerType)
       .prefix('custom logger')
-      .message('test adding custom logger type via type function')
+      .text('test adding custom logger type via type function')
       .appendDivider('*')
       .print()
   })
@@ -45,21 +45,21 @@ describe('logger', () => {
     logger
       .newType(['bgRedBright', 'underline'])
       .prefix('custom logger')
-      .message('test adding custom logger type via proxy function')
+      .text('test adding custom logger type via proxy function')
       .print()
 
     // Use the type function to add and use the custom logger type
     logger
       .type('newType')
       .prefix('custom logger')
-      .message('The next time you can use `newType` with `type` function')
+      .text('The next time you can use `newType` with `type` function')
       .print()
 
     // Not recommended style: directly using the new type
     const customLoggerType = logger.newType as unknown as LoggerType
     customLoggerType
       .prefix('custom logger')
-      .message('Also, you can use `newType` directly, but not recommend')
+      .text('Also, you can use `newType` directly, but not recommend')
       .print()
 
     // Verify the custom type was added
@@ -78,7 +78,7 @@ describe('logger', () => {
     // Use the overridden logger type
     logger.info
       .prefix('info')
-      .message('test overriding preset logger type')
+      .text('test overriding preset logger type')
       .prependDivider()
       .print()
   })
@@ -86,9 +86,9 @@ describe('logger', () => {
   it('reuse logger instance', () => {
     const reusedLogger = Logger.type('info').time().prependDivider('♥')
 
-    // Use the reused logger instance to print multiple messages
-    reusedLogger.prefix('love').message('the world').print()
-    reusedLogger.prefix('love').message('you').print()
+    // Use the reused logger instance to print multiple texts
+    reusedLogger.prefix('love').text('the world').print()
+    reusedLogger.prefix('love').text('you').print()
   })
 
   it('ignore non-existed chalk style', () => {
@@ -96,7 +96,7 @@ describe('logger', () => {
       logger.error
       // @ts-expect-error: Non-existed chalk style test
         .prefix('error', ['nonExistedChalkStyle'])
-        .message('test ignoring non-existed chalk style')
+        .text('test ignoring non-existed chalk style')
         .print()
     }).not.toThrow()
   })

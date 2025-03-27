@@ -16,8 +16,8 @@ function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
 }
 
 export class Logger {
-  private _message: string | null = null
-  private _messageStyles: Type.Styles = []
+  private _text: string | null = null
+  private _textStyles: Type.Styles = []
   private _prefix: string | null = null
   private _prefixStyles: Type.Styles = []
   private _data: any
@@ -137,7 +137,7 @@ export class Logger {
   }
 
   styles(styles: Type.Styles) {
-    this._messageStyles = styles
+    this._textStyles = styles
     return this
   }
 
@@ -156,9 +156,9 @@ export class Logger {
     return this
   }
 
-  message(message: string, styles?: Type.Styles) {
-    this._message = message
-    styles && (this._messageStyles = styles)
+  text(text: string, styles?: Type.Styles) {
+    this._text = text
+    styles && (this._textStyles = styles)
     return this
   }
 
@@ -174,15 +174,15 @@ export class Logger {
     return this
   }
 
-  private formatMessage() {
-    let formattedMessage = this._message || ''
-    if (formattedMessage) {
-      formattedMessage = formattedMessage.replace(
+  private formatText() {
+    let formattedText = this._text || ''
+    if (formattedText) {
+      formattedText = formattedText.replace(
         /\[\[(.+?)\]\]/g,
         chalk.underline.yellow('$1'),
       )
     }
-    return getStyledChalkInstance(this._messageStyles, formattedMessage)
+    return getStyledChalkInstance(this._textStyles, formattedText)
   }
 
   private formatPrefix() {
@@ -210,7 +210,7 @@ export class Logger {
       }
 
       const prefix = this.formatPrefix()
-      const message = this.formatMessage()
+      const text = this.formatText()
       const time = this._displayTime
         ? chalk.gray(new Date().toLocaleTimeString())
         : ''
@@ -224,8 +224,8 @@ export class Logger {
         )
       }
 
-      if (time || prefix || message) {
-        const output = `${time} ${prefix} ${message}`.trim()
+      if (time || prefix || text) {
+        const output = `${time} ${prefix} ${text}`.trim()
         console.log(output)
       }
 
@@ -245,7 +245,7 @@ export class Logger {
   }
 
   toString() {
-    return this.formatMessage()
+    return this.formatText()
   }
 }
 

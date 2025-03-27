@@ -1,8 +1,8 @@
 import { Logger } from './core.ts'
 import { typeProxyHandler } from './wrapper.ts'
 
-function logger(message: string) {
-  return Logger.plain.message(message)
+function logger(text: string) {
+  return Logger.plain.text(text)
 }
 
 export const accessor = new Proxy(logger, {

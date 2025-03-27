@@ -16,13 +16,13 @@ Each of them will return a `Logger` instance with the corresponding log type, yo
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger.info.prefix('info title').message('This is an info message').print()
-logger.warn.prefix('warn title').message('This is a warning message').print()
-logger.error.prefix('error title').message('This is an error message').print()
-logger.debug.prefix('debug title').message('This is a debug message').print()
-logger.success.prefix('success title').message('This is a success message').print()
-logger.failure.prefix('failure title').message('This is a failure message').print()
-logger.plain.prefix('plain title').message('This is a plain message').print()
+logger.info.prefix('info title').text('This is an info text').print()
+logger.warn.prefix('warn title').text('This is a warning text').print()
+logger.error.prefix('error title').text('This is an error text').print()
+logger.debug.prefix('debug title').text('This is a debug text').print()
+logger.success.prefix('success title').text('This is a success text').print()
+logger.failure.prefix('failure title').text('This is a failure text').print()
+logger.plain.prefix('plain title').text('This is a plain text').print()
 ```
 
 ## `Logger` class
@@ -37,8 +37,8 @@ import {Logger} from '@shermant/logger'
 
 // You can use `Logger` instances sharing the same log type and other config options in this way.
 const logger = Logger.type('info').time().prependDivider('♥')
-logger.prefix('love').message('the world').print()
-logger.prefix('love').message('you').print()
+logger.prefix('love').text('the world').print()
+logger.prefix('love').text('you').print()
 ```
 
 ## `logger` accessor
@@ -66,7 +66,7 @@ const logger = createLogger<{
 logger
     .newType(['bgGreenBright', 'underline'])
     .prefix('custom logger')
-    .message('test adding custom logger type via type function')
+    .text('test adding custom logger type via type function')
     .print()
 ```
 
@@ -76,7 +76,7 @@ Next time, use `newType` with the `type` function.
 logger
     .type('newType')
     .prefix('custom logger')
-    .message('The next time you can use `newType` with `type` function')
+    .text('The next time you can use `newType` with `type` function')
     .print()
 ```
 
@@ -92,13 +92,13 @@ This is not recommend code style
 const newType = logger.newType as unknown as Logger
 newType
     .prefix('custom logger')
-    .message('Also, you can use `newType` directly, but not recommend')
+    .text('Also, you can use `newType` directly, but not recommend')
     .print()
 ```
 
 ## `print()` method
 
-Use print() to output the log message to the console. You can pass a boolean value to control whether the log message is
+Use print() to output the log text to the console. You can pass a boolean value to control whether the log text is
 output.
 
 ## `type()` method
@@ -111,7 +111,7 @@ Use `type(string, [styles])` to specify the log type, or you can create custom l
 
 ```typescript
 // You can use the `type` method to specify the log type
-logger.type('anyType').prefix('type').message('This is an info message').print()
+logger.type('anyType').prefix('type').text('This is an info text').print()
 ```
 
 ### Override Preset Style
@@ -122,7 +122,7 @@ background color and the text color.
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger.type('info', ['bgRed', 'white']).prefix('info title').message('This is a red info message').print()
+logger.type('info', ['bgRed', 'white']).prefix('info title').text('This is a red info text').print()
 ```
 
 ### Add custom log types
@@ -137,38 +137,38 @@ import {logger} from '@shermant/logger'
 logger.type('myCustomType', ['bgRed', 'white'])
 
 // Then, you can use `myCustomType` to log messages
-logger.type('myCustomType').prefix('custom').message('This is a custom message').print()
+logger.type('myCustomType').prefix('custom').text('This is a custom text').print()
 ```
 
 ## `prefix()` method
 
-Use `prefix(string)` to add a prefix to the log message, and the prefix will be displayed in the log message.
+Use `prefix(string)` to add a prefix to the log text, and the prefix will be displayed in the log text.
 
 In the future, you can use `prefix` attribute to filter log messages.
 
-## `message()` method
+## `text()` method
 
-Use `message(string)` to add a message to the log message.
+Use `text(string)` to add a text to the log text.
 
 ### Emphasize key information
 
-With `[[key infomation]]}` syntax, you can emphasize key information in the log message.
+With `[[key infomation]]}` syntax, you can emphasize key information in the log text.
 
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger.info.prefix('info title').message('This is an info message with [[key information]]').print()
+logger.info.prefix('info title').text('This is an info text with [[key information]]').print()
 ```
 
-Then, the message `formatter` will use `chalk.yellow.underline` style to decorate the key information.
+Then, the text `formatter` will use `chalk.yellow.underline` style to decorate the key information.
 
 Later, you are able to customize the style and the matched sign of the key information.
 
 ## `prependDivider()` & `appendDivider()` method
 
-Use `prependDivider()` to add a divider before the log message.
+Use `prependDivider()` to add a divider before the log text.
 
-Use `appendDivider()` to add a divider after the log message.
+Use `appendDivider()` to add a divider after the log text.
 
 Both of them receive three optional arguments: `char`, `length`, and `styles`.
 
@@ -178,8 +178,8 @@ The default value of `char` is `-`, the default value of `length` is `80`, and t
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger.info.prefix('info title').prependDivider().message('This is an info message').print()
-logger.info.prefix('info title').appendDivider().message('This is an info message').print()
+logger.info.prefix('info title').prependDivider().text('This is an info text').print()
+logger.info.prefix('info title').appendDivider().text('This is an info text').print()
 ```
 
 ## `time()` method
@@ -189,33 +189,33 @@ If you want to display the log time, you can use the `time()` method.
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger.info.prefix('info title').time().message('This is an info message').print()
+logger.info.prefix('info title').time().text('This is an info text').print()
 ```
 
 ## `styles()` method
 
-Use `styles()` to add styles to the log message.
+Use `styles()` to add styles to the log text.
 
-Note that the styles will only be applied to the log message without the prefix part.
+Note that the styles will only be applied to the log text without the prefix part.
 
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger.info.prefix('info title').styles(['bgRed', 'white']).message('This is an info message').print()
+logger.info.prefix('info title').styles(['bgRed', 'white']).text('This is an info text').print()
 ```
 
 ## `data()` method
 
-Use `data()` method to print your data below the log message.
+Use `data()` method to print your data below the log text.
 
-The second parameter is a boolean value that controls whether to print the data in the log message, default value is
+The second parameter is a boolean value that controls whether to print the data in the log text, default value is
 `true`.
 
 ```typescript
-logger.info.prefix('info title').styles(['bgRed', 'white']).message('error data')
+logger.info.prefix('info title').styles(['bgRed', 'white']).text('error data')
     .data(
         {
-            error: 'error message',
+            error: 'error text',
             status: 500
         },
         false
@@ -224,12 +224,12 @@ logger.info.prefix('info title').styles(['bgRed', 'white']).message('error data'
 
 ## `toString()` method
 
-Use `toString()` method to get the formatted and rendered log message.
+Use `toString()` method to get the formatted and rendered log text.
 
 ```typescript
 import {logger} from '@shermant/logger'
 
-logger('This is an info [[message]]').toString()
+logger('This is an info [[text]]').toString()
 ```
 
 ## `StreamLogger` class
@@ -262,7 +262,7 @@ await streamLogger.update()
 ### Constructor
 
 ```typescript
-new StreamLogger(prefixText ? : string, prefixTextStyles ? : Type.Styles)
+new StreamLogger(prefixText ? : string, prefixMessagestyles ? : Type.Styles)
 ```
 
 Creates a new StreamLogger instance with an optional prefix text and styles. The spinner starts automatically upon
@@ -379,7 +379,7 @@ async function fetchData(url: string) {
     return response
   }
   catch (error) {
-    streamLogger.fail(`Request failed: ${error.message}`)
+    streamLogger.fail(`Request failed: ${error.text}`)
     throw error
   }
 }
