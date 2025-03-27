@@ -15,8 +15,8 @@ function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
 export class Logger {
   private _message: string | null = null
   private _messageStyles: Type.Styles = []
-  private _tag: string | null = null
-  private _tagStyles: Type.Styles = []
+  private _prefix: string | null = null
+  private _prefixStyles: Type.Styles = []
   private _data: any
   private _displayTime: boolean = false
   private _displayData: boolean = true
@@ -34,8 +34,8 @@ export class Logger {
   private _singleDividerLength: number = 1
   private _isVisible: boolean = true
 
-  constructor(tagStyles: Type.Styles) {
-    this._tagStyles = tagStyles
+  constructor(prefixStyles: Type.Styles) {
+    this._prefixStyles = prefixStyles
   }
 
   static stylesMap: Record<Type.Type | string, Type.Styles> = {
@@ -74,6 +74,11 @@ export class Logger {
 
   static get stream() {
     return new StreamLogger()
+  }
+
+  static toStream(type: Type.Type) {
+    const styles = Logger.stylesMap[type] || Logger.stylesMap.info
+    return new StreamLogger(undefined, styles)
   }
 
   static get plain() {
@@ -154,9 +159,9 @@ export class Logger {
     return this
   }
 
-  tag(tag: string, styles?: Type.Styles) {
-    this._tag = tag
-    styles && (this._tagStyles = styles)
+  prefix(prefix: string, styles?: Type.Styles) {
+    this._prefix = prefix
+    styles && (this._prefixStyles = styles)
     return this
   }
 
@@ -177,15 +182,15 @@ export class Logger {
     return getStyledChalkInstance(this._messageStyles, formattedMessage)
   }
 
-  private formatTag() {
-    if (!this._tag) {
+  private formatPrefix() {
+    if (!this._prefix) {
       return ''
     }
 
-    const tag = this._tag.trim()
-    const unifiedTag = ` ${tag.charAt(0).toUpperCase()}${tag.slice(1)} `
+    const prefix = this._prefix.trim()
+    const unifiedPrefix = ` ${prefix.charAt(0).toUpperCase()}${prefix.slice(1)} `
 
-    return getStyledChalkInstance(this._tagStyles, unifiedTag)
+    return getStyledChalkInstance(this._prefixStyles, unifiedPrefix)
   }
 
   print(isVisible: boolean = true) {
@@ -201,7 +206,7 @@ export class Logger {
         return
       }
 
-      const tag = this.formatTag()
+      const prefix = this.formatPrefix()
       const message = this.formatMessage()
       const time = this._displayTime
         ? chalk.gray(new Date().toLocaleTimeString())
@@ -216,8 +221,8 @@ export class Logger {
         )
       }
 
-      if (time || tag || message) {
-        const output = `${time} ${tag} ${message}`.trim()
+      if (time || prefix || message) {
+        const output = `${time} ${prefix} ${message}`.trim()
         console.log(output)
       }
 
@@ -245,7 +250,7 @@ export class StreamLogger {
   public state: 'start' | 'stop' | 'succeed' | 'fail' | undefined = undefined
 
   private spinner: Ora | undefined = undefined
-  private dealy: number = 0
+  private delay: number = 0
   private text: string = ''
   private color: Color = 'yellow'
   private detail: string = ''
@@ -278,9 +283,15 @@ export class StreamLogger {
   }
 
   private decorateText(text: string = '', styles?: Type.Styles) {
-    return logger(getStyledChalkInstance(styles, text)).toString()
+    return logger(getStyledChalkInstance(styles || this.textStyles, text)).toString()
   }
 
+  /**
+   * Sets the text for the spinner
+   * @param text Text to display
+   * @param styles Optional styling for the text
+   * @returns This StreamLogger instance for chaining
+   */
   setText(text: string = '', styles?: Type.Styles) {
     if (!this.spinner) {
       return this
@@ -290,6 +301,12 @@ export class StreamLogger {
     return this
   }
 
+  /**
+   * Sets the detail text displayed below the main spinner text
+   * @param detail Detail text to display
+   * @param styles Optional styling for the detail text
+   * @returns This StreamLogger instance for chaining
+   */
   setDetail(detail = '', styles?: Type.Styles) {
     if (!this.spinner) {
       return this
@@ -299,14 +316,23 @@ export class StreamLogger {
     return this
   }
 
+  /**
+   * Sets a delay before updating the spinner
+   * @param delay Delay in milliseconds
+   * @returns This StreamLogger instance for chaining
+   */
   setDelay(delay: number) {
     if (!this.spinner) {
       return this
     }
-    this.dealy = delay
+    this.delay = delay
     return this
   }
 
+  /**
+   * Updates the spinner with current text and detail
+   * @returns Promise that resolves after the delay (if any)
+   */
   async update(): Promise<void> {
     if (!this.spinner) {
       return
@@ -329,13 +355,42 @@ export class StreamLogger {
       this.spinner.color = this.color
     }
 
-    if (this.dealy > 0) {
-      await sleep(this.dealy)
+    if (this.delay > 0) {
+      await sleep(this.delay)
     }
   }
 
+  /**
+   * Sets the state of the spinner
+   * @param state State to set (start, stop, succeed, fail)
+   * @returns This StreamLogger instance for chaining
+   */
   setState(state: 'start' | 'stop' | 'succeed' | 'fail') {
     this.state = state
+    return this
+  }
+
+  /**
+   * Sets the color of the spinner
+   * @param color Color to set the spinner to
+   * @returns This StreamLogger instance for chaining
+   */
+  setColor(color: Color) {
+    this.color = color
+    if (this.spinner) {
+      this.spinner.color = color
+    }
+    return this
+  }
+
+  /**
+   * Apply Logger type styles to this StreamLogger
+   * @param type The logger type to use for styling
+   * @returns This StreamLogger instance for chaining
+   */
+  withType(type: Type.Type) {
+    const styles = Logger.stylesMap[type] || Logger.stylesMap.info
+    this.textStyles = styles
     return this
   }
 
@@ -355,7 +410,7 @@ export class StreamLogger {
         this.succeed(text)
         break
       case 'destroy':
-        this.destory()
+        this.destroy()
         break
       case 'fail':
         this.fail(text)
@@ -373,7 +428,7 @@ export class StreamLogger {
     return this
   }
 
-  private destory() {
+  private destroy() {
     this.stop()
     this.spinner = undefined
     return this

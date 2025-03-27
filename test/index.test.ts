@@ -8,7 +8,7 @@ describe('logger', () => {
   it('access polymorphic logger', () => {
     expect(() => {
       logger('anything you wanna put here').print()
-      logger.info.tag('OKAY').message('test').print()
+      logger.info.prefix('OKAY').message('test').print()
     }).not.toThrow()
   })
 
@@ -27,7 +27,7 @@ describe('logger', () => {
     // Use the custom logger type
     logger
       .type(customLoggerType)
-      .tag('custom logger')
+      .prefix('custom logger')
       .message('test adding custom logger type via type function')
       .appendDivider('*')
       .print()
@@ -44,21 +44,21 @@ describe('logger', () => {
     // Add and use the custom logger type via proxy
     logger
       .newType(['bgRedBright', 'underline'])
-      .tag('custom logger')
+      .prefix('custom logger')
       .message('test adding custom logger type via proxy function')
       .print()
 
     // Use the type function to add and use the custom logger type
     logger
       .type('newType')
-      .tag('custom logger')
+      .prefix('custom logger')
       .message('The next time you can use `newType` with `type` function')
       .print()
 
     // Not recommended style: directly using the new type
     const customLoggerType = logger.newType as unknown as LoggerType
     customLoggerType
-      .tag('custom logger')
+      .prefix('custom logger')
       .message('Also, you can use `newType` directly, but not recommend')
       .print()
 
@@ -77,7 +77,7 @@ describe('logger', () => {
 
     // Use the overridden logger type
     logger.info
-      .tag('info')
+      .prefix('info')
       .message('test overriding preset logger type')
       .prependDivider()
       .print()
@@ -87,8 +87,8 @@ describe('logger', () => {
     const reusedLogger = Logger.type('info').time().prependDivider('♥')
 
     // Use the reused logger instance to print multiple messages
-    reusedLogger.tag('love').message('the world').print()
-    reusedLogger.tag('love').message('you').print()
+    reusedLogger.prefix('love').message('the world').print()
+    reusedLogger.prefix('love').message('you').print()
   })
 
   it('transform to string', () => {
@@ -105,6 +105,22 @@ describe('logger', () => {
 
   it('should display streaming logger', async () => {
     const streamLogger = new StreamLogger('❤️ test', ['underline'])
+
+    expect(streamLogger.state).toBe('start')
+
+    await streamLogger
+      .setText('changing', ['bgGreenBright', 'underline'])
+      .setDetail('you looks pretty', ['bgGreenBright', 'underline'])
+      .setDelay(1000)
+      .update()
+
+    await streamLogger
+      .setState('succeed')
+      .update()
+  })
+
+  it('should display streaming logger with type', async () => {
+    const streamLogger = Logger.toStream('info')
 
     expect(streamLogger.state).toBe('start')
 
