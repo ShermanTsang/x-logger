@@ -7,8 +7,11 @@ import { logger } from './index.ts'
 import { sleep } from './utils.ts'
 
 function getStyledChalkInstance(styles: Type.Styles = [], text: string) {
-  return styles.reduce((accumulator, currentStyle) => {
-    return (chalk[currentStyle] as ChalkInstance)(accumulator)
+  return styles.reduce((accumulator, chalkStyleDescriptor) => {
+    if (chalkStyleDescriptor in chalk) {
+      return (chalk[chalkStyleDescriptor] as ChalkInstance)(accumulator)
+    }
+    return accumulator
   }, text)
 }
 

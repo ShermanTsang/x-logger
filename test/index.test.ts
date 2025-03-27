@@ -91,6 +91,16 @@ describe('logger', () => {
     reusedLogger.prefix('love').message('you').print()
   })
 
+  it('ignore non-existed chalk style', () => {
+    expect(() => {
+      logger.error
+      // @ts-expect-error: Non-existed chalk style test
+        .prefix('error', ['nonExistedChalkStyle'])
+        .message('test ignoring non-existed chalk style')
+        .print()
+    }).not.toThrow()
+  })
+
   it('transform to string', () => {
     const rawText = 'this is [[string]]'
     const string = logger(rawText).toString()
