@@ -167,10 +167,18 @@ export class Logger {
     return this
   }
 
+  get formattedTime() {
+    return this._displayTime ? `${new Date().toLocaleTimeString()} ` : ''
+  }
+
   text(text: string, styles?: Type.Styles) {
     this._text = text
     styles && (this._textStyles = styles)
     return this
+  }
+
+  get formattedText() {
+    return this._text ? `${this.decorateText(this._text, this._textStyles)} ` : ''
   }
 
   detail(detail: string, styles?: Type.Styles) {
@@ -179,15 +187,27 @@ export class Logger {
     return this
   }
 
+  get formattedDetail() {
+    return this._detail ? `\n${this.decorateText(this._detail, this._detailStyles)}` : ''
+  }
+
   prefix(prefix: string, styles?: Type.Styles) {
     this._prefix = prefix
     styles && (this._prefixStyles = styles)
     return this
   }
 
+  get formattedPrefix() {
+    return this._prefix ? `${this.decorateText(this._prefix, this._prefixStyles)} ` : ''
+  }
+
   data(data: any) {
     this._data = data
     return this
+  }
+
+  get formattedData() {
+    return this._data ? `\n${this._data}` : ''
   }
 
   protected decorateText(content: string, styles?: Type.Styles) {
@@ -201,16 +221,9 @@ export class Logger {
     return getStyledChalkInstance(styles, formattedContent)
   }
 
-  protected getMainOutput() {
-    const formattedPrefix = this._prefix ? this.decorateText(this._prefix, this._prefixStyles) : ''
-    const formattedText = this._text ? this.decorateText(this._text, this._textStyles) : ''
-    const formattedDetail = this._detail ? `\n${this.decorateText(this._detail, this._detailStyles)}` : ''
-    const formattedData = this._data ? `\n${this._data}` : '111'
-
-    const formattedTime = this._displayTime ? chalk.gray(new Date().toLocaleTimeString()) : ''
-
-    if (formattedTime || formattedText || formattedDetail || formattedData || (this._loggerType === 'normal' && formattedPrefix)) {
-      return `${formattedTime}${this._loggerType === 'normal' ? formattedPrefix : ''}${formattedText}${formattedDetail}${formattedData}`
+  protected composeMainOutput() {
+    if (this.formattedTime || this.formattedText || this.formattedDetail || this.formattedData || (this._loggerType === 'normal' && this.formattedPrefix)) {
+      return `${this.formattedTime}${this._loggerType === 'normal' ? this.formattedPrefix : ''}${this.formattedText}${this.formattedDetail}${this.formattedData}`
     }
 
     return ''
@@ -241,7 +254,7 @@ export class Logger {
       )
     }
 
-    console.log(this.getMainOutput())
+    console.log(this.composeMainOutput())
 
     if (this._appendDivider) {
       console.log(
@@ -262,7 +275,7 @@ export class Logger {
   }
 
   toString() {
-    return this.getMainOutput().toString()
+    return this.composeMainOutput().toString()
   }
 
   toObject() {
@@ -348,7 +361,7 @@ export class StreamLogger extends Logger {
       this.updateState(this._state)
     }
     else {
-      this._spinner.text = this.getMainOutput()
+      this._spinner.text = this.composeMainOutput()
     }
   }
 
@@ -368,7 +381,7 @@ export class StreamLogger extends Logger {
 
     switch (state) {
       case 'start':
-        this._spinner.start(this.getMainOutput())
+        this._spinner.start(this.composeMainOutput())
         break
       case 'stop':
         if (!this._spinner) {
@@ -381,14 +394,14 @@ export class StreamLogger extends Logger {
         if (!this._spinner) {
           return this
         }
-        this._spinner.succeed(this.getMainOutput())
+        this._spinner.succeed(this.composeMainOutput())
         this._spinner = undefined
         break
       case 'fail':
         if (!this._spinner) {
           return this
         }
-        this._spinner.fail(this.getMainOutput())
+        this._spinner.fail(this.composeMainOutput())
         this._spinner = undefined
         break
     }
