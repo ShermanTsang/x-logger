@@ -262,7 +262,7 @@ export class Logger {
   }
 
   toString() {
-    return this.toObject.toString()
+    return this.getMainOutput().toString()
   }
 
   toObject() {
