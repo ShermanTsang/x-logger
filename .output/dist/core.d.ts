@@ -1,14 +1,15 @@
-import type {Color} from 'ora';
-import type {Type} from './typings';
-
+import type { Ora } from 'ora';
+import type { Type } from './typings';
 export declare class Logger {
-    private _text;
-    private _textStyles;
-    private _prefix;
-    private _prefixStyles;
-    private _data;
-    private _displayTime;
-    private _displayData;
+    protected _text: string | null;
+    protected _textStyles: Type.Styles;
+    protected _detail: string | null;
+    protected _detailStyles: Type.Styles;
+    protected _prefix: string | null;
+    protected _prefixStyles: Type.Styles;
+    protected _data: any;
+    protected _displayTime: boolean;
+    protected _loggerType: 'normal' | 'stream';
     private _prependDivider;
     private _prependDividerStyles;
     private _prependDividerLength;
@@ -22,130 +23,61 @@ export declare class Logger {
     private _singleDividerChar;
     private _singleDividerLength;
     private _isVisible;
-
-    constructor(prefixStyles: Type.Styles);
-
+    constructor(prefixStyles?: Type.Styles);
     static stylesMap: Record<Type.Type | string, Type.Styles>;
-
     static getLoggerInstance(type: Type.Type, styles?: Type.Styles): Logger;
-
     static type(type: Type.Type, styles?: Type.Styles): Logger;
-
     static get stream(): StreamLogger;
-
-    static toStream(type: Type.Type): StreamLogger;
-
+    toStream(prefix?: string, prefixStyles?: Type.Styles): StreamLogger;
     static get plain(): Logger;
-
     static get info(): Logger;
-
     static get warn(): Logger;
-
     static get error(): Logger;
-
     static get debug(): Logger;
-
     static get success(): Logger;
-
     static get failure(): Logger;
-
     private setDividerProperties;
-
     divider(char?: string, length?: number, styles?: Type.Styles): void;
-
     styles(styles: Type.Styles): this;
-
     prependDivider(char?: string, length?: number, styles?: Type.Styles): this;
-
     appendDivider(char?: string, length?: number, styles?: Type.Styles): this;
-
     time(isDisplay?: boolean): this;
-
+    get formattedTime(): string;
     text(text: string, styles?: Type.Styles): this;
-
+    get formattedText(): string;
+    detail(detail: string, styles?: Type.Styles): this;
+    get formattedDetail(): string;
     prefix(prefix: string, styles?: Type.Styles): this;
-
-    data(data: any, displayData?: boolean): this;
-
-    private formatText;
-    private formatPrefix;
-
+    get formattedPrefix(): string;
+    data(data: any): this;
+    get formattedData(): string;
+    protected decorateText(content: string, styles?: Type.Styles): string;
+    protected composeMainOutput(): string;
     print(isVisible?: boolean): void;
-
+    private printBrowserOutput;
+    protected capitalize(text: string): string;
+    get [Symbol.toStringTag](): string;
     toString(): string;
+    toObject(): this;
 }
-
-export declare class StreamLogger {
-    state: 'start' | 'stop' | 'succeed' | 'fail' | undefined;
-    private spinner;
-    private delay;
-    private text;
-    private color;
-    private detail;
-    private prefixText;
-    private textStyles;
-    private detailStyles;
-    private prefixTextStyles;
-
-    constructor(prefixText?: string, prefixTextStyles?: Type.Styles);
-
-    private create;
-    private capitalize;
-    private decorateText;
-
-    /**
-     * Sets the text for the spinner
-     * @param text Text to display
-     * @param styles Optional styling for the text
-     * @returns This StreamLogger instance for chaining
-     */
+export declare class StreamLogger extends Logger {
+    protected _state: 'start' | 'stop' | 'succeed' | 'fail' | undefined;
+    protected _spinner: Ora | undefined;
+    protected _delay: number;
+    _prefix: string | null;
+    _prefixStyles: Type.Styles;
+    _text: string | null;
+    _detail: string | null;
+    _textStyles: Type.Styles;
+    _detailStyles: Type.Styles;
+    _loggerType: 'normal' | 'stream';
+    constructor(prefix?: string, prefixStyles?: Type.Styles);
+    prefix(prefix: string, styles?: Type.Styles): this;
     text(text?: string, styles?: Type.Styles): this;
-
-    /**
-     * Sets the detail text displayed below the main spinner text
-     * @param detail Detail text to display
-     * @param styles Optional styling for the detail text
-     * @returns This StreamLogger instance for chaining
-     */
     detail(detail?: string, styles?: Type.Styles): this;
-
-    /**
-     * Sets a delay before updating the spinner
-     * @param delay Delay in milliseconds
-     * @returns This StreamLogger instance for chaining
-     */
     delay(delay: number): this;
-
-    /**
-     * Updates the spinner with current text and detail
-     * @returns Promise that resolves after the delay (if any)
-     */
-    update(): Promise<void>;
-
-    /**
-     * Sets the state of the spinner
-     * @param state State to set (start, stop, succeed, fail)
-     * @returns This StreamLogger instance for chaining
-     */
     state(state: 'start' | 'stop' | 'succeed' | 'fail'): this;
-
-    /**
-     * Sets the color of the spinner
-     * @param color Color to set the spinner to
-     * @returns This StreamLogger instance for chaining
-     */
-    setColor(color: Color): this;
-
-    /**
-     * Apply Logger type styles to this StreamLogger
-     * @param type The logger type to use for styling
-     * @returns This StreamLogger instance for chaining
-     */
-    withType(type: Type.Type): this;
-
-    private changeState;
-    private stop;
-    private destroy;
-    private succeed;
-    private fail;
+    update(): void;
+    asyncUpdate(delay?: number): Promise<void>;
+    private updateState;
 }

@@ -1,28 +1,77 @@
-# API & Usage
+# API Reference & Usage
 
-The basic usage involves using the logger `accessor`(function-based proxy) to print messages.
+This guide covers all the features and methods available in `@shermant/logger`. The library provides a fluent, chainable API that makes logging both powerful and intuitive.
 
-Predefined log types are wrapped in static getters,
-allowing direct use.
+## Table of Contents
 
-## `Logger.[TypeName]` static getter
+- [Basic Usage](#basic-usage)
+- [Logger Class](#logger-class)
+- [Predefined Log Types](#predefined-log-types)
+- [Custom Log Types](#custom-log-types)
+- [Styling and Formatting](#styling-and-formatting)
+- [Stream Logger](#stream-logger)
+- [Advanced Features](#advanced-features)
+- [TypeScript Support](#typescript-support)
 
-The basic usage of this package is to use the `logger` accessor to log messages.
+## Basic Usage
 
-This package wraps preset log types in static getters, and you can use them directly.
-
-Each of them will return a `Logger` instance with the corresponding log type, you can continue to use chain calling .
+The simplest way to use the logger is through the predefined log types. Each type has its own styling and is designed for specific use cases.
 
 ```typescript
 import { logger } from '@shermant/logger'
 
-logger.info.prefix('info title').text('This is an info text').print()
-logger.warn.prefix('warn title').text('This is a warning text').print()
-logger.error.prefix('error title').text('This is an error text').print()
-logger.debug.prefix('debug title').text('This is a debug text').print()
-logger.success.prefix('success title').text('This is a success text').print()
-logger.failure.prefix('failure title').text('This is a failure text').print()
-logger.plain.prefix('plain title').text('This is a plain text').print()
+// Simple logging
+logger.info.text('Application started').print()
+logger.warn.text('This is a warning').print()
+logger.error.text('Something went wrong').print()
+logger.success.text('Operation completed').print()
+```
+
+## Predefined Log Types
+
+The library comes with seven predefined log types, each with distinct styling:
+
+| Type | Purpose | Default Style |
+|------|---------|---------------|
+| `info` | General information | Blue background |
+| `warn` | Warnings | Yellow background |
+| `error` | Error messages | Red background |
+| `debug` | Debug information | Magenta background |
+| `success` | Success messages | Green background |
+| `failure` | Failure messages | Red background with strikethrough |
+| `plain` | Unstyled text | No styling |
+
+### Examples
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Information logging
+logger.info
+  .prefix('🚀 APP')
+  .text('Server starting on port 3000')
+  .print()
+
+// Warning with details
+logger.warn
+  .prefix('⚠️ WARNING')
+  .text('Deprecated API usage detected')
+  .detail('Please update to the new API')
+  .print()
+
+// Error with data
+logger.error
+  .prefix('❌ ERROR')
+  .text('Database connection failed')
+  .data({ host: 'localhost', port: 5432 })
+  .print()
+
+// Success with timestamp
+logger.success
+  .prefix('✅ SUCCESS')
+  .text('User authentication completed')
+  .time()
+  .print()
 ```
 
 ## `Logger` class

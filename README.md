@@ -18,6 +18,39 @@ English | [简体中文](./README.zh-CN.md)
 - Displaying log time
 - Dynamic creation of custom log types
 - Interactive spinner-based logging with `StreamLogger`
+- **🌐 Browser Console Support** - Works seamlessly in both Node.js and browser environments
+- **🎨 Cross-Platform Styling** - Automatic environment detection with appropriate styling
+
+## Browser Support
+
+Sherman Logger now supports browser environments! The library automatically detects the environment and provides appropriate styling:
+
+### Node.js Environment
+
+- Uses `chalk` for terminal colors and styling
+- Uses `ora` for interactive spinners
+- Full feature support
+
+### Browser Environment
+
+- Uses CSS styling for console output
+- Provides visual feedback for stream operations
+- Maintains API compatibility
+
+### Usage Example
+
+```javascript
+import { Logger } from '@shermant/logger'
+
+// Works in both Node.js and browser
+Logger.info.text('Hello World!').print()
+Logger.success.text('Operation completed').print()
+
+// Stream logging with cross-platform support
+const stream = Logger.stream
+stream.text('Processing...').update()
+stream.text('Done!').state('succeed')
+```
 
 ## Docs
 

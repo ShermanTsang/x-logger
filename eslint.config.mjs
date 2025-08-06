@@ -4,5 +4,12 @@ export default antfu({
   rules: {
     'no-console': 'off',
   },
-  formatters: {},
+  formatters: false,
+  markdown: false,
+  ignores: [
+    'docs/**',
+    '.output/**',
+    'dist/**',
+    'build/**',
+  ],
 })

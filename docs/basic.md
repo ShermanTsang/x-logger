@@ -1,34 +1,99 @@
-# Introduction
+# Getting Started
 
-`Logger` is a lightweight logging library that allows custom log styles and tags. It provides some predefined log types
-and supports the dynamic creation of new log types.
+Welcome to `@shermant/logger` - a modern, lightweight, and feature-rich logging library for TypeScript and JavaScript applications.
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/ShermanTsang/Logger-TypeScript?label=version)
-
 ![Build Status](https://github.com/ShermanTsang/Logger-TypeScript/actions/workflows/npm-publish.yml/badge.svg)
-
 ![npm](https://img.shields.io/npm/dt/@shermant/logger)
 
 ## Features
 
-- Multiple predefined log types (info, warn, error, debug, success, failure, plain)
-- Custom log type styles
-- Log tags
-- Log prepend and append dividers
-- Displaying log time
-- Dynamic creation of custom log types
-- Interactive spinner-based logging with `StreamLogger`
+✨ **Core Features**
+- 🎯 **Predefined Log Types**: info, warn, error, debug, success, failure, plain
+- 🎨 **Rich Styling**: Full Chalk.js integration for colors and text decoration
+- 🔗 **Chainable API**: Fluent interface for building complex log messages
+- ⚡ **Zero Dependencies**: Core functionality requires no external dependencies
+- 🌐 **Cross-Platform**: Works in Node.js, Bun, and browser environments
+
+🚀 **Advanced Features**
+- 🎯 **Custom Log Types**: Create and register your own log types dynamically
+- 📊 **Stream Logging**: Interactive spinners and progress indicators
+- ⏰ **Timestamps**: Built-in time display with customizable formatting
+- 🎭 **Dividers**: Visual separators for better log organization
+- 🔧 **TypeScript**: Full type safety with excellent IntelliSense support
 
 ## Installation
 
-Install using any package manager: npm, pnpm, yarn, or bun:
+Install using your preferred package manager:
 
-```bash
+::: code-group
+
+```bash [bun]
 bun add @shermant/logger
+```
+
+```bash [npm]
 npm install @shermant/logger
-pnpm install @shermant/logger
+```
+
+```bash [yarn]
 yarn add @shermant/logger
 ```
+
+```bash [pnpm]
+pnpm add @shermant/logger
+```
+
+:::
+
+## Quick Start
+
+### Basic Usage
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Simple logging with predefined types
+logger.info.text('Application started').print()
+logger.warn.text('This is a warning').print()
+logger.error.text('Something went wrong').print()
+logger.success.text('Operation completed').print()
+```
+
+### Chainable API
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Build complex log messages
+logger
+  .info
+  .prefix('🚀 APP')
+  .text('Server starting on port 3000')
+  .detail('Environment: development')
+  .time()
+  .print()
+```
+
+### Browser Compatibility
+
+The logger automatically detects the environment and adapts its behavior:
+
+```typescript
+// Works in both Node.js and browser
+import { logger } from '@shermant/logger'
+
+logger.info.text('This works everywhere!').print()
+```
+
+## Environment Support
+
+| Environment | Status | Notes |
+|-------------|--------|-------|
+| Node.js     | ✅ Full | All features available |
+| Bun         | ✅ Full | Optimized for Bun runtime |
+| Browser     | ✅ Partial | Colors may not display in all consoles |
+| Deno        | ✅ Compatible | Works with ES modules |
 
 ## Concept
 
@@ -52,7 +117,7 @@ strings: the background color and the text color.
 Below is the type definition of the `Style` type
 
 ```typescript
-import {ChalkInstance} from 'chalk'
+import { ChalkInstance } from 'chalk'
 
 namespace LoggerType {
     // ignored content...
