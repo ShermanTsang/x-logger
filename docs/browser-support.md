@@ -7,6 +7,16 @@ Link: [Browser Test](https://shermantsang.github.io/x-logger/browser-test.html)
 
 ## Browser Compatibility
 
+### Recent Improvements (v1.2.0+)
+
+Starting from version 1.2.0, Sherman Logger includes significant browser compatibility improvements:
+
+- ✅ **Separate Browser Build**: Dedicated browser-optimized build that excludes Node.js-specific dependencies
+- ✅ **Chalk Compatibility Fix**: Resolved `Cannot read properties of undefined (reading 'indexOf')` error
+- ✅ **Automatic Environment Detection**: Improved detection prevents Node.js modules from loading in browsers
+- ✅ **Zero External Dependencies**: Browser build has no external dependencies for maximum compatibility
+- ✅ **Smaller Bundle Size**: Browser-specific build is optimized for size and performance
+
 ### Supported Browsers
 
 | Browser       | Version | Support Level | Notes                   |
@@ -42,7 +52,8 @@ Link: [Browser Test](https://shermantsang.github.io/x-logger/browser-test.html)
   </head>
   <body>
     <script type="module">
-      import { logger } from "./node_modules/@shermant/logger/dist/index.js";
+      // Use the browser-specific build for optimal compatibility
+      import { logger } from "./node_modules/@shermant/logger/.output/dist/index.browser.js";
 
       logger.info.text("Hello from browser!").print();
     </script>
@@ -60,12 +71,24 @@ Link: [Browser Test](https://shermantsang.github.io/x-logger/browser-test.html)
   </head>
   <body>
     <script type="module">
-      import { logger } from "https://unpkg.com/@shermant/logger@latest/dist/index.js";
+      // CDN automatically serves the browser build
+      import { logger } from "https://unpkg.com/@shermant/logger@latest/.output/dist/index.browser.js";
 
       logger.success.text("Loaded from CDN!").print();
     </script>
   </body>
 </html>
+```
+
+### Package Manager Auto-Resolution
+
+When using modern bundlers or package managers, the browser build is automatically selected:
+
+```javascript
+// Modern bundlers will automatically use the browser build
+import { logger } from '@shermant/logger'
+
+logger.info.text('Automatically using browser-optimized build!').print()
 ```
 
 ### Bundle Integration

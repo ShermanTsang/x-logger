@@ -9,6 +9,7 @@ export const isNode
   = typeof globalThis !== 'undefined'
   && typeof (globalThis as any).process !== 'undefined'
   && (globalThis as any).process?.versions?.node
+  && !isBrowser
 
 // Browser console styling map
 const browserStylesMap: Record<string, string> = {
@@ -71,13 +72,16 @@ const browserStylesMap: Record<string, string> = {
 let chalkInstance: any = null
 
 async function getChalk() {
-  if (!chalkInstance && isNode) {
+  if (!chalkInstance && isNode && !isBrowser) {
     try {
       const chalkModule = await import('chalk')
       chalkInstance = chalkModule.default
     }
     catch (error) {
-      safeConsoleLog('Failed to load chalk:', error)
+      // Silently fail in browser environments or when chalk is not available
+      if (isNode) {
+        safeConsoleLog('Failed to load chalk:', error)
+      }
     }
   }
   return chalkInstance
@@ -152,8 +156,8 @@ export function logWithStyle(message: string, styles?: Type.Styles) {
   }
 }
 
-// Initialize chalk for Node.js environments
-if (isNode) {
+// Initialize chalk for Node.js environments only
+if (isNode && !isBrowser) {
   getChalk()
 }
 

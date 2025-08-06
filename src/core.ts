@@ -1,14 +1,20 @@
 import type { Ora } from 'ora'
+import {
+  getStyledText,
+  isBrowser,
+  isNode,
+  logWithStyle,
+  safeConsoleLog,
+} from './adapter.ts'
 import type { Type } from './typings'
 import { sleep } from './utils.ts'
-import { getStyledText, isBrowser, isNode, logWithStyle, safeConsoleLog } from './adapter.ts'
 
 // Lazy-loaded modules for Node.js
 let chalk: any = null
 let ora: any = null
 
 async function loadNodeModules() {
-  if (isNode && !chalk) {
+  if (isNode && !isBrowser && !chalk) {
     try {
       const [chalkModule, oraModule] = await Promise.all([
         import('chalk'),
@@ -18,13 +24,16 @@ async function loadNodeModules() {
       ora = oraModule.default
     }
     catch (error) {
-      safeConsoleLog('Failed to load Node.js modules:', error)
+      // Silently fail in browser environments or when modules are not available
+      if (isNode && !isBrowser) {
+        safeConsoleLog('Failed to load Node.js modules:', error)
+      }
     }
   }
 }
 
-// Initialize modules for Node.js
-if (isNode) {
+// Initialize modules for Node.js only
+if (isNode && !isBrowser) {
   loadNodeModules()
 }
 
@@ -168,21 +177,21 @@ export class Logger {
 
   private setDividerProperties(
     type: 'prepend' | 'append' | 'single',
-        char: string = '-',
-        length: number = 40,
-        styles: Type.Styles = ['gray'],
+    char: string = '-',
+    length: number = 40,
+    styles: Type.Styles = ['gray'],
   ) {
     const prefix
-            = type === 'prepend'
-              ? '_prependDivider'
-              : type === 'append'
-                ? '_appendDivider'
-                : '_singleDivider'
+      = type === 'prepend'
+        ? '_prependDivider'
+        : type === 'append'
+          ? '_appendDivider'
+          : '_singleDivider'
     this[`${prefix}`] = true
     this[`${prefix}Char`] = char || this[`${prefix}Char`]
     this[`${prefix}Styles`] = styles || this[`${prefix}Styles`]
     this[`${prefix}Length`]
-            = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`])
+      = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`])
   }
 
   divider(char?: string, length?: number, styles?: Type.Styles) {
@@ -221,7 +230,9 @@ export class Logger {
   }
 
   get formattedText() {
-    return this._text ? `${this.decorateText(this._text, this._textStyles)} ` : ''
+    return this._text
+      ? `${this.decorateText(this._text, this._textStyles)} `
+      : ''
   }
 
   detail(detail: string, styles?: Type.Styles) {
@@ -231,7 +242,9 @@ export class Logger {
   }
 
   get formattedDetail() {
-    return this._detail ? `\n${this.decorateText(this._detail, this._detailStyles)}` : ''
+    return this._detail
+      ? `\n${this.decorateText(this._detail, this._detailStyles)}`
+      : ''
   }
 
   prefix(prefix: string, styles?: Type.Styles) {
@@ -241,7 +254,9 @@ export class Logger {
   }
 
   get formattedPrefix() {
-    return this._prefix ? `${this.decorateText(this._prefix, this._prefixStyles)} ` : ''
+    return this._prefix
+      ? `${this.decorateText(this._prefix, this._prefixStyles)} `
+      : ''
   }
 
   data(data: any) {
@@ -276,7 +291,13 @@ export class Logger {
   }
 
   protected composeMainOutput() {
-    if (this.formattedTime || this.formattedText || this.formattedDetail || this.formattedData || (this._loggerType === 'normal' && this.formattedPrefix)) {
+    if (
+      this.formattedTime
+      || this.formattedText
+      || this.formattedDetail
+      || this.formattedData
+      || (this._loggerType === 'normal' && this.formattedPrefix)
+    ) {
       return `${this.formattedTime}${this._loggerType === 'normal' ? this.formattedPrefix : ''}${this.formattedText}${this.formattedDetail}${this.formattedData}`
     }
 
@@ -290,23 +311,31 @@ export class Logger {
     }
 
     if (this._singleDivider) {
-      const dividerText = this._singleDividerChar.repeat(this._singleDividerLength)
+      const dividerText = this._singleDividerChar.repeat(
+        this._singleDividerLength,
+      )
       if (isBrowser) {
         logWithStyle(dividerText, this._singleDividerStyles)
       }
       else {
-        safeConsoleLog(getStyledChalkInstance(this._singleDividerStyles, dividerText))
+        safeConsoleLog(
+          getStyledChalkInstance(this._singleDividerStyles, dividerText),
+        )
       }
       return
     }
 
     if (this._prependDivider) {
-      const prependText = this._prependDividerChar.repeat(this._prependDividerLength)
+      const prependText = this._prependDividerChar.repeat(
+        this._prependDividerLength,
+      )
       if (isBrowser) {
         logWithStyle(prependText, this._prependDividerStyles)
       }
       else {
-        safeConsoleLog(getStyledChalkInstance(this._prependDividerStyles, prependText))
+        safeConsoleLog(
+          getStyledChalkInstance(this._prependDividerStyles, prependText),
+        )
       }
     }
 
@@ -320,12 +349,16 @@ export class Logger {
     }
 
     if (this._appendDivider) {
-      const appendText = this._appendDividerChar.repeat(this._appendDividerLength)
+      const appendText = this._appendDividerChar.repeat(
+        this._appendDividerLength,
+      )
       if (isBrowser) {
         logWithStyle(appendText, this._appendDividerStyles)
       }
       else {
-        safeConsoleLog(getStyledChalkInstance(this._appendDividerStyles, appendText))
+        safeConsoleLog(
+          getStyledChalkInstance(this._appendDividerStyles, appendText),
+        )
       }
     }
   }
@@ -338,7 +371,12 @@ export class Logger {
     const hasHighlight = output.includes('[[') && output.includes(']]')
     const timeMatch = output.match(/^\d{1,2}:\d{2}:\d{2}(?:\s[AP]M)?\s/)
 
-    if (hasHighlight || timeMatch || this._prefixStyles.length > 0 || this._textStyles.length > 0) {
+    if (
+      hasHighlight
+      || timeMatch
+      || this._prefixStyles.length > 0
+      || this._textStyles.length > 0
+    ) {
       // Complex styling - break down into parts
       let remainingOutput = output
 
@@ -360,7 +398,10 @@ export class Logger {
         parts.forEach((part) => {
           if (part.match(/\[\[.+?\]\]/)) {
             const text = part.replace(/\[\[(.+?)\]\]/g, '$1')
-            safeConsoleLog(`%c${text}`, 'text-decoration: underline; color: #ffff00; font-weight: bold')
+            safeConsoleLog(
+              `%c${text}`,
+              'text-decoration: underline; color: #ffff00; font-weight: bold',
+            )
           }
           else if (part.trim()) {
             logWithStyle(part, this._textStyles)
@@ -395,7 +436,9 @@ export class Logger {
 }
 
 export class StreamLogger extends Logger {
-  protected _state: 'start' | 'stop' | 'succeed' | 'fail' | undefined = undefined
+  protected _state: 'start' | 'stop' | 'succeed' | 'fail' | undefined
+  = undefined
+
   protected _spinner: Ora | undefined = undefined
   protected _delay: number = 0
   declare _prefix
@@ -438,11 +481,17 @@ export class StreamLogger extends Logger {
     styles && (this._prefixStyles = styles)
 
     if (this._spinner) {
-      this._spinner.prefixText = this.decorateText(this._prefix, this._prefixStyles)
+      this._spinner.prefixText = this.decorateText(
+        this._prefix,
+        this._prefixStyles,
+      )
     }
     else if (isBrowser) {
       // Browser environment - just store the prefix for later use
-      safeConsoleLog(`%c[PREFIX SET: ${prefix}]`, 'color: #888; font-style: italic;')
+      safeConsoleLog(
+        `%c[PREFIX SET: ${prefix}]`,
+        'color: #888; font-style: italic;',
+      )
     }
 
     return this
@@ -522,16 +571,28 @@ export class StreamLogger extends Logger {
       // Browser environment - use styled console logs
       switch (state) {
         case 'start':
-          safeConsoleLog(`%c[STREAM STARTED] ${output}`, 'color: #00ff00; font-weight: bold')
+          safeConsoleLog(
+            `%c[STREAM STARTED] ${output}`,
+            'color: #00ff00; font-weight: bold',
+          )
           break
         case 'stop':
-          safeConsoleLog(`%c[STREAM STOPPED] ${output}`, 'color: #ff8800; font-weight: bold')
+          safeConsoleLog(
+            `%c[STREAM STOPPED] ${output}`,
+            'color: #ff8800; font-weight: bold',
+          )
           break
         case 'succeed':
-          safeConsoleLog(`%c✓ [STREAM SUCCESS] ${output}`, 'color: #00ff00; font-weight: bold')
+          safeConsoleLog(
+            `%c✓ [STREAM SUCCESS] ${output}`,
+            'color: #00ff00; font-weight: bold',
+          )
           break
         case 'fail':
-          safeConsoleLog(`%c✗ [STREAM FAILED] ${output}`, 'color: #ff0000; font-weight: bold')
+          safeConsoleLog(
+            `%c✗ [STREAM FAILED] ${output}`,
+            'color: #ff0000; font-weight: bold',
+          )
           break
       }
     }

@@ -1,18 +1,28 @@
 {
   "name": "@shermant/logger",
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "author": "ShermanT",
   "license": "ISC",
+  "exports": {
+    ".": {
+      "browser": "./.output/dist/index.browser.js",
+      "node": "./.output/dist/index.js",
+      "default": "./.output/dist/index.js"
+    }
+  },
   "main": ".output/dist/index.js",
+  "browser": ".output/dist/index.browser.js",
   "types": ".output/dist/index.d.ts",
   "scripts": {
     "dev": "bun run ./src/index.ts",
     "test": "vitest --watch=false",
     "test:watch": "vitest --watch=true",
     "clean:dist": "rimraf -rf ./.output/dist",
-    "build": "bun run test && bun run clean:dist && bun build ./src/index.ts --minify --outdir ./.output/dist --target node && tsc",
+    "build": "bun run test && bun run clean:dist && bun run build:node && bun run build:browser && tsc",
+    "build:node": "bun build ./src/index.ts --minify --outdir ./.output/dist --target node --external chalk --external ora",
+    "build:browser": "bun build ./src/index.ts --minify --outfile ./.output/dist/index.browser.js --target browser --external chalk --external ora --define process.env.NODE_ENV='\"production\"'",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
