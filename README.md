@@ -1,4 +1,10 @@
-# Logger
+<div align="center">
+  <img src="logo.svg" alt="Sherman Logger" width="120" height="120">
+  
+  # Sherman Logger
+
+  A lightweight, chainable, and cross-platform logging solution for modern JavaScript applications
+</div>
 
 `Logger` is a lightweight logging library that allows custom log styles and tags. It provides some predefined log types
 and supports the dynamic creation of new log types.

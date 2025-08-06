@@ -10,7 +10,7 @@ export default {
 
   // Head configuration
   head: [
-    ['link', { rel: 'icon', href: '/x-logger/favicon.ico' }],
+    ['link', { rel: 'icon', href: '/x-logger/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'theme-color', content: '#646cff' }],
     ['meta', { name: 'og:type', content: 'website' }],
     ['meta', { name: 'og:locale', content: 'en' }],

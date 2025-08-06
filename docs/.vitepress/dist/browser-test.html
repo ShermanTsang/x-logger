@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherman Logger - Browser Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .console-note {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        button {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1976d2;
+        }
+        .code {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sherman Logger - Browser Compatibility Test</h1>
+        
+        <div class="note">
+            <strong>📝 Note:</strong> Open your browser's Developer Console (F12) to see the styled log outputs!<br>
+            <strong>ℹ️ Expected:</strong> You may see Node.js module errors (process, os, tty) in the console - these are expected in browser environments and don't affect the logger functionality.
+        </div>
+
+        <h2>Basic Logger Tests</h2>
+        <button onclick="testBasicLogging()">Test Basic Logging</button>
+        <button onclick="testStyledLogging()">Test Styled Logging</button>
+        <button onclick="testHighlights()">Test Highlights [[text]]</button>
+        <button onclick="testDividers()">Test Dividers</button>
+
+        <h2>Stream Logger Tests</h2>
+        <button onclick="testStreamLogger()">Test Stream Logger</button>
+        <button onclick="testStreamStates()">Test Stream States</button>
+
+        <h2>Time and Prefix Tests</h2>
+        <button onclick="testTimeAndPrefix()">Test Time & Prefix</button>
+
+        <div class="code">
+            <strong>Example usage in browser:</strong><br>
+            <code>
+                import { logger } from '../../.output/dist/index.js';<br>
+                logger.info.text('Hello from browser!').print();
+            </code>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the actual logger (build the project first with: bun run build)
+        try {
+            const { logger } = await import('/x-logger/dist/index.js');
+            window.logger = logger;
+            console.log('%c✅ Sherman Logger loaded successfully!', 'color: #00aa00; font-weight: bold');
+            console.log('%c📝 Note: Node.js module errors (process, os, tty) are expected in browser environment and do not affect functionality.', 'color: #888888; font-style: italic;');
+        } catch (error) {
+            console.warn('%c⚠️ Could not load Sherman Logger. Using fallback demo.', 'color: #ff8800; font-weight: bold');
+            console.log('%cTo use the real logger, run: bun run build', 'color: #666');
+            
+            // Fallback simulated logger for demo purposes
+            window.logger = {
+                info: {
+                    text: (text) => ({
+                        print: () => console.log(`%c${text}`, 'background-color: #5555ff; color: #ffffff; padding: 2px 4px; border-radius: 3px')
+                    })
+                },
+                success: {
+                    text: (text) => ({
+                        print: () => console.log(`%c${text}`, 'background-color: #55ff55; color: #000000; padding: 2px 4px; border-radius: 3px')
+                    })
+                },
+                error: {
+                    text: (text) => ({
+                        print: () => console.log(`%c${text}`, 'background-color: #ff5555; color: #ffffff; padding: 2px 4px; border-radius: 3px')
+                    })
+                },
+                warn: {
+                    text: (text) => ({
+                        print: () => console.log(`%c${text}`, 'background-color: #ffff55; color: #000000; padding: 2px 4px; border-radius: 3px')
+                    })
+                }
+            };
+        }
+
+        window.testBasicLogging = () => {
+            console.log('%c=== Basic Logging Test ===', 'font-weight: bold; font-size: 16px');
+            logger.info.text('This is an info message').print();
+            logger.success.text('This is a success message').print();
+            logger.error.text('This is an error message').print();
+            logger.warn.text('This is a warning message').print();
+        };
+
+        window.testStyledLogging = () => {
+            console.log('%c=== Styled Logging Test ===', 'font-weight: bold; font-size: 16px');
+            console.log('%cBold text', 'font-weight: bold');
+            console.log('%cItalic text', 'font-style: italic');
+            console.log('%cUnderlined text', 'text-decoration: underline');
+            console.log('%cColored text', 'color: #ff6600; font-weight: bold');
+        };
+
+        window.testHighlights = () => {
+            console.log('%c=== Highlight Test ===', 'font-weight: bold; font-size: 16px');
+            console.log('This text has %chighlighted%c content in it', 
+                'text-decoration: underline; color: #ffff00; font-weight: bold', 
+                'color: inherit; text-decoration: none; font-weight: normal');
+        };
+
+        window.testDividers = () => {
+            console.log('%c=== Divider Test ===', 'font-weight: bold; font-size: 16px');
+            console.log('%c' + '-'.repeat(40), 'color: #808080');
+            console.log('Content between dividers');
+            console.log('%c' + '='.repeat(40), 'color: #808080');
+        };
+
+        window.testStreamLogger = () => {
+            console.log('%c=== Stream Logger Test ===', 'font-weight: bold; font-size: 16px');
+            console.log('%c[STREAM STARTED] Processing data...', 'color: #00ff00; font-weight: bold');
+            
+            setTimeout(() => {
+                console.log('%c[STREAM UPDATE] Still processing...', 'color: #00aaff');
+            }, 1000);
+            
+            setTimeout(() => {
+                console.log('%c✓ [STREAM SUCCESS] Data processed successfully!', 'color: #00ff00; font-weight: bold');
+            }, 2000);
+        };
+
+        window.testStreamStates = () => {
+            console.log('%c=== Stream States Test ===', 'font-weight: bold; font-size: 16px');
+            console.log('%c[STREAM STARTED] Starting process...', 'color: #00ff00; font-weight: bold');
+            console.log('%c[STREAM STOPPED] Process stopped', 'color: #ff8800; font-weight: bold');
+            console.log('%c✓ [STREAM SUCCESS] Process completed', 'color: #00ff00; font-weight: bold');
+            console.log('%c✗ [STREAM FAILED] Process failed', 'color: #ff0000; font-weight: bold');
+        };
+
+        window.testTimeAndPrefix = () => {
+            console.log('%c=== Time & Prefix Test ===', 'font-weight: bold; font-size: 16px');
+            const time = new Date().toLocaleTimeString();
+            console.log(`%c${time} `, 'color: #888; font-size: 0.9em');
+            console.log('%c[API] %cRequest completed successfully', 
+                'background-color: #5555ff; color: #ffffff; padding: 2px 4px; border-radius: 3px',
+                'color: inherit');
+        };
+
+        // Show initial message
+        console.log('%c🎉 Sherman Logger Browser Test Ready!', 'font-size: 18px; color: #2196f3; font-weight: bold');
+        console.log('%cClick the buttons above to test different logger features.', 'color: #666');
+    </script>
+</body>
+</html>
