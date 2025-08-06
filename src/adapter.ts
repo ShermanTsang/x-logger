@@ -1,17 +1,10 @@
 import type { Type } from './typings'
 
-// WeChat miniapp environment detection
-export const isWeChatMiniapp
-  = typeof globalThis !== 'undefined'
-  && typeof (globalThis as any).wx !== 'undefined'
-  && typeof (globalThis as any).wx.getSystemInfoSync === 'function'
-
 // Environment detection
 export const isBrowser
-  = (typeof globalThis !== 'undefined'
+  = typeof globalThis !== 'undefined'
   && typeof (globalThis as any).window !== 'undefined'
-  && typeof (globalThis as any).document !== 'undefined')
-  || isWeChatMiniapp // Treat WeChat miniapp as browser environment for console operations
+  && typeof (globalThis as any).document !== 'undefined'
 
 export const isNode
   = typeof globalThis !== 'undefined'

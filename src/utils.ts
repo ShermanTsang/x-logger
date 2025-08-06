@@ -12,60 +12,11 @@ interface NavigatorStorage {
   estimate: () => Promise<StorageEstimate>
 }
 
-interface ExtendedNavigator extends Navigator {
-  storage?: NavigatorStorage
-}
 
-// WeChat miniapp types
-interface WeChatSystemInfo {
-  brand: string
-  model: string
-  pixelRatio: number
-  screenWidth: number
-  screenHeight: number
-  windowWidth: number
-  windowHeight: number
-  statusBarHeight: number
-  language: string
-  version: string
-  system: string
-  platform: string
-  fontSizeSetting: number
-  SDKVersion: string
-  benchmarkLevel: number
-  albumAuthorized: boolean
-  cameraAuthorized: boolean
-  locationAuthorized: boolean
-  microphoneAuthorized: boolean
-  notificationAuthorized: boolean
-  notificationAlertAuthorized: boolean
-  notificationBadgeAuthorized: boolean
-  notificationSoundAuthorized: boolean
-  bluetoothEnabled: boolean
-  locationEnabled: boolean
-  wifiEnabled: boolean
-  safeArea: {
-    left: number
-    right: number
-    top: number
-    bottom: number
-    width: number
-    height: number
-  }
-}
-
-interface WeChatAPI {
-  getSystemInfoSync: () => WeChatSystemInfo
-  getSystemInfo: (options: {
-    success?: (res: WeChatSystemInfo) => void
-    fail?: (err: any) => void
-    complete?: () => void
-  }) => void
-}
 
 /**
  * Safe navigator access for environments where navigator might be undefined
- * (e.g., WeChat miniapp, some server-side rendering contexts)
+ * (e.g., some server-side rendering contexts)
  */
 export const safeNavigator = {
   /**
@@ -74,9 +25,8 @@ export const safeNavigator = {
    */
   getUserAgent(): string {
     try {
-      return typeof navigator !== 'undefined' && navigator?.userAgent
-        ? navigator.userAgent
-        : 'Unknown UserAgent'
+      const userAgent = safeNavigator.safeNavigatorProperty<string>('userAgent')
+      return userAgent && typeof userAgent === 'string' ? userAgent : 'Unknown UserAgent'
     }
     catch {
       return 'Unknown UserAgent'
@@ -89,14 +39,10 @@ export const safeNavigator = {
    */
   hasStorageAPI(): boolean {
     try {
-      if (typeof navigator === 'undefined' || !navigator) {
-        return false
-      }
-
-      const extendedNavigator = navigator as ExtendedNavigator
-      return 'storage' in extendedNavigator
-        && extendedNavigator.storage !== undefined
-        && typeof extendedNavigator.storage.estimate === 'function'
+      const storage = safeNavigator.safeNavigatorProperty<NavigatorStorage>('storage')
+      return storage !== null 
+        && typeof storage === 'object'
+        && typeof storage.estimate === 'function'
     }
     catch {
       return false
@@ -109,9 +55,11 @@ export const safeNavigator = {
    */
   async getStorageEstimate(): Promise<StorageEstimate | null> {
     try {
-      if (this.hasStorageAPI()) {
-        const extendedNavigator = navigator as ExtendedNavigator
-        return await extendedNavigator.storage!.estimate()
+      if (safeNavigator.hasStorageAPI()) {
+        const storage = safeNavigator.safeNavigatorProperty<NavigatorStorage>('storage')
+        if (storage && typeof storage.estimate === 'function') {
+          return await storage.estimate()
+        }
       }
       return null
     }
@@ -134,14 +82,52 @@ export const safeNavigator = {
   },
 
   /**
-   * Check if running in WeChat miniapp environment
-   * @returns boolean indicating if in WeChat miniapp
+   * Safely access navigator properties to prevent userAgentData or other property access errors
+   * @param property - The navigator property to access
+   * @returns The property value or null if not available
    */
-  isWeChatMiniapp(): boolean {
+  safeNavigatorProperty<T = any>(property: string): T | null {
     try {
-      return typeof globalThis !== 'undefined'
-        && typeof (globalThis as any).wx !== 'undefined'
-        && typeof (globalThis as any).wx.getSystemInfoSync === 'function'
+      if (!safeNavigator.isAvailable()) {
+        return null
+      }
+      
+      // Use Object.prototype.hasOwnProperty for safe property checking
+      if (Object.prototype.hasOwnProperty.call(navigator, property)) {
+        return (navigator as any)[property]
+      }
+      
+      return null
+    }
+    catch {
+      return null
+    }
+  },
+
+  /**
+   * Get enhanced user agent string
+   * @returns User agent string
+   */
+  getEnhancedUserAgent(): string {
+    try {
+      return safeNavigator.getUserAgent()
+    }
+    catch {
+      return safeNavigator.getUserAgent()
+    }
+  },
+
+  /**
+   * Safely detect if running on mobile device
+   * @returns boolean indicating if on mobile device
+   */
+  isMobile(): boolean {
+    try {
+      const userAgent = safeNavigator.getUserAgent()
+      if (userAgent === 'Unknown UserAgent') {
+        return false
+      }
+      return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(userAgent)
     }
     catch {
       return false
@@ -149,61 +135,20 @@ export const safeNavigator = {
   },
 
   /**
-   * Get WeChat miniapp system information
-   * @returns WeChat system info or null if not available
-   */
-  getWeChatSystemInfo(): WeChatSystemInfo | null {
-    try {
-      if (this.isWeChatMiniapp()) {
-        const wx = (globalThis as any).wx as WeChatAPI
-        return wx.getSystemInfoSync()
-      }
-      return null
-    }
-    catch {
-      return null
-    }
-  },
-
-  /**
-   * Get user agent string with WeChat miniapp support
-   * @returns Enhanced user agent string including WeChat miniapp info
-   */
-  getEnhancedUserAgent(): string {
-    try {
-      if (this.isWeChatMiniapp()) {
-        const systemInfo = this.getWeChatSystemInfo()
-        if (systemInfo) {
-          return `WeChat-Miniapp/${systemInfo.version} (${systemInfo.system}; ${systemInfo.model}) MicroMessenger/${systemInfo.SDKVersion}`
-        }
-        return 'WeChat-Miniapp/Unknown'
-      }
-
-      return this.getUserAgent()
-    }
-    catch {
-      return this.getUserAgent()
-    }
-  },
-
-  /**
-   * Get environment information including WeChat miniapp details
+   * Get environment information
    * @returns Environment information object
    */
   getEnvironmentInfo(): {
-    isWeChatMiniapp: boolean
     isNavigatorAvailable: boolean
     hasStorageAPI: boolean
+    isMobile: boolean
     userAgent: string
-    weChatSystemInfo?: WeChatSystemInfo | null
   } {
-    const isWeChatMiniapp = this.isWeChatMiniapp()
     return {
-      isWeChatMiniapp,
-      isNavigatorAvailable: this.isAvailable(),
-      hasStorageAPI: this.hasStorageAPI(),
-      userAgent: this.getEnhancedUserAgent(),
-      ...(isWeChatMiniapp && { weChatSystemInfo: this.getWeChatSystemInfo() }),
+      isNavigatorAvailable: safeNavigator.isAvailable(),
+      hasStorageAPI: safeNavigator.hasStorageAPI(),
+      isMobile: safeNavigator.isMobile(),
+      userAgent: safeNavigator.getEnhancedUserAgent(),
     }
   },
 }

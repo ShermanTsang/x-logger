@@ -705,68 +705,7 @@ function checkBrowserSupport() {
 }
 ```
 
-## WeChat Miniapp Compatibility
-
-Sherman Logger provides built-in compatibility for WeChat miniapp environments with automatic environment detection and safe API access.
-
-### Environment Detection
-
-Sherman Logger automatically detects WeChat miniapp environments and treats them as browser environments for console operations:
-
-```typescript
-import { logger, safeNavigator, isWeChatMiniapp, isBrowser } from '@shermant/logger'
-
-// Automatic environment detection
-if (isWeChatMiniapp) {
-  logger.info
-    .prefix('📱 WECHAT')
-    .text('WeChat miniapp environment detected')
-    .detail('Console logging enabled')
-    .print()
-}
-
-// WeChat miniapp is treated as browser environment
-console.log('isBrowser:', isBrowser) // true in WeChat miniapp
-console.log('isWeChatMiniapp:', isWeChatMiniapp) // true in WeChat miniapp
-```
-
-### WeChat System Information
-
-Access WeChat miniapp system information safely:
-
-```typescript
-import { logger, safeNavigator } from '@shermant/logger'
-
-// Get WeChat system information
-if (safeNavigator.isWeChatMiniapp()) {
-  const systemInfo = safeNavigator.getWeChatSystemInfo()
-  
-  if (systemInfo) {
-    logger.info
-      .prefix('📱 SYSTEM')
-      .text('WeChat miniapp system info')
-      .data({
-        platform: systemInfo.platform,
-        system: systemInfo.system,
-        version: systemInfo.version,
-        SDKVersion: systemInfo.SDKVersion,
-        brand: systemInfo.brand,
-        model: systemInfo.model
-      })
-      .print()
-  }
-}
-
-// Enhanced user agent with WeChat info
-const enhancedUserAgent = safeNavigator.getEnhancedUserAgent()
-logger.info
-  .prefix('🔍 UA')
-  .text('Enhanced user agent')
-  .detail(enhancedUserAgent)
-  .print()
-```
-
-### Safe Navigator Utility
+## Safe Navigator Utility
 
 Use the `safeNavigator` utility to safely access navigator properties:
 
@@ -785,11 +724,10 @@ logger.info
 const userAgent = safeNavigator.getUserAgent() // Returns 'Unknown UserAgent' if navigator is unavailable
 
 logger.info
-  .prefix('📱 MINIAPP')
-  .text('WeChat miniapp logging')
+  .prefix('📱 MOBILE')
+  .text('Mobile environment logging')
   .detail(`User Agent: ${userAgent}`)
   .detail(`Navigator Available: ${safeNavigator.isAvailable()}`)
-  .detail(`WeChat Miniapp: ${safeNavigator.isWeChatMiniapp()}`)
   .print()
 
 // Safe storage API usage
@@ -810,12 +748,12 @@ if (safeNavigator.hasStorageAPI()) {
 }
 ```
 
-### Error Handling in WeChat Miniapp
+### Error Handling in Browser Environments
 
 ```typescript
 import { logger, safeNavigator } from '@shermant/logger'
 
-// Safe error tracking that works in WeChat miniapp
+// Safe error tracking that works across browser environments
 function setupErrorTracking() {
   // Use try-catch for environments where addEventListener might not be available
   try {
@@ -848,46 +786,58 @@ function setupErrorTracking() {
 ### Mobile Environment Detection
 
 ```typescript
-import { logger, safeNavigator, isWeChatMiniapp } from '@shermant/logger'
+import { logger, safeNavigator } from '@shermant/logger'
 
 function detectMobileEnvironment() {
   const envInfo = safeNavigator.getEnvironmentInfo()
   const enhancedUA = safeNavigator.getEnhancedUserAgent()
   
-  // Enhanced mobile detection including WeChat miniapp
-  const isMobile = envInfo.isMobile || isWeChatMiniapp
+  // Mobile detection
+  const isMobile = safeNavigator.isMobile() || envInfo.isMobile
   
   if (isMobile) {
     logger.info
       .prefix('📱 MOBILE')
       .text('Mobile environment detected')
       .detail(`Enhanced UA: ${enhancedUA}`)
-      .detail(`WeChat Miniapp: ${isWeChatMiniapp}`)
       .data(envInfo)
       .print()
-      
-    // Get device information if in WeChat miniapp
-    if (isWeChatMiniapp) {
-      const systemInfo = safeNavigator.getWeChatSystemInfo()
-      if (systemInfo) {
-        logger.info
-          .prefix('📱 DEVICE')
-          .text('Device information')
-          .detail(`Brand: ${systemInfo.brand}`)
-          .detail(`Model: ${systemInfo.model}`)
-          .detail(`System: ${systemInfo.system}`)
-          .print()
-      }
-    }
   }
   
   return {
     isMobile,
-    isWeChatMiniapp,
     environment: envInfo
   }
 }
 ```
+
+### Mobile Detection
+
+```typescript
+import { safeNavigator } from '@shermant/logger'
+
+// Safe mobile detection using built-in method
+const isMobile = safeNavigator.isMobile()
+
+// Or use the user agent directly
+const userAgent = safeNavigator.getUserAgent()
+const isMobileManual = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(userAgent)
+
+// Get environment info with mobile detection
+const envInfo = safeNavigator.getEnvironmentInfo()
+console.log('Is mobile:', envInfo.isMobile)
+```
+
+#### `safeNavigator` API
+
+- `isAvailable()` - Check if navigator is available
+- `getUserAgent()` - Get user agent string safely
+- `hasStorageAPI()` - Check if Storage API is available
+- `getStorageEstimate()` - Get storage quota information
+- `isMobile()` - Detect mobile devices safely
+- `getEnhancedUserAgent()` - Get enhanced user agent string
+- `getEnvironmentInfo()` - Get comprehensive environment information
+- `safeNavigatorProperty(property)` - Safely access any navigator property
 
 ## Best Practices for Browser Usage
 
