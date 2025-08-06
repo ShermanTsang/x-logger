@@ -16,6 +16,7 @@ Starting from version 1.2.0, Sherman Logger includes significant browser compati
 - ✅ **Automatic Environment Detection**: Improved detection prevents Node.js modules from loading in browsers
 - ✅ **Zero External Dependencies**: Browser build has no external dependencies for maximum compatibility
 - ✅ **Smaller Bundle Size**: Browser-specific build is optimized for size and performance
+- ✅ **Console Display Fix**: Fixed issue where prefix and text appeared on separate lines in browser console
 
 ### Supported Browsers
 

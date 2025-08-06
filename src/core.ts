@@ -377,18 +377,28 @@ export class Logger {
       || this._prefixStyles.length > 0
       || this._textStyles.length > 0
     ) {
-      // Complex styling - break down into parts
+      // Complex styling - combine all parts into a single console.log call
+      const logParts: string[] = []
+      const logStyles: string[] = []
       let remainingOutput = output
 
       // Handle time
       if (timeMatch && this._displayTime) {
-        safeConsoleLog(`%c${timeMatch[0]}`, 'color: #888; font-size: 0.9em')
+        logParts.push(`%c${timeMatch[0]}`)
+        logStyles.push('color: #888; font-size: 0.9em')
         remainingOutput = remainingOutput.substring(timeMatch[0].length)
       }
 
       // Handle prefix
       if (this._prefix && this._loggerType === 'normal') {
-        logWithStyle(`${this._prefix} `, this._prefixStyles)
+        const { styles: prefixCss } = getStyledText(this._prefixStyles, `${this._prefix} `)
+        if (prefixCss) {
+          logParts.push(`%c${this._prefix} `)
+          logStyles.push(prefixCss)
+        }
+        else {
+          logParts.push(`${this._prefix} `)
+        }
         remainingOutput = remainingOutput.replace(`${this._prefix} `, '')
       }
 
@@ -398,18 +408,35 @@ export class Logger {
         parts.forEach((part) => {
           if (part.match(/\[\[.+?\]\]/)) {
             const text = part.replace(/\[\[(.+?)\]\]/g, '$1')
-            safeConsoleLog(
-              `%c${text}`,
-              'text-decoration: underline; color: #ffff00; font-weight: bold',
-            )
+            logParts.push(`%c${text}`)
+            logStyles.push('text-decoration: underline; color: #ffff00; font-weight: bold')
           }
           else if (part.trim()) {
-            logWithStyle(part, this._textStyles)
+            const { styles: textCss } = getStyledText(this._textStyles, part)
+            if (textCss) {
+              logParts.push(`%c${part}`)
+              logStyles.push(textCss)
+            }
+            else {
+              logParts.push(part)
+            }
           }
         })
       }
-      else {
-        logWithStyle(remainingOutput, this._textStyles)
+      else if (remainingOutput) {
+        const { styles: textCss } = getStyledText(this._textStyles, remainingOutput)
+        if (textCss) {
+          logParts.push(`%c${remainingOutput}`)
+          logStyles.push(textCss)
+        }
+        else {
+          logParts.push(remainingOutput)
+        }
+      }
+
+      // Output everything in a single console.log call
+      if (logParts.length > 0) {
+        safeConsoleLog(logParts.join(''), ...logStyles)
       }
     }
     else {
