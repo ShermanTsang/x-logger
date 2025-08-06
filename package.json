@@ -1,7 +1,7 @@
 {
   "name": "@shermant/logger",
   "type": "module",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "",
   "author": "ShermanT",
   "license": "ISC",
@@ -15,6 +15,11 @@
   "main": ".output/dist/index.js",
   "browser": ".output/dist/index.browser.js",
   "types": ".output/dist/index.d.ts",
+  "files": [
+    ".output/dist/**/*",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "dev": "bun run ./src/index.ts",
     "test": "vitest --watch=false",
@@ -28,7 +33,6 @@
     "docs:preview": "vitepress preview docs",
     "lint": "eslint ."
   },
-  "dependencies": {},
   "optionalDependencies": {
     "chalk": "^5.3.0",
     "ora": "^8.2.0"
