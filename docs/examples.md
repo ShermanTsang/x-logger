@@ -423,11 +423,13 @@ async function processFiles(directory: string) {
         }
 
         // Page load logging
+        import { safeNavigator } from './dist/index.js'
+        
         logger.info
           .prefix('📄 PAGE')
           .text('Page loaded successfully')
           .detail(`URL: ${window.location.href}`)
-          .detail(`User Agent: ${navigator.userAgent}`)
+          .detail(`User Agent: ${safeNavigator.getUserAgent()}`)
           .time()
           .print()
     </script>

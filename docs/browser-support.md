@@ -130,13 +130,13 @@ logger.warn.text('Yellow background warning message').print()
 The logger automatically detects browser environment and adapts its behavior:
 
 ```typescript
-import { logger } from '@shermant/logger'
+import { logger, safeNavigator } from '@shermant/logger'
 
 // The logger automatically detects it's running in a browser
 logger.info
   .prefix('🌐 BROWSER')
   .text('Running in browser environment')
-  .detail(`User Agent: ${navigator.userAgent}`)
+  .detail(`User Agent: ${safeNavigator.getUserAgent()}`)
   .detail(`URL: ${window.location.href}`)
   .print()
 ```
@@ -454,7 +454,7 @@ axios.interceptors.request.use((config) => {
 ### Error Tracking
 
 ```typescript
-import { logger } from '@shermant/logger'
+import { logger, safeNavigator } from '@shermant/logger'
 
 // Global error handler
 window.addEventListener('error', (event) => {
@@ -465,7 +465,7 @@ window.addEventListener('error', (event) => {
     .detail(`File: ${event.filename}:${event.lineno}:${event.colno}`)
     .data({
       error: event.error?.stack,
-      userAgent: navigator.userAgent,
+      userAgent: safeNavigator.getUserAgent(),
       url: window.location.href,
     })
     .time()
@@ -480,7 +480,7 @@ window.addEventListener('unhandledrejection', (event) => {
     .detail(`Reason: ${event.reason}`)
     .data({
       reason: event.reason,
-      userAgent: navigator.userAgent,
+      userAgent: safeNavigator.getUserAgent(),
       url: window.location.href,
     })
     .time()
@@ -574,7 +574,7 @@ class PerformanceLogger {
 ### Local Storage Integration
 
 ```typescript
-import { logger } from '@shermant/logger'
+import { logger, safeNavigator } from '@shermant/logger'
 
 class StorageLogger {
   // Log storage operations
@@ -596,9 +596,9 @@ class StorageLogger {
 
   // Monitor storage quota
   static async logStorageQuota() {
-    if ('storage' in navigator && 'estimate' in navigator.storage) {
-      const estimate = await navigator.storage.estimate()
-
+    const estimate = await safeNavigator.getStorageEstimate()
+    
+    if (estimate) {
       logger.info
         .prefix('📊 QUOTA')
         .text('Storage quota information')
@@ -610,6 +610,12 @@ class StorageLogger {
           `Usage: ${(((estimate.usage || 0) / (estimate.quota || 1)) * 100).toFixed(1)}%`
         )
         .time()
+        .print()
+    } else {
+      logger.warn
+        .prefix('📊 QUOTA')
+        .text('Storage quota API not available')
+        .detail('This environment does not support storage estimation')
         .print()
     }
   }
@@ -658,19 +664,18 @@ const enhancedStorage = {
 ### Console Styling Limitations
 
 ```typescript
-import { logger } from '@shermant/logger'
+import { logger, safeNavigator } from '@shermant/logger'
 
 // Some mobile browsers may not support full console styling
-const isMobile
-  = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  )
+const userAgent = safeNavigator.getUserAgent()
+const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
 
 if (isMobile) {
   logger.warn
     .prefix('📱 MOBILE')
     .text('Mobile browser detected')
     .detail('Console styling may be limited')
+    .detail(`User Agent: ${userAgent}`)
     .print()
 }
 ```
@@ -697,6 +702,190 @@ function checkBrowserSupport() {
     .print()
 
   return features
+}
+```
+
+## WeChat Miniapp Compatibility
+
+Sherman Logger provides built-in compatibility for WeChat miniapp environments with automatic environment detection and safe API access.
+
+### Environment Detection
+
+Sherman Logger automatically detects WeChat miniapp environments and treats them as browser environments for console operations:
+
+```typescript
+import { logger, safeNavigator, isWeChatMiniapp, isBrowser } from '@shermant/logger'
+
+// Automatic environment detection
+if (isWeChatMiniapp) {
+  logger.info
+    .prefix('📱 WECHAT')
+    .text('WeChat miniapp environment detected')
+    .detail('Console logging enabled')
+    .print()
+}
+
+// WeChat miniapp is treated as browser environment
+console.log('isBrowser:', isBrowser) // true in WeChat miniapp
+console.log('isWeChatMiniapp:', isWeChatMiniapp) // true in WeChat miniapp
+```
+
+### WeChat System Information
+
+Access WeChat miniapp system information safely:
+
+```typescript
+import { logger, safeNavigator } from '@shermant/logger'
+
+// Get WeChat system information
+if (safeNavigator.isWeChatMiniapp()) {
+  const systemInfo = safeNavigator.getWeChatSystemInfo()
+  
+  if (systemInfo) {
+    logger.info
+      .prefix('📱 SYSTEM')
+      .text('WeChat miniapp system info')
+      .data({
+        platform: systemInfo.platform,
+        system: systemInfo.system,
+        version: systemInfo.version,
+        SDKVersion: systemInfo.SDKVersion,
+        brand: systemInfo.brand,
+        model: systemInfo.model
+      })
+      .print()
+  }
+}
+
+// Enhanced user agent with WeChat info
+const enhancedUserAgent = safeNavigator.getEnhancedUserAgent()
+logger.info
+  .prefix('🔍 UA')
+  .text('Enhanced user agent')
+  .detail(enhancedUserAgent)
+  .print()
+```
+
+### Safe Navigator Utility
+
+Use the `safeNavigator` utility to safely access navigator properties:
+
+```typescript
+import { logger, safeNavigator } from '@shermant/logger'
+
+// Comprehensive environment information
+const envInfo = safeNavigator.getEnvironmentInfo()
+logger.info
+  .prefix('🌐 ENV')
+  .text('Environment information')
+  .data(envInfo)
+  .print()
+
+// Safe user agent detection
+const userAgent = safeNavigator.getUserAgent() // Returns 'Unknown UserAgent' if navigator is unavailable
+
+logger.info
+  .prefix('📱 MINIAPP')
+  .text('WeChat miniapp logging')
+  .detail(`User Agent: ${userAgent}`)
+  .detail(`Navigator Available: ${safeNavigator.isAvailable()}`)
+  .detail(`WeChat Miniapp: ${safeNavigator.isWeChatMiniapp()}`)
+  .print()
+
+// Safe storage API usage
+if (safeNavigator.hasStorageAPI()) {
+  const estimate = await safeNavigator.getStorageEstimate()
+  if (estimate) {
+    logger.info
+      .prefix('💾 STORAGE')
+      .text('Storage information')
+      .detail(`Used: ${((estimate.usage || 0) / 1024 / 1024).toFixed(2)} MB`)
+      .print()
+  }
+} else {
+  logger.warn
+    .prefix('💾 STORAGE')
+    .text('Storage API not available in this environment')
+    .print()
+}
+```
+
+### Error Handling in WeChat Miniapp
+
+```typescript
+import { logger, safeNavigator } from '@shermant/logger'
+
+// Safe error tracking that works in WeChat miniapp
+function setupErrorTracking() {
+  // Use try-catch for environments where addEventListener might not be available
+  try {
+    if (typeof window !== 'undefined' && window.addEventListener) {
+      window.addEventListener('error', (event) => {
+        logger.error
+          .prefix('🚨 ERROR')
+          .text('JavaScript error detected')
+          .detail(`Message: ${event.message}`)
+          .data({
+            error: event.error?.stack,
+            userAgent: safeNavigator.getEnhancedUserAgent(),
+            environment: safeNavigator.getEnvironmentInfo(),
+            url: typeof window !== 'undefined' ? window.location?.href : 'Unknown',
+          })
+          .time()
+          .print()
+      })
+    }
+  } catch (error) {
+    logger.warn
+      .prefix('⚠️ SETUP')
+      .text('Could not set up global error handler')
+      .detail('This environment may not support addEventListener')
+      .print()
+  }
+}
+```
+
+### Mobile Environment Detection
+
+```typescript
+import { logger, safeNavigator, isWeChatMiniapp } from '@shermant/logger'
+
+function detectMobileEnvironment() {
+  const envInfo = safeNavigator.getEnvironmentInfo()
+  const enhancedUA = safeNavigator.getEnhancedUserAgent()
+  
+  // Enhanced mobile detection including WeChat miniapp
+  const isMobile = envInfo.isMobile || isWeChatMiniapp
+  
+  if (isMobile) {
+    logger.info
+      .prefix('📱 MOBILE')
+      .text('Mobile environment detected')
+      .detail(`Enhanced UA: ${enhancedUA}`)
+      .detail(`WeChat Miniapp: ${isWeChatMiniapp}`)
+      .data(envInfo)
+      .print()
+      
+    // Get device information if in WeChat miniapp
+    if (isWeChatMiniapp) {
+      const systemInfo = safeNavigator.getWeChatSystemInfo()
+      if (systemInfo) {
+        logger.info
+          .prefix('📱 DEVICE')
+          .text('Device information')
+          .detail(`Brand: ${systemInfo.brand}`)
+          .detail(`Model: ${systemInfo.model}`)
+          .detail(`System: ${systemInfo.system}`)
+          .print()
+      }
+    }
+  }
+  
+  return {
+    isMobile,
+    isWeChatMiniapp,
+    environment: envInfo
+  }
 }
 ```
 
