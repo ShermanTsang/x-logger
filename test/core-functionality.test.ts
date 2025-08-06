@@ -84,11 +84,12 @@ describe('logger', () => {
   })
 
   it('show logger detail', () => {
-    expect(() => logger.info
-      .prefix('notice', ['bgRed'])
-      .text('this is [[text]]')
-      .detail('[[detail]]')
-      .print(),
+    expect(() =>
+      logger.info
+        .prefix('notice', ['bgRed'])
+        .text('this is [[text]]')
+        .detail('[[detail]]')
+        .print(),
     ).not.toThrow()
   })
 
@@ -103,7 +104,7 @@ describe('logger', () => {
   it('ignore non-existed chalk style', () => {
     expect(() => {
       logger.error
-      // @ts-expect-error: Non-existed chalk style test
+        // @ts-expect-error: Non-existed chalk style test
         .prefix('error', ['nonExistedChalkStyle'])
         .text('test ignoring non-existed chalk style')
         .print()
@@ -130,12 +131,17 @@ describe('stream logger', () => {
   })
 
   it('create stream logger via Logger.toStream', async () => {
-    const streamLogger2 = (new Logger()).toStream('❤️ streamLogger2', ['underline'])
+    const streamLogger2 = new Logger().toStream('❤️ streamLogger2', [
+      'underline',
+    ])
     streamLogger2.text('create via Logger.toStream', ['gray']).update()
   })
 
   it('create stream logger via logger.stream', async () => {
     const streamLogger3 = logger.stream
-    streamLogger3.prefix('❤️ streamLogger3', ['underline']).text('create via logger.stream', ['gray']).update()
+    streamLogger3
+      .prefix('❤️ streamLogger3', ['underline'])
+      .text('create via logger.stream', ['gray'])
+      .update()
   })
 })
