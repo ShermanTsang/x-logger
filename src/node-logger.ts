@@ -5,7 +5,7 @@
 import type { Ora } from 'ora'
 import type { Type } from './typings'
 import { BaseLogger, BaseStreamLogger } from './base-logger'
-import { safeConsoleLog } from './console-utils'
+import { safeConsoleLog } from './utils'
 
 // Lazy-loaded modules for Node.js
 let chalk: any = null

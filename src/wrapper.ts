@@ -1,4 +1,4 @@
-import { Logger } from './core.ts'
+import { Logger } from './logger-factory.ts'
 import type { Type } from './typings'
 import type { BaseLogger } from './base-logger.ts'
 

@@ -1,4 +1,4 @@
-export { Logger, StreamLogger } from './core.ts';
+export { Logger, StreamLogger } from './logger-factory.ts';
 export { createLoggerWithCustomType as createLogger } from './wrapper.ts';
 export { accessor as logger } from './accessor.ts';
 export { safeNavigator } from './utils.ts';
