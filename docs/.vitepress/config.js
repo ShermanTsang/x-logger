@@ -103,6 +103,7 @@ export default {
           { text: 'Custom Types', link: '/custom-types' },
           { text: 'Stream Logging', link: '/stream-logging' },
           { text: 'Browser Support', link: '/browser-support' },
+          { text: 'Build Optimization', link: '/build-optimization' },
         ],
       },
       {

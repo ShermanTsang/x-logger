@@ -73,8 +73,10 @@ const browserStylesMap: Record<string, string> = {
 let chalkInstance: any = null
 
 async function getChalk() {
-  if (!chalkInstance && isNode && !isBrowser) {
+  // eslint-disable-next-line node/prefer-global/process
+  if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'browser' && !chalkInstance && isNode && !isBrowser) {
     try {
+      // Only import chalk in Node.js environments, not in browser builds
       const chalkModule = await import('chalk')
       chalkInstance = chalkModule.default
     }

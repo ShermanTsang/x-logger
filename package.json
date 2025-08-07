@@ -27,7 +27,7 @@
     "clean:dist": "rimraf -rf ./.output/dist",
     "build": "bun run test && bun run clean:dist && bun run build:node && bun run build:browser && tsc",
     "build:node": "bun build ./src/index.ts --minify --outdir ./.output/dist --target node --external chalk --external ora",
-    "build:browser": "bun build ./src/index.ts --minify --outfile ./.output/dist/index.browser.js --target browser --external chalk --external ora --define process.env.NODE_ENV='\"production\"'",
+    "build:browser": "bun build ./src/index.ts --minify --outfile ./.output/dist/index.browser.js --target browser --external chalk --external ora --define process.env.NODE_ENV='\"browser\"'",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",

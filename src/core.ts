@@ -14,8 +14,10 @@ let chalk: any = null
 let ora: any = null
 
 async function loadNodeModules() {
-  if (isNode && !isBrowser && !chalk) {
+  // eslint-disable-next-line node/prefer-global/process
+  if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'browser' && isNode && !isBrowser && !chalk) {
     try {
+      // Only import Node.js modules in Node.js environments, not in browser builds
       const [chalkModule, oraModule] = await Promise.all([
         import('chalk'),
         import('ora'),
