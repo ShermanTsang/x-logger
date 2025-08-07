@@ -2,35 +2,27 @@
   "compilerOptions": {
     "target": "ESNext",
     "jsx": "react-jsx",
-    // Enable latest features
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "moduleDetection": "force",
     "module": "ESNext",
-    // Bundler mode
     "moduleResolution": "bundler",
-
+    "allowImportingTsExtensions": true,
     "allowJs": true,
-    // Best practices
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": false,
-    // Some stricter flags
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    // Custom
-    "declaration": true,
-    "outDir": ".output/dist",
+    "noEmit": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts",
     ".output"
   ]
 }

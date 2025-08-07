@@ -1,44 +1,60 @@
 import type { ChalkInstance } from 'chalk'
 import type { Ora } from 'ora'
 
+// Import global type declarations
+import './global'
+
 // Forward declarations for circular dependency resolution
 export interface BaseLogger {
   // Core methods
-  text: (text: string, styles?: Type.Styles) => BaseLogger
-  detail: (detail: string, styles?: Type.Styles) => BaseLogger
-  prefix: (prefix: string, styles?: Type.Styles) => BaseLogger
-  data: (data: any) => BaseLogger
-  time: (isDisplay?: boolean) => BaseLogger
-  styles: (styles: Type.Styles) => BaseLogger
+  text: (text: string, styles?: Type.Styles) => this
+  detail: (detail: string, styles?: Type.Styles) => this
+  prefix: (prefix: string, styles?: Type.Styles) => this
+  data: (data: any) => this
+  time: (isDisplay?: boolean) => this
+  styles: (styles: Type.Styles) => this
 
   // Divider methods
   divider: (char?: string, length?: number, styles?: Type.Styles) => void
-  prependDivider: (char?: string, length?: number, styles?: Type.Styles) => BaseLogger
-  appendDivider: (char?: string, length?: number, styles?: Type.Styles) => BaseLogger
+  prependDivider: (char?: string, length?: number, styles?: Type.Styles) => this
+  appendDivider: (char?: string, length?: number, styles?: Type.Styles) => this
 
   // Output methods
   print: (isVisible?: boolean) => void
   toString: () => string
-  toObject: () => BaseLogger
+  toObject: () => this
   toStream: (prefix?: string, prefixStyles?: Type.Styles) => BaseStreamLogger
 
   // Abstract methods
   decorateText: (content: string, styles?: Type.Styles) => string
   printOutput: (output: string) => void
   printDivider: (text: string, styles: Type.Styles) => void
+
+  // Index signature for dynamic property access
+  [key: string]: any
 }
 
 export interface BaseStreamLogger extends BaseLogger {
   // Stream-specific methods
-  delay: (delay: number) => BaseStreamLogger
-  state: (state: Type.StreamLoggerState) => BaseStreamLogger
+  delay: (delay: number) => this
+  state: (state: 'start' | 'stop' | 'succeed' | 'fail') => this
   update: () => void
   asyncUpdate: (delay?: number) => Promise<void>
+
+  // Override BaseLogger methods to return this for chaining
+  text: (text?: string, styles?: Type.Styles) => this
+  detail: (detail?: string, styles?: Type.Styles) => this
+  prefix: (prefix: string, styles?: Type.Styles) => this
+  data: (data: any) => this
+  time: (isDisplay?: boolean) => this
+  styles: (styles: Type.Styles) => this
+  prependDivider: (char?: string, length?: number, styles?: Type.Styles) => this
+  appendDivider: (char?: string, length?: number, styles?: Type.Styles) => this
 
   // Abstract stream methods
   initializeStream: () => void
   updateStream: (output: string) => void
-  finalizeStream: (state: Type.StreamLoggerState, output: string) => void
+  finalizeStream: (state: 'start' | 'stop' | 'succeed' | 'fail', output: string) => void
 }
 
 // Main Type namespace containing all type definitions

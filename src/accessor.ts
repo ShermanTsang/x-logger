@@ -1,5 +1,5 @@
-import { Logger } from './logger-factory.ts'
-import { typeProxyHandler } from './wrapper.ts'
+import { Logger } from './logger-factory'
+import { typeProxyHandler } from './wrapper'
 import type { BaseLogger } from './typings'
 
 function logger(text: string) {

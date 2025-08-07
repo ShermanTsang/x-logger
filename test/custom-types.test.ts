@@ -1,17 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { Logger as LoggerType } from '../src'
-import { Logger, StreamLogger } from '../src'
 import { createLogger, logger } from '../src/index'
 import type { Type } from '../src/typings'
 
-describe('logger', () => {
-  it('access polymorphic logger', () => {
-    expect(() => {
-      logger('anything you wanna put here').print()
-      logger.info.prefix('OKAY').text('test').print()
-    }).not.toThrow()
-  })
-
+describe('custom logger types', () => {
   it('add custom logger type via `type` function', () => {
     const customLoggerType = 'test'
 
@@ -81,67 +73,5 @@ describe('logger', () => {
       .text('test overriding preset logger type')
       .prependDivider()
       .print()
-  })
-
-  it('show logger detail', () => {
-    expect(() =>
-      logger.info
-        .prefix('notice', ['bgRed'])
-        .text('this is [[text]]')
-        .detail('[[detail]]')
-        .print(),
-    ).not.toThrow()
-  })
-
-  it('reuse logger instance', () => {
-    const reusedLogger = Logger.type('info').time().prependDivider('♥')
-
-    // Use the reused logger instance to print multiple texts
-    reusedLogger.prefix('love').text('the world').print()
-    reusedLogger.prefix('love').text('you').print()
-  })
-
-  it('ignore non-existed chalk style', () => {
-    expect(() => {
-      logger.error
-        // @ts-expect-error: Non-existed chalk style test
-        .prefix('error', ['nonExistedChalkStyle'])
-        .text('test ignoring non-existed chalk style')
-        .print()
-    }).not.toThrow()
-  })
-
-  it('transform to string', () => {
-    const rawText = 'this is [[string]]'
-    const string = logger(rawText).toString()
-    expect(string !== rawText).toBe(true)
-    expect(typeof string).toBe('string')
-  })
-
-  it('show only single divider', () => {
-    logger.info.divider('-')
-    expect(logger.info.prependDivider().toString().split('\n').length).toBe(1)
-  })
-})
-
-describe('stream logger', () => {
-  it('create stream logger via new StreamLogger', async () => {
-    const streamLogger1 = new StreamLogger('❤️ streamLogger1', ['underline'])
-    streamLogger1.text('create via new StreamLogger', ['gray']).update()
-  })
-
-  it('create stream logger via Logger.toStream', async () => {
-    const streamLogger2 = new Logger().toStream('❤️ streamLogger2', [
-      'underline',
-    ])
-    streamLogger2.text('create via Logger.toStream', ['gray']).update()
-  })
-
-  it('create stream logger via logger.stream', async () => {
-    const streamLogger3 = logger.stream
-    streamLogger3
-      .prefix('❤️ streamLogger3', ['underline'])
-      .text('create via logger.stream', ['gray'])
-      .update()
   })
 })

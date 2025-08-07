@@ -148,7 +148,7 @@ describe('cross-Platform Feature Detection', () => {
     const loggerInstance = logger.info
 
     methods.forEach((method) => {
-      expect(typeof loggerInstance[method]).toBe('function')
+      expect(typeof (loggerInstance as any)[method]).toBe('function')
     })
   })
 })

@@ -26,7 +26,7 @@ describe('safeNavigator', () => {
     it('should return user agent when navigator is available', () => {
       const mockNavigator = {
         userAgent: 'Mozilla/5.0 (Test Browser)',
-      } as Navigator
+      } as any
 
       Object.defineProperty(globalThis, 'navigator', {
         value: mockNavigator,
@@ -44,7 +44,7 @@ describe('safeNavigator', () => {
     })
 
     it('should return fallback when navigator.userAgent is undefined', () => {
-      const mockNavigator = {} as Navigator
+      const mockNavigator = {} as any
 
       Object.defineProperty(globalThis, 'navigator', {
         value: mockNavigator,
@@ -58,7 +58,7 @@ describe('safeNavigator', () => {
 
   describe('isAvailable', () => {
     it('should return true when navigator is available', () => {
-      const mockNavigator = {} as Navigator
+      const mockNavigator = {} as any
 
       Object.defineProperty(globalThis, 'navigator', {
         value: mockNavigator,
@@ -110,7 +110,7 @@ describe('safeNavigator', () => {
     })
 
     it('should return false when storage is not available', () => {
-      const mockNavigator = {} as Navigator
+      const mockNavigator = {} as any
 
       Object.defineProperty(globalThis, 'navigator', {
         value: mockNavigator,
@@ -186,7 +186,7 @@ describe('safeNavigator', () => {
       // Simulate environment where navigator exists but storage doesn't
       const mockNavigator = {
         userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X)',
-      } as Navigator
+      } as any
 
       Object.defineProperty(globalThis, 'navigator', {
         value: mockNavigator,
@@ -212,7 +212,7 @@ describe('safeNavigator', () => {
       ]
 
       mobileUserAgents.forEach((userAgent) => {
-        const mockNavigator = { userAgent } as Navigator
+        const mockNavigator = { userAgent } as any
         Object.defineProperty(globalThis, 'navigator', {
           value: mockNavigator,
           writable: true,
@@ -231,7 +231,7 @@ describe('safeNavigator', () => {
       ]
 
       desktopUserAgents.forEach((userAgent) => {
-        const mockNavigator = { userAgent } as Navigator
+        const mockNavigator = { userAgent } as any
         Object.defineProperty(globalThis, 'navigator', {
           value: mockNavigator,
           writable: true,
@@ -268,7 +268,7 @@ describe('safeNavigator', () => {
       const mockNavigator = {
         userAgent: 'Test Browser',
         language: 'en-US',
-      } as Navigator
+      } as any
 
       Object.defineProperty(globalThis, 'navigator', {
         value: mockNavigator,

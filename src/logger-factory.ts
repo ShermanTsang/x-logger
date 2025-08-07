@@ -2,7 +2,7 @@
  * Logger Factory - Automatically selects the appropriate logger implementation based on environment
  */
 
-import type { Type } from './typings'
+import type { BaseLogger as IBaseLogger, BaseStreamLogger as IBaseStreamLogger, Type } from './typings'
 import { isBrowser, isNode } from './environment'
 import { NodeLogger, NodeStreamLogger } from './node-logger'
 import { BrowserLogger, BrowserStreamLogger } from './browser-logger'
@@ -119,7 +119,7 @@ export class LoggerFactory {
  * Unified Logger class that provides the same API as the original Logger
  * but uses the factory pattern internally to select the appropriate implementation
  */
-export class Logger {
+export class Logger implements IBaseLogger {
   private _instance: BaseLogger
 
   static stylesMap = (LoggerFactory.getLoggerInstance('info').constructor as any).stylesMap
@@ -193,13 +193,90 @@ export class Logger {
   static get failure(): BaseLogger {
     return LoggerFactory.failure
   }
+
+  // Implement BaseLogger interface methods
+  text(text: string, styles?: Type.Styles): this {
+    this._instance.text(text, styles)
+    return this
+  }
+
+  detail(detail: string, styles?: Type.Styles): this {
+    this._instance.detail(detail, styles)
+    return this
+  }
+
+  prefix(prefix: string, styles?: Type.Styles): this {
+    this._instance.prefix(prefix, styles)
+    return this
+  }
+
+  data(data: any): this {
+    this._instance.data(data)
+    return this
+  }
+
+  time(isDisplay?: boolean): this {
+    this._instance.time(isDisplay)
+    return this
+  }
+
+  styles(styles: Type.Styles): this {
+    this._instance.styles(styles)
+    return this
+  }
+
+  divider(char?: string, length?: number, styles?: Type.Styles): void {
+    return this._instance.divider(char, length, styles)
+  }
+
+  prependDivider(char?: string, length?: number, styles?: Type.Styles): this {
+    this._instance.prependDivider(char, length, styles)
+    return this
+  }
+
+  appendDivider(char?: string, length?: number, styles?: Type.Styles): this {
+    this._instance.appendDivider(char, length, styles)
+    return this
+  }
+
+  print(isVisible?: boolean): void {
+    return this._instance.print(isVisible)
+  }
+
+  toString(): string {
+    return this._instance.toString()
+  }
+
+  toObject(): this {
+    this._instance.toObject()
+    return this
+  }
+
+  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+    return this._instance.toStream(prefix, prefixStyles)
+  }
+
+  decorateText(content: string, styles?: Type.Styles): string {
+    return this._instance.decorateText(content, styles)
+  }
+
+  printOutput(output: string): void {
+    return this._instance.printOutput(output)
+  }
+
+  printDivider(text: string, styles: Type.Styles): void {
+    return this._instance.printDivider(text, styles)
+  }
+
+  // Index signature for dynamic property access
+  [key: string]: any
 }
 
 /**
  * Unified StreamLogger class that provides the same API as the original StreamLogger
  * but uses the factory pattern internally to select the appropriate implementation
  */
-export class StreamLogger {
+export class StreamLogger implements IBaseStreamLogger {
   private _instance: BaseStreamLogger
 
   constructor(prefix?: string, prefixStyles?: Type.Styles) {
@@ -230,4 +307,112 @@ export class StreamLogger {
   static create(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
     return LoggerFactory.createStreamLogger(prefix, prefixStyles)
   }
+
+  // Implement BaseStreamLogger interface methods
+  text(text?: string, styles?: Type.Styles): this {
+    this._instance.text(text, styles)
+    return this
+  }
+
+  detail(detail?: string, styles?: Type.Styles): this {
+    this._instance.detail(detail, styles)
+    return this
+  }
+
+  prefix(prefix: string, styles?: Type.Styles): this {
+    this._instance.prefix(prefix, styles)
+    return this
+  }
+
+  data(data: any): this {
+    this._instance.data(data)
+    return this
+  }
+
+  time(isDisplay?: boolean): this {
+    this._instance.time(isDisplay)
+    return this
+  }
+
+  styles(styles: Type.Styles): this {
+    this._instance.styles(styles)
+    return this
+  }
+
+  divider(char?: string, length?: number, styles?: Type.Styles): void {
+    return this._instance.divider(char, length, styles)
+  }
+
+  prependDivider(char?: string, length?: number, styles?: Type.Styles): this {
+    this._instance.prependDivider(char, length, styles)
+    return this
+  }
+
+  appendDivider(char?: string, length?: number, styles?: Type.Styles): this {
+    this._instance.appendDivider(char, length, styles)
+    return this
+  }
+
+  print(isVisible?: boolean): void {
+    return this._instance.print(isVisible)
+  }
+
+  toString(): string {
+    return this._instance.toString()
+  }
+
+  toObject(): this {
+    this._instance.toObject()
+    return this
+  }
+
+  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+    return this._instance.toStream(prefix, prefixStyles)
+  }
+
+  decorateText(content: string, styles?: Type.Styles): string {
+    return this._instance.decorateText(content, styles)
+  }
+
+  printOutput(output: string): void {
+    return this._instance.printOutput(output)
+  }
+
+  printDivider(text: string, styles: Type.Styles): void {
+    return this._instance.printDivider(text, styles)
+  }
+
+  // Stream-specific methods
+  delay(delay: number): this {
+    this._instance.delay(delay)
+    return this
+  }
+
+  state(state: 'start' | 'stop' | 'succeed' | 'fail'): this {
+    this._instance.state(state)
+    return this
+  }
+
+  update(): void {
+    return this._instance.update()
+  }
+
+  async asyncUpdate(delay?: number): Promise<void> {
+    return this._instance.asyncUpdate(delay)
+  }
+
+  initializeStream(): void {
+    return this._instance.initializeStream()
+  }
+
+  updateStream(output: string): void {
+    return this._instance.updateStream(output)
+  }
+
+  finalizeStream(state: 'start' | 'stop' | 'succeed' | 'fail', output: string): void {
+    return this._instance.finalizeStream(state, output)
+  }
+
+  // Index signature for dynamic property access
+  [key: string]: any
 }

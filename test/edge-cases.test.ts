@@ -139,7 +139,7 @@ describe('edge Cases and Error Handling', () => {
 
 describe('memory and Performance', () => {
   it('should not leak memory with many logger instances', () => {
-    const instances = []
+    const instances: any[] = []
 
     for (let i = 0; i < 1000; i++) {
       instances.push(
