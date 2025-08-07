@@ -31,7 +31,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "lint": "eslint ."
+    "lint": "eslint . --fix --ignore-pattern 'docs/**'"
   },
   "optionalDependencies": {
     "chalk": "^5.3.0",

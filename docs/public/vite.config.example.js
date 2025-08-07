@@ -7,16 +7,16 @@ export default defineConfig(({ command, mode }) => {
   const isProduction = mode === 'production'
   const isBrowser = process.env.TARGET === 'browser'
   const isServerless = process.env.TARGET === 'serverless'
-  
+
   return {
     // Build configuration
     build: {
       // Target configuration
       target: isBrowser ? 'es2015' : 'node14',
-      
+
       // Minification
       minify: isProduction ? 'terser' : false,
-      
+
       // Terser options for production builds
       terserOptions: isProduction ? {
         compress: {
@@ -24,7 +24,7 @@ export default defineConfig(({ command, mode }) => {
           drop_debugger: true,
         },
       } : {},
-      
+
       // Rollup options
       rollupOptions: {
         // External dependencies - don't bundle these
@@ -33,86 +33,92 @@ export default defineConfig(({ command, mode }) => {
           if (isBrowser) {
             return ['chalk', 'ora'].includes(id)
           }
-          
+
           // For serverless, exclude optional dependencies to reduce bundle size
           if (isServerless) {
             return ['chalk', 'ora'].includes(id)
           }
-          
+
           // For Node.js builds, you can choose to include or exclude
           // Excluding reduces bundle size but requires runtime installation
           return ['chalk', 'ora'].includes(id)
         },
-        
+
         // Output configuration
         output: {
           // Global variables for UMD builds
           globals: {
-            'chalk': 'chalk',
-            'ora': 'ora'
+            chalk: 'chalk',
+            ora: 'ora',
           },
-          
+
           // Manual chunks for code splitting (disable for serverless)
-          manualChunks: isServerless ? undefined : {
-            vendor: ['@shermant/logger']
-          }
-        }
+          manualChunks: isServerless
+            ? undefined
+            : {
+                vendor: ['@shermant/logger'],
+              },
+        },
       },
-      
+
       // Library mode configuration (if building a library)
-      lib: isBrowser ? {
-        entry: 'src/index.ts',
-        name: 'ShermanLogger',
-        formats: ['es', 'umd'],
-        fileName: (format) => `sherman-logger.${format}.js`
-      } : undefined
+      lib: isBrowser
+        ? {
+            entry: 'src/index.ts',
+            name: 'ShermanLogger',
+            formats: ['es', 'umd'],
+            fileName: format => `sherman-logger.${format}.js`,
+          }
+        : undefined,
     },
-    
+
     // Define global constants
     define: {
       'process.env.NODE_ENV': JSON.stringify(mode),
       'process.env.TARGET': JSON.stringify(process.env.TARGET || 'node'),
       // Disable chalk in browser builds
-      '__DISABLE_CHALK__': isBrowser
+      '__DISABLE_CHALK__': isBrowser,
     },
-    
+
     // Resolve configuration
     resolve: {
       // Alias configuration for replacing dependencies
       alias: isBrowser ? {
         // Replace chalk with a stub for browser builds
-        'chalk': new URL('./stubs/chalk-stub.js', import.meta.url).pathname
+        chalk: new URL('./stubs/chalk-stub.js', import.meta.url).pathname,
       } : {},
-      
+
       // Fallback configuration for browser builds
-      fallback: isBrowser ? {
-        'chalk': false,
-        'ora': false,
-        'process': false,
-        'util': false
-      } : {}
+      fallback: isBrowser
+        ? {
+            chalk: false,
+            ora: false,
+            process: false,
+            util: false,
+          }
+        : {},
     },
-    
+
     // Optimization configuration
     optimizeDeps: {
       // Include dependencies that should be pre-bundled
       include: isBrowser ? [] : ['@shermant/logger'],
-      
+
       // Exclude dependencies from pre-bundling
-      exclude: ['chalk', 'ora']
+      exclude: ['chalk', 'ora'],
     },
-    
+
     // Development server configuration
     server: {
       // CORS configuration for development
       cors: true,
-      
+
       // Port configuration
       port: 3000,
-      
+
       // Open browser automatically
-      open: isBrowser
-    }
+      open: isBrowser,
+    },
   }
 })
 
@@ -155,14 +161,14 @@ const chalkStub = {
   white: (text) => text,
   gray: (text) => text,
   grey: (text) => text,
-  
+
   // Style methods
   bold: (text) => text,
   dim: (text) => text,
   italic: (text) => text,
   underline: (text) => text,
   strikethrough: (text) => text,
-  
+
   // Background methods
   bgBlack: (text) => text,
   bgRed: (text) => text,

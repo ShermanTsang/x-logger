@@ -1,0 +1,233 @@
+/**
+ * Logger Factory - Automatically selects the appropriate logger implementation based on environment
+ */
+
+import type { Type } from './typings'
+import { isBrowser, isNode } from './environment'
+import { NodeLogger, NodeStreamLogger } from './node-logger'
+import { BrowserLogger, BrowserStreamLogger } from './browser-logger'
+import type { BaseLogger, BaseStreamLogger } from './base-logger'
+
+/**
+ * Factory class that creates the appropriate logger instance based on the current environment
+ */
+export class LoggerFactory {
+  /**
+   * Creates a logger instance appropriate for the current environment
+   */
+  static createLogger(prefixStyles?: Type.Styles): BaseLogger {
+    if (isBrowser) {
+      return new BrowserLogger(prefixStyles)
+    }
+    else if (isNode) {
+      return new NodeLogger(prefixStyles)
+    }
+    else {
+      // Fallback to Node logger for unknown environments
+      return new NodeLogger(prefixStyles)
+    }
+  }
+
+  /**
+   * Creates a stream logger instance appropriate for the current environment
+   */
+  static createStreamLogger(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+    if (isBrowser) {
+      return new BrowserStreamLogger(prefix, prefixStyles)
+    }
+    else if (isNode) {
+      return new NodeStreamLogger(prefix, prefixStyles)
+    }
+    else {
+      // Fallback to Node stream logger for unknown environments
+      return new NodeStreamLogger(prefix, prefixStyles)
+    }
+  }
+
+  /**
+   * Gets a logger instance for a specific type
+   */
+  static getLoggerInstance(type: Type.Type, styles?: Type.Styles): BaseLogger {
+    if (isBrowser) {
+      return BrowserLogger.getLoggerInstance(type, styles)
+    }
+    else if (isNode) {
+      return NodeLogger.getLoggerInstance(type, styles)
+    }
+    else {
+      // Fallback to Node logger for unknown environments
+      return NodeLogger.getLoggerInstance(type, styles)
+    }
+  }
+
+  /**
+   * Creates and registers a custom logger type
+   */
+  static type(type: Type.Type, styles?: Type.Styles): BaseLogger {
+    if (isBrowser) {
+      return BrowserLogger.type(type, styles)
+    }
+    else if (isNode) {
+      return NodeLogger.type(type, styles)
+    }
+    else {
+      // Fallback to Node logger for unknown environments
+      return NodeLogger.type(type, styles)
+    }
+  }
+
+  /**
+   * Gets a stream logger instance
+   */
+  static get stream(): BaseStreamLogger {
+    return this.createStreamLogger()
+  }
+
+  /**
+   * Gets predefined logger types
+   */
+  static get plain(): BaseLogger {
+    return this.getLoggerInstance('plain')
+  }
+
+  static get info(): BaseLogger {
+    return this.getLoggerInstance('info')
+  }
+
+  static get warn(): BaseLogger {
+    return this.getLoggerInstance('warn')
+  }
+
+  static get error(): BaseLogger {
+    return this.getLoggerInstance('error')
+  }
+
+  static get debug(): BaseLogger {
+    return this.getLoggerInstance('debug')
+  }
+
+  static get success(): BaseLogger {
+    return this.getLoggerInstance('success')
+  }
+
+  static get failure(): BaseLogger {
+    return this.getLoggerInstance('failure')
+  }
+}
+
+/**
+ * Unified Logger class that provides the same API as the original Logger
+ * but uses the factory pattern internally to select the appropriate implementation
+ */
+export class Logger {
+  private _instance: BaseLogger
+
+  static stylesMap = (LoggerFactory.getLoggerInstance('info').constructor as any).stylesMap
+
+  // Make instanceof work with platform-specific logger instances
+  static readonly [Symbol.hasInstance] = (instance: any) => {
+    return instance && typeof instance === 'object' && instance._isShermanLogger === true
+  }
+
+  constructor(prefixStyles?: Type.Styles) {
+    this._instance = LoggerFactory.createLogger(prefixStyles)
+
+    // Delegate all methods to the underlying instance
+    return new Proxy(this, {
+      get(target, prop, receiver) {
+        if (prop in target._instance) {
+          const value = target._instance[prop as keyof BaseLogger]
+          if (typeof value === 'function') {
+            return value.bind(target._instance)
+          }
+          return value
+        }
+        return Reflect.get(target, prop, receiver)
+      },
+      set(target, prop, value, receiver) {
+        if (prop in target._instance) {
+          ;(target._instance as any)[prop] = value
+          return true
+        }
+        return Reflect.set(target, prop, value, receiver)
+      },
+    })
+  }
+
+  static getLoggerInstance(type: Type.Type, styles?: Type.Styles): BaseLogger {
+    return LoggerFactory.getLoggerInstance(type, styles)
+  }
+
+  static type(type: Type.Type, styles?: Type.Styles): BaseLogger {
+    return LoggerFactory.type(type, styles)
+  }
+
+  static get stream(): BaseStreamLogger {
+    return LoggerFactory.stream
+  }
+
+  static get plain(): BaseLogger {
+    return LoggerFactory.plain
+  }
+
+  static get info(): BaseLogger {
+    return LoggerFactory.info
+  }
+
+  static get warn(): BaseLogger {
+    return LoggerFactory.warn
+  }
+
+  static get error(): BaseLogger {
+    return LoggerFactory.error
+  }
+
+  static get debug(): BaseLogger {
+    return LoggerFactory.debug
+  }
+
+  static get success(): BaseLogger {
+    return LoggerFactory.success
+  }
+
+  static get failure(): BaseLogger {
+    return LoggerFactory.failure
+  }
+}
+
+/**
+ * Unified StreamLogger class that provides the same API as the original StreamLogger
+ * but uses the factory pattern internally to select the appropriate implementation
+ */
+export class StreamLogger {
+  private _instance: BaseStreamLogger
+
+  constructor(prefix?: string, prefixStyles?: Type.Styles) {
+    this._instance = LoggerFactory.createStreamLogger(prefix, prefixStyles)
+
+    // Delegate all methods to the underlying instance
+    return new Proxy(this, {
+      get(target, prop, receiver) {
+        if (prop in target._instance) {
+          const value = target._instance[prop as keyof BaseStreamLogger]
+          if (typeof value === 'function') {
+            return value.bind(target._instance)
+          }
+          return value
+        }
+        return Reflect.get(target, prop, receiver)
+      },
+      set(target, prop, value, receiver) {
+        if (prop in target._instance) {
+          ;(target._instance as any)[prop] = value
+          return true
+        }
+        return Reflect.set(target, prop, value, receiver)
+      },
+    })
+  }
+
+  static create(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+    return LoggerFactory.createStreamLogger(prefix, prefixStyles)
+  }
+}

@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+// Now import Logger after mocking environment
 import { Logger } from '../src/index'
 
-// Mock browser environment
+// Mock browser environment BEFORE importing Logger
 const mockConsole = {
   log: vi.fn(),
   info: vi.fn(),
@@ -14,13 +16,25 @@ const mockWindow = {
   console: mockConsole,
 }
 
+// Mock document object for browser environment simulation
+const mockDocument = {
+  createElement: vi.fn(),
+}
+
+// Set up browser environment before any imports
+globalThis.console = mockConsole as any
+globalThis.window = mockWindow as any
+globalThis.document = mockDocument as any
+
+// Mock the environment detection module
+vi.mock('../src/environment', () => ({
+  isBrowser: true,
+  isNode: false,
+}))
+
 describe('browser Integration Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    // Mock global console
-    globalThis.console = mockConsole as any
-    // Mock window for browser environment
-    globalThis.window = mockWindow as any
   })
 
   describe('basic Logging in Browser Environment', () => {

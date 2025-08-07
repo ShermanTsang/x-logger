@@ -6,81 +6,81 @@ const chalkStub = new Proxy({}, {
   get(target, prop) {
     if (typeof prop === 'string') {
       // Return a function that just returns the text without styling
-      return function(text) {
+      return function (text) {
         // Support chaining by returning another proxy
         const result = String(text)
         return new Proxy(() => result, {
           get: () => chalkStub[prop],
-          apply: () => result
+          apply: () => result,
         })
       }
     }
     return target[prop]
-  }
+  },
 })
 
 // Alternative: Explicit method implementation
 const explicitChalkStub = {
   // Color methods
-  black: (text) => text,
-  red: (text) => text,
-  green: (text) => text,
-  yellow: (text) => text,
-  blue: (text) => text,
-  magenta: (text) => text,
-  cyan: (text) => text,
-  white: (text) => text,
-  gray: (text) => text,
-  grey: (text) => text,
-  
+  black: text => text,
+  red: text => text,
+  green: text => text,
+  yellow: text => text,
+  blue: text => text,
+  magenta: text => text,
+  cyan: text => text,
+  white: text => text,
+  gray: text => text,
+  grey: text => text,
+
   // Bright colors
-  blackBright: (text) => text,
-  redBright: (text) => text,
-  greenBright: (text) => text,
-  yellowBright: (text) => text,
-  blueBright: (text) => text,
-  magentaBright: (text) => text,
-  cyanBright: (text) => text,
-  whiteBright: (text) => text,
-  
+  blackBright: text => text,
+  redBright: text => text,
+  greenBright: text => text,
+  yellowBright: text => text,
+  blueBright: text => text,
+  magentaBright: text => text,
+  cyanBright: text => text,
+  whiteBright: text => text,
+
   // Background colors
-  bgBlack: (text) => text,
-  bgRed: (text) => text,
-  bgGreen: (text) => text,
-  bgYellow: (text) => text,
-  bgBlue: (text) => text,
-  bgMagenta: (text) => text,
-  bgCyan: (text) => text,
-  bgWhite: (text) => text,
-  bgGray: (text) => text,
-  bgGrey: (text) => text,
-  
+  bgBlack: text => text,
+  bgRed: text => text,
+  bgGreen: text => text,
+  bgYellow: text => text,
+  bgBlue: text => text,
+  bgMagenta: text => text,
+  bgCyan: text => text,
+  bgWhite: text => text,
+  bgGray: text => text,
+  bgGrey: text => text,
+
   // Bright background colors
-  bgBlackBright: (text) => text,
-  bgRedBright: (text) => text,
-  bgGreenBright: (text) => text,
-  bgYellowBright: (text) => text,
-  bgBlueBright: (text) => text,
-  bgMagentaBright: (text) => text,
-  bgCyanBright: (text) => text,
-  bgWhiteBright: (text) => text,
-  
+  bgBlackBright: text => text,
+  bgRedBright: text => text,
+  bgGreenBright: text => text,
+  bgYellowBright: text => text,
+  bgBlueBright: text => text,
+  bgMagentaBright: text => text,
+  bgCyanBright: text => text,
+  bgWhiteBright: text => text,
+
   // Style methods
-  bold: (text) => text,
-  dim: (text) => text,
-  italic: (text) => text,
-  underline: (text) => text,
-  strikethrough: (text) => text,
-  inverse: (text) => text,
-  hidden: (text) => text,
-  visible: (text) => text,
-  reset: (text) => text
+  bold: text => text,
+  dim: text => text,
+  italic: text => text,
+  underline: text => text,
+  strikethrough: text => text,
+  inverse: text => text,
+  hidden: text => text,
+  visible: text => text,
+  reset: text => text,
 }
 
 // Make methods chainable for the explicit stub
-Object.keys(explicitChalkStub).forEach(key => {
+Object.keys(explicitChalkStub).forEach((key) => {
   const originalMethod = explicitChalkStub[key]
-  explicitChalkStub[key] = function(text) {
+  explicitChalkStub[key] = function (text) {
     const result = originalMethod(text)
     // Return a chainable object
     const chainable = Object.assign(() => result, explicitChalkStub)
@@ -97,7 +97,7 @@ export default chalkStub
 
 // Usage examples:
 // import chalk from './chalk-stub.js'
-// 
+//
 // console.log(chalk.red('This will be plain text'))
 // console.log(chalk.bold.blue('This will also be plain text'))
 // console.log(chalk.bgRed.white('No styling applied'))

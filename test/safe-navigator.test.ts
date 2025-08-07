@@ -54,8 +54,6 @@ describe('safeNavigator', () => {
 
       expect(safeNavigator.getUserAgent()).toBe('Unknown UserAgent')
     })
-
-
   })
 
   describe('isAvailable', () => {

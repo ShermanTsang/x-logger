@@ -4,9 +4,7 @@ node_modules/
 .pnp.js
 
 # Build outputs
-.output/
-dist/
-build/
+.output/**/*
 
 # VitePress
 docs/.vitepress/dist/

@@ -12,8 +12,6 @@ interface NavigatorStorage {
   estimate: () => Promise<StorageEstimate>
 }
 
-
-
 /**
  * Safe navigator access for environments where navigator might be undefined
  * (e.g., some server-side rendering contexts)
@@ -40,7 +38,7 @@ export const safeNavigator = {
   hasStorageAPI(): boolean {
     try {
       const storage = safeNavigator.safeNavigatorProperty<NavigatorStorage>('storage')
-      return storage !== null 
+      return storage !== null
         && typeof storage === 'object'
         && typeof storage.estimate === 'function'
     }
@@ -91,12 +89,12 @@ export const safeNavigator = {
       if (!safeNavigator.isAvailable()) {
         return null
       }
-      
+
       // Use Object.prototype.hasOwnProperty for safe property checking
       if (Object.prototype.hasOwnProperty.call(navigator, property)) {
         return (navigator as any)[property]
       }
-      
+
       return null
     }
     catch {
