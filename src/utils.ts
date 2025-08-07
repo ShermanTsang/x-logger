@@ -230,15 +230,9 @@ export function logWithStyle(message: string, styles?: Type.Styles) {
 // NAVIGATOR UTILITIES (Browser specific)
 // =============================================================================
 
-// Type definitions for storage API
-interface StorageEstimate {
-  quota?: number
-  usage?: number
-}
-
-interface NavigatorStorage {
-  estimate: () => Promise<StorageEstimate>
-}
+// Use storage API types from typings
+type StorageEstimate = Type.StorageEstimate
+type NavigatorStorage = Type.NavigatorStorage
 
 /**
  * Safe navigator access for environments where navigator might be undefined

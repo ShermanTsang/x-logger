@@ -1,6 +1,6 @@
 import { Logger } from './logger-factory.ts'
 import { typeProxyHandler } from './wrapper.ts'
-import type { BaseLogger } from './base-logger.ts'
+import type { BaseLogger } from './typings'
 
 function logger(text: string) {
   return Logger.plain.text(text)

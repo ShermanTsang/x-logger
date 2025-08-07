@@ -8,3 +8,11 @@ export { accessor as logger } from './accessor.ts'
 // Utility functions
 export { safeNavigator } from './utils.ts'
 export { isBrowser, isNode } from './environment.ts'
+
+// Type definitions for TypeScript users
+export type { BaseLogger, BaseStreamLogger, Type } from './typings'
+
+// Re-export commonly used types for convenience
+export type {
+  Type as LoggerType,
+} from './typings'

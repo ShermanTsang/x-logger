@@ -1,6 +1,5 @@
 import { Logger } from './logger-factory.ts'
-import type { Type } from './typings'
-import type { BaseLogger } from './base-logger.ts'
+import type { BaseLogger, Type } from './typings'
 
 export const typeProxyHandler = new Proxy(Logger, {
   get(target, prop, receiver) {
