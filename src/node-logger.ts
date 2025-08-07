@@ -10,9 +10,10 @@ import { safeConsoleLog } from './utils'
 // Lazy-loaded modules for Node.js
 let chalk: any = null
 let ora: any = null
+let modulesLoaded = false
 
 async function loadNodeModules() {
-  if (!chalk) {
+  if (!modulesLoaded) {
     try {
       // Only import Node.js modules in Node.js environments
       const [chalkModule, oraModule] = await Promise.all([
@@ -21,9 +22,11 @@ async function loadNodeModules() {
       ])
       chalk = chalkModule.default
       ora = oraModule.default
+      modulesLoaded = true
     }
     catch (error) {
       safeConsoleLog('Failed to load Node.js modules:', error)
+      modulesLoaded = true // Mark as loaded even if failed to prevent retries
     }
   }
 }
@@ -160,6 +163,8 @@ export class NodeLogger extends BaseLogger {
     }
     return text
   }
+
+
 }
 
 /**
@@ -170,6 +175,13 @@ export class NodeStreamLogger extends BaseStreamLogger {
 
   constructor(prefix?: string, prefixStyles?: Type.Styles) {
     super(prefix, prefixStyles)
+    // Initialize stream after ensuring modules are loaded
+    this.initializeStreamAsync()
+  }
+
+  private async initializeStreamAsync(): Promise<void> {
+    // Wait for modules to load before initializing
+    await loadNodeModules()
     this.initializeStream()
   }
 
@@ -295,4 +307,6 @@ export class NodeStreamLogger extends BaseStreamLogger {
     }
     return text
   }
+
+
 }

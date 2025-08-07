@@ -298,4 +298,29 @@ export abstract class BaseStreamLogger extends BaseLogger {
     this.finalizeStream(state, output)
     this._state = undefined
   }
+
+  // Convenience methods for common stream states
+  succeed(output?: string): this {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('succeed', finalOutput)
+    return this
+  }
+
+  fail(output?: string): this {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('fail', finalOutput)
+    return this
+  }
+
+  start(output?: string): this {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('start', finalOutput)
+    return this
+  }
+
+  stop(output?: string): this {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('stop', finalOutput)
+    return this
+  }
 }

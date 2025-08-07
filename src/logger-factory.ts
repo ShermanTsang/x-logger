@@ -413,6 +413,27 @@ export class StreamLogger implements IBaseStreamLogger {
     return this._instance.finalizeStream(state, output)
   }
 
+  // Convenience methods for common stream states
+  succeed(output?: string): this {
+    this._instance.succeed(output)
+    return this
+  }
+
+  fail(output?: string): this {
+    this._instance.fail(output)
+    return this
+  }
+
+  start(output?: string): this {
+    this._instance.start(output)
+    return this
+  }
+
+  stop(output?: string): this {
+    this._instance.stop(output)
+    return this
+  }
+
   // Index signature for dynamic property access
   [key: string]: any
 }
