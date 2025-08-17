@@ -289,7 +289,7 @@ export class StreamLogger implements IBaseStreamLogger {
         if (prop in target._instance) {
           const value = (target._instance as any)[prop]
           if (typeof value === 'function') {
-            return function(...args: any[]) {
+            return function (...args: any[]) {
               const result = value.apply(target._instance, args)
               // If the method returns the instance (for chaining), return the proxy instead
               if (result === target._instance) {

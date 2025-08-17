@@ -9,7 +9,7 @@ export const typeProxyHandler = new Proxy(Logger, {
     if (prop in target) {
       return Reflect.get(target, prop, receiver)
     }
-    
+
     // For custom types not in target, return a function that can create and register the custom type
     const customTypeFunction = function (...args: any[]) {
       const [customType, styles] = [prop, args[0]]
@@ -104,7 +104,7 @@ export function createLoggerWithCustomType<
       if (prop in target) {
         return Reflect.get(target, prop, receiver)
       }
-      
+
       // For custom types, return a function that can create and register the custom type
       // This allows overriding predefined types when used with createLogger<T>()
       const customTypeFunction = function (...args: any[]) {
@@ -174,7 +174,7 @@ export function createLoggerWithCustomType<
       if (baseDescriptor) {
         return baseDescriptor
       }
-      
+
       // Check if it's a registered custom type
       try {
         const loggerInstance = Logger.getLoggerInstance('info')
@@ -190,11 +190,11 @@ export function createLoggerWithCustomType<
       catch {
         // Ignore errors
       }
-      
+
       return undefined
     },
   })
-  
+
   return customTypeProxy as unknown as typeof Logger & T
 }
 

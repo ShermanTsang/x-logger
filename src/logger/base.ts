@@ -52,13 +52,13 @@ export abstract class BaseLogger {
    */
   private clone(): this {
     const cloned = Object.create(Object.getPrototypeOf(this))
-    
+
     // Copy all properties
     Object.assign(cloned, this)
-    
+
     // Ensure the cloned instance is recognized as a Sherman Logger
     cloned._isShermanLogger = true
-    
+
     return cloned
   }
 
@@ -257,33 +257,35 @@ export abstract class BaseLogger {
 
   toString() {
     let result = ''
-    
+
     // Add prepend divider if present
     if (this._prependDivider) {
       const prependText = this._prependDividerChar.repeat(this._prependDividerLength)
       result += prependText
     }
-    
+
     // Add single divider if present
     if (this._singleDivider) {
       const dividerText = this._singleDividerChar.repeat(this._singleDividerLength)
       result += dividerText
     }
-    
+
     // Add main output
     const mainOutput = this.composeMainOutput()
     if (mainOutput) {
-      if (result) result += '\n'
+      if (result)
+        result += '\n'
       result += mainOutput
     }
-    
+
     // Add append divider if present
     if (this._appendDivider) {
       const appendText = this._appendDividerChar.repeat(this._appendDividerLength)
-      if (result) result += '\n'
+      if (result)
+        result += '\n'
       result += appendText
     }
-    
+
     return result
   }
 
@@ -297,7 +299,7 @@ export abstract class BaseLogger {
       loggerType: this._loggerType,
       prefixStyles: this._prefixStyles,
       textStyles: this._textStyles,
-      detailStyles: this._detailStyles
+      detailStyles: this._detailStyles,
     }
   }
 
