@@ -175,9 +175,9 @@ export abstract class BaseLogger {
       || this.formattedText
       || this.formattedDetail
       || this.formattedData
-      || (this._loggerType === 'normal' && this.formattedPrefix)
+      || this.formattedPrefix
     ) {
-      return `${this.formattedTime}${this._loggerType === 'normal' ? this.formattedPrefix : ''}${this.formattedText}${this.formattedDetail}${this.formattedData}`
+      return `${this.formattedTime}${this.formattedPrefix}${this.formattedText}${this.formattedDetail}${this.formattedData}`
     }
 
     return ''

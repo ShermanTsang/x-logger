@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { Logger, StreamLogger } from '../src'
 import { logger } from '../src/index'
 
@@ -21,5 +21,31 @@ describe('stream logger', () => {
       .prefix('❤️ streamLogger3', ['underline'])
       .text('create via logger.stream', ['gray'])
       .update()
+  })
+
+  it('should include prefix in stream logger output', () => {
+    const stream = logger.stream
+      .prefix('📦 INSTALL')
+      .text('Installing packages...')
+
+    const output = stream.toString()
+    expect(output).toContain('📦 INSTALL')
+    expect(output).toContain('Installing packages...')
+
+    // Test that prefix persists after text updates
+    stream.text('Downloading dependencies...')
+    const updatedOutput = stream.toString()
+    expect(updatedOutput).toContain('📦 INSTALL')
+    expect(updatedOutput).toContain('Downloading dependencies...')
+  })
+
+  it('should include styled prefix in stream logger output', () => {
+    const stream = logger.stream
+      .prefix('🔄 PROCESS', ['cyan', 'bold'])
+      .text('Processing data...')
+
+    const output = stream.toString()
+    expect(output).toContain('🔄 PROCESS')
+    expect(output).toContain('Processing data...')
   })
 })
