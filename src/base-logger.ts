@@ -152,7 +152,21 @@ export abstract class BaseLogger {
   }
 
   get formattedData() {
-    return this._data ? `\n${this._data}` : ''
+    if (!this._data) return ''
+    
+    // Handle different data types appropriately
+    if (typeof this._data === 'string') {
+      return `\n${this._data}`
+    } else if (typeof this._data === 'object') {
+      try {
+        return `\n${JSON.stringify(this._data, null, 2)}`
+      } catch (error) {
+        // Handle circular references and other JSON.stringify errors
+        return `\n[Circular Reference or Invalid JSON]`
+      }
+    } else {
+      return `\n${String(this._data)}`
+    }
   }
 
   protected composeMainOutput() {
@@ -242,7 +256,7 @@ export abstract class BaseStreamLogger extends BaseLogger {
   constructor(prefix?: string, prefixStyles?: Type.Styles) {
     super(prefixStyles || [])
     this._loggerType = 'stream'
-    this._state = 'start'
+    this._state = undefined
     prefix && this.prefix(prefix, prefixStyles)
   }
 
