@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { Logger, StreamLogger, createLogger, logger } from '../../src'
 import { measurePerformance, testData } from './test-utils'
 
-describe('Performance Tests - Cross-Platform', () => {
+describe('performance Tests - Cross-Platform', () => {
   let startTime: number
   let endTime: number
 
@@ -17,7 +17,7 @@ describe('Performance Tests - Cross-Platform', () => {
     expect(duration).toBeLessThan(2000) // 2 seconds max for any test
   })
 
-  describe('Logger Instance Creation Performance', () => {
+  describe('logger Instance Creation Performance', () => {
     it('should create logger instances quickly', () => {
       const { duration } = measurePerformance(() => {
         const instances = []
@@ -54,7 +54,7 @@ describe('Performance Tests - Cross-Platform', () => {
     })
   })
 
-  describe('Text Processing Performance', () => {
+  describe('text Processing Performance', () => {
     it('should handle large text efficiently', () => {
       const largeText = 'A'.repeat(100000) // 100KB of text
 
@@ -119,7 +119,7 @@ describe('Performance Tests - Cross-Platform', () => {
     })
   })
 
-  describe('Memory Usage Tests', () => {
+  describe('memory Usage Tests', () => {
     it('should not accumulate memory with repeated operations', () => {
       const { duration } = measurePerformance(() => {
         // Create many logger instances and ensure they can be garbage collected
@@ -171,22 +171,22 @@ describe('Performance Tests - Cross-Platform', () => {
     it('should handle memory cleanup efficiently', () => {
       const { duration } = measurePerformance(() => {
         const loggers = []
-        
+
         // Create many loggers
         for (let i = 0; i < 500; i++) {
           loggers.push(
             logger.type(`cleanup_${i}`)
               .prefix(`CLEANUP_${i}`)
-              .text(`Cleanup test ${i}`)
+              .text(`Cleanup test ${i}`),
           )
         }
 
         // Clear references
         loggers.length = 0
-        
+
         // Force potential garbage collection
-        if (global.gc) {
-          global.gc()
+        if (globalThis.gc) {
+          globalThis.gc()
         }
       })
 
@@ -194,7 +194,7 @@ describe('Performance Tests - Cross-Platform', () => {
     })
   })
 
-  describe('Concurrent Usage Tests', () => {
+  describe('concurrent Usage Tests', () => {
     it('should handle concurrent logger creation', async () => {
       const { duration } = await measurePerformance(async () => {
         const promises = Array.from({ length: 50 }, async (_, i) => {
@@ -205,7 +205,7 @@ describe('Performance Tests - Cross-Platform', () => {
                 .prefix(`CONCURRENT_${i}`)
                 .text(`Concurrent test ${i}`)
                 .toString()
-              
+
               expect(result).toContain(`CONCURRENT_${i}`)
               resolve()
             }, Math.random() * 10)
@@ -220,9 +220,8 @@ describe('Performance Tests - Cross-Platform', () => {
 
     it('should handle concurrent stream operations', async () => {
       const { duration } = await measurePerformance(async () => {
-        const streams = Array.from({ length: 20 }, (_, i) => 
-          new StreamLogger(`STREAM_${i}`)
-        )
+        const streams = Array.from({ length: 20 }, (_, i) =>
+          new StreamLogger(`STREAM_${i}`))
 
         const operations = streams.map(async (stream, i) => {
           return new Promise<void>((resolve) => {
@@ -243,7 +242,7 @@ describe('Performance Tests - Cross-Platform', () => {
     })
   })
 
-  describe('Stress Tests', () => {
+  describe('stress Tests', () => {
     it('should handle high-frequency logging', () => {
       const { duration } = measurePerformance(() => {
         for (let i = 0; i < 5000; i++) {
@@ -261,7 +260,7 @@ describe('Performance Tests - Cross-Platform', () => {
       const { duration } = measurePerformance(() => {
         for (let i = 0; i < 100; i++) {
           const baseLogger = logger.type(`stress_${i}`, ['red', 'bold'])
-          
+
           for (let j = 0; j < 10; j++) {
             baseLogger
               .prefix(`NESTED_${i}_${j}`)
@@ -300,7 +299,7 @@ describe('Performance Tests - Cross-Platform', () => {
     })
   })
 
-  describe('Resource Cleanup Tests', () => {
+  describe('resource Cleanup Tests', () => {
     it('should clean up resources after operations', () => {
       const initialMemory = process.memoryUsage?.()?.heapUsed || 0
 
@@ -316,8 +315,8 @@ describe('Performance Tests - Cross-Platform', () => {
         }
 
         // Force cleanup if available
-        if (global.gc) {
-          global.gc()
+        if (globalThis.gc) {
+          globalThis.gc()
         }
       })
 
@@ -334,7 +333,7 @@ describe('Performance Tests - Cross-Platform', () => {
     it('should handle stream cleanup efficiently', () => {
       const { duration } = measurePerformance(() => {
         const streams = []
-        
+
         // Create many streams
         for (let i = 0; i < 100; i++) {
           const stream = new StreamLogger(`CLEANUP_STREAM_${i}`)
@@ -345,10 +344,10 @@ describe('Performance Tests - Cross-Platform', () => {
         }
 
         // Simulate cleanup
-        streams.forEach(stream => {
+        streams.forEach((stream) => {
           stream.toString() // Finalize
         })
-        
+
         streams.length = 0 // Clear references
       })
 

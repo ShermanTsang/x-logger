@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { BrowserLogger, BrowserStreamLogger } from '../../src/logger/browser'
 import { Logger, StreamLogger, createLogger, logger } from '../../src'
 import type { Type } from '../../src/typings'
-import { mockBrowserEnvironment, testData, testStyles, validateLoggerOutput, measurePerformance } from '../shared/test-utils'
+import { measurePerformance, mockBrowserEnvironment, testData } from '../shared/test-utils'
 
 // Mock browser environment utilities
 function setupBrowserMocks() {
@@ -27,19 +27,19 @@ function setupBrowserMocks() {
   return { mockConsole, mockWindow, mockDocument }
 }
 
-describe('BrowserLogger - Browser Environment', () => {
+describe('browserLogger - Browser Environment', () => {
   let browserEnv: ReturnType<typeof mockBrowserEnvironment>
   let mocks: ReturnType<typeof setupBrowserMocks>
 
   beforeEach(() => {
     browserEnv = mockBrowserEnvironment()
     mocks = setupBrowserMocks()
-    
+
     // Override with our specific mocks
     globalThis.console = mocks.mockConsole as any
     globalThis.window = mocks.mockWindow as any
     globalThis.document = mocks.mockDocument as any
-    
+
     vi.clearAllMocks()
   })
 
@@ -47,7 +47,7 @@ describe('BrowserLogger - Browser Environment', () => {
     browserEnv.restore()
   })
 
-  describe('Basic Browser Logger Operations', () => {
+  describe('basic Browser Logger Operations', () => {
     it('should create BrowserLogger instance', () => {
       const browserLogger = new BrowserLogger()
       expect(browserLogger).toBeInstanceOf(BrowserLogger)
@@ -64,7 +64,7 @@ describe('BrowserLogger - Browser Environment', () => {
       const browserLogger = new BrowserLogger()
       browserLogger.text('Styled text', ['red', 'bold']).print()
       expect(mocks.mockConsole.log).toHaveBeenCalled()
-      
+
       // Check that console.log was called with CSS styling
       const calls = mocks.mockConsole.log.mock.calls
       expect(calls.length).toBeGreaterThan(0)
@@ -77,7 +77,7 @@ describe('BrowserLogger - Browser Environment', () => {
     })
   })
 
-  describe('CSS Styling System', () => {
+  describe('cSS Styling System', () => {
     it('should convert chalk-style names to CSS', () => {
       const browserLogger = new BrowserLogger()
       const styledText = browserLogger.decorateText('Test', ['red', 'bold'])
@@ -113,7 +113,7 @@ describe('BrowserLogger - Browser Environment', () => {
     })
   })
 
-  describe('Static Factory Methods', () => {
+  describe('static Factory Methods', () => {
     it('should create logger via static type method', () => {
       const infoLogger = BrowserLogger.type('info')
       expect(infoLogger).toBeInstanceOf(BrowserLogger)
@@ -148,7 +148,7 @@ describe('BrowserLogger - Browser Environment', () => {
     })
   })
 
-  describe('Console Output Formatting', () => {
+  describe('console Output Formatting', () => {
     it('should use console.log for regular messages', () => {
       const browserLogger = new BrowserLogger()
       browserLogger.text('Regular message').print()
@@ -165,7 +165,7 @@ describe('BrowserLogger - Browser Environment', () => {
         .detail('Additional details', ['gray'])
         .data({ key: 'value' })
         .print()
-      
+
       expect(mocks.mockConsole.log).toHaveBeenCalled()
     })
 
@@ -176,7 +176,7 @@ describe('BrowserLogger - Browser Environment', () => {
     })
   })
 
-  describe('Browser Logger Integration', () => {
+  describe('browser Logger Integration', () => {
     it('should work with main logger export in browser', () => {
       expect(() => {
         logger.info.text('Main logger test').print()
@@ -200,7 +200,7 @@ describe('BrowserLogger - Browser Environment', () => {
 
       expect(() => {
         typedLogger
-          .browserCustom(['bgPurple', 'white'])
+          .browserCustom(['bgGreen', 'white'])
           .prefix('BROWSER_CUSTOM')
           .text('Typed custom logger')
           .print()
@@ -208,7 +208,7 @@ describe('BrowserLogger - Browser Environment', () => {
     })
   })
 
-  describe('Browser Performance', () => {
+  describe('browser Performance', () => {
     it('should create logger instances efficiently in browser', () => {
       const { duration } = measurePerformance(() => {
         for (let i = 0; i < 100; i++) {
@@ -243,7 +243,7 @@ describe('BrowserLogger - Browser Environment', () => {
     })
   })
 
-  describe('Browser Edge Cases', () => {
+  describe('browser Edge Cases', () => {
     it('should handle missing console methods gracefully', () => {
       const limitedConsole = {
         log: vi.fn(),
@@ -280,18 +280,18 @@ describe('BrowserLogger - Browser Environment', () => {
   })
 })
 
-describe('BrowserStreamLogger - Browser Stream Logging', () => {
+describe('browserStreamLogger - Browser Stream Logging', () => {
   let browserEnv: ReturnType<typeof mockBrowserEnvironment>
   let mocks: ReturnType<typeof setupBrowserMocks>
 
   beforeEach(() => {
     browserEnv = mockBrowserEnvironment()
     mocks = setupBrowserMocks()
-    
+
     globalThis.console = mocks.mockConsole as any
     globalThis.window = mocks.mockWindow as any
     globalThis.document = mocks.mockDocument as any
-    
+
     vi.clearAllMocks()
   })
 
@@ -299,7 +299,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     browserEnv.restore()
   })
 
-  describe('Browser Stream Logger Creation', () => {
+  describe('browser Stream Logger Creation', () => {
     it('should create BrowserStreamLogger instance', () => {
       const streamLogger = new BrowserStreamLogger('STREAM')
       expect(streamLogger).toBeInstanceOf(BrowserStreamLogger)
@@ -322,7 +322,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     })
   })
 
-  describe('Browser Stream Operations', () => {
+  describe('browser Stream Operations', () => {
     it('should handle initialization in browser', () => {
       const stream = new BrowserStreamLogger('INIT_TEST')
       expect(() => {
@@ -333,7 +333,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     it('should handle text updates in browser', () => {
       const stream = new BrowserStreamLogger('UPDATE_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.text('Initial text')
         stream.update()
@@ -345,18 +345,18 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     it('should handle async updates in browser', async () => {
       const stream = new BrowserStreamLogger('ASYNC_TEST')
       stream.initializeStream()
-      
+
       expect(async () => {
         await stream.asyncUpdate(10)
       }).not.toThrow()
     })
   })
 
-  describe('Browser Stream State Management', () => {
+  describe('browser Stream State Management', () => {
     it('should handle succeed state in browser', () => {
       const stream = new BrowserStreamLogger('SUCCESS_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.succeed('Operation completed successfully')
       }).not.toThrow()
@@ -365,7 +365,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     it('should handle fail state in browser', () => {
       const stream = new BrowserStreamLogger('FAIL_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.fail('Operation failed')
       }).not.toThrow()
@@ -374,7 +374,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     it('should handle start state in browser', () => {
       const stream = new BrowserStreamLogger('START_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.start('Starting operation')
       }).not.toThrow()
@@ -383,14 +383,14 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     it('should handle stop state in browser', () => {
       const stream = new BrowserStreamLogger('STOP_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.stop('Stopping operation')
       }).not.toThrow()
     })
   })
 
-  describe('Browser Stream Integration', () => {
+  describe('browser Stream Integration', () => {
     it('should work with logger.stream in browser', () => {
       const stream = logger.stream
       expect(() => {
@@ -422,14 +422,14 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
         .prefix('STYLED', ['bgGreen', 'white'])
         .text('Styled stream text', ['red', 'bold'])
         .update()
-      
+
       const output = stream.toString()
       expect(output).toContain('STYLED')
       expect(output).toContain('Styled stream text')
     })
   })
 
-  describe('Browser Stream Performance', () => {
+  describe('browser Stream Performance', () => {
     it('should handle rapid updates efficiently in browser', () => {
       const stream = new BrowserStreamLogger('RAPID_TEST')
       stream.initializeStream()
@@ -460,7 +460,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     })
   })
 
-  describe('Browser Stream Error Handling', () => {
+  describe('browser Stream Error Handling', () => {
     it('should handle missing console methods in streams', () => {
       const limitedConsole = {
         log: vi.fn(),
@@ -490,7 +490,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
     })
   })
 
-  describe('Browser Stream Method Chaining', () => {
+  describe('browser Stream Method Chaining', () => {
     it('should support method chaining in browser', () => {
       const stream = new BrowserStreamLogger('CHAIN_TEST')
       const result = stream
@@ -508,9 +508,9 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
       stream
         .prefix('STATE', ['bgYellow', 'black'])
         .text('Initial state')
-      
+
       stream.update() // Returns void in browser
-      
+
       stream.text('Updated state')
       stream.succeed('Final state') // Returns void in browser
 
@@ -521,7 +521,7 @@ describe('BrowserStreamLogger - Browser Stream Logging', () => {
   })
 })
 
-describe('Cross-Platform Browser Compatibility', () => {
+describe('cross-Platform Browser Compatibility', () => {
   let browserEnv: ReturnType<typeof mockBrowserEnvironment>
 
   beforeEach(() => {
@@ -533,7 +533,7 @@ describe('Cross-Platform Browser Compatibility', () => {
     browserEnv.restore()
   })
 
-  describe('Feature Detection', () => {
+  describe('feature Detection', () => {
     it('should detect browser environment correctly', () => {
       expect(typeof window).toBe('object')
       expect(typeof document).toBe('object')
@@ -541,7 +541,7 @@ describe('Cross-Platform Browser Compatibility', () => {
 
     it('should handle missing browser features gracefully', () => {
       delete (globalThis as any).document
-      
+
       const browserLogger = new BrowserLogger()
       expect(() => {
         browserLogger.text('No document test').print()
@@ -549,7 +549,7 @@ describe('Cross-Platform Browser Compatibility', () => {
     })
   })
 
-  describe('Console API Compatibility', () => {
+  describe('console API Compatibility', () => {
     it('should work with minimal console implementation', () => {
       const minimalConsole = {
         log: vi.fn(),

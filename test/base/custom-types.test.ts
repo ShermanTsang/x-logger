@@ -3,8 +3,8 @@ import type { Logger as LoggerType } from '../../src'
 import { createLogger, logger } from '../../src/index'
 import type { Type } from '../../src/typings'
 
-describe('Custom Logger Types - Base Functionality', () => {
-  describe('Adding Custom Types', () => {
+describe('custom Logger Types - Base Functionality', () => {
+  describe('adding Custom Types', () => {
     it('should add custom logger type via type function', () => {
       const customLoggerType = 'test'
 
@@ -81,7 +81,7 @@ describe('Custom Logger Types - Base Functionality', () => {
     })
   })
 
-  describe('Overriding Preset Types', () => {
+  describe('overriding Preset Types', () => {
     it('should override preset logger type', () => {
       const originalInfoStyles = logger.stylesMap.info
       const newStyles: (typeof logger.stylesMap)['info'] = ['bgYellow']
@@ -125,7 +125,7 @@ describe('Custom Logger Types - Base Functionality', () => {
     })
   })
 
-  describe('Type System Integration', () => {
+  describe('type System Integration', () => {
     it('should work with TypeScript type system', () => {
       interface CustomTypes {
         apiCall: Type.CreateCustomType
@@ -189,7 +189,7 @@ describe('Custom Logger Types - Base Functionality', () => {
     })
   })
 
-  describe('Edge Cases', () => {
+  describe('edge Cases', () => {
     it('should handle empty style arrays', () => {
       expect(() => {
         logger.type('emptyStyles', [])

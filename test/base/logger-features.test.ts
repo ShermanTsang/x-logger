@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Logger, StreamLogger, createLogger, logger } from '../../src'
 import type { Type } from '../../src/typings'
-import { createMockConsole, testData } from '../shared/test-utils'
+import { createMockConsole } from '../shared/test-utils'
 
 describe('logger Features and Functionality', () => {
   describe('core Logger Features', () => {

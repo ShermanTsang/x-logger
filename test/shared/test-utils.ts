@@ -92,7 +92,7 @@ export const testStyles: Record<string, Type.Styles> = {
 /**
  * Performance test helpers
  */
-export function measurePerformance<T>(fn: () => T): { result: T; duration: number } {
+export function measurePerformance<T>(fn: () => T): { result: T, duration: number } {
   const start = performance.now()
   const result = fn()
   const end = performance.now()

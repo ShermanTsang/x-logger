@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NodeLogger, NodeStreamLogger } from '../../src/logger/node'
 import { Logger, StreamLogger, createLogger, logger } from '../../src'
 import type { Type } from '../../src/typings'
-import { mockNodeEnvironment, testData, testStyles, validateLoggerOutput, measurePerformance, sleep } from '../shared/test-utils'
+import { measurePerformance, mockNodeEnvironment, testData, validateLoggerOutput } from '../shared/test-utils'
 
 // Mock console for output capture
 const mockConsole = {
@@ -12,7 +12,7 @@ const mockConsole = {
   info: vi.fn(),
 }
 
-describe('NodeLogger - Node.js Environment', () => {
+describe('nodeLogger - Node.js Environment', () => {
   let originalConsole: typeof console
   let nodeEnv: ReturnType<typeof mockNodeEnvironment>
 
@@ -28,7 +28,7 @@ describe('NodeLogger - Node.js Environment', () => {
     nodeEnv.restore()
   })
 
-  describe('Basic Logger Operations', () => {
+  describe('basic Logger Operations', () => {
     it('should create NodeLogger instance', () => {
       const nodeLogger = new NodeLogger()
       expect(nodeLogger).toBeInstanceOf(NodeLogger)
@@ -44,14 +44,14 @@ describe('NodeLogger - Node.js Environment', () => {
     it('should apply chalk styles in Node.js environment', async () => {
       const nodeLogger = new NodeLogger()
       const styledLogger = nodeLogger.text('Styled text', ['red', 'bold'])
-      
+
       // Wait a bit for chalk to load if needed
       await new Promise(resolve => setTimeout(resolve, 10))
-      
+
       // The actual styling would be applied by chalk
       const output = styledLogger.toString()
       expect(output).toContain('Styled text')
-      
+
       styledLogger.print()
       expect(mockConsole.log).toHaveBeenCalled()
     })
@@ -63,7 +63,7 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Static Factory Methods', () => {
+  describe('static Factory Methods', () => {
     it('should create logger via static type method', () => {
       const infoLogger = NodeLogger.type('info')
       expect(infoLogger).toBeInstanceOf(NodeLogger)
@@ -98,7 +98,7 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Chalk Integration', () => {
+  describe('chalk Integration', () => {
     it('should handle chalk styles gracefully when chalk is available', () => {
       const nodeLogger = new NodeLogger()
       expect(() => {
@@ -130,7 +130,7 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Logger Factory Integration', () => {
+  describe('logger Factory Integration', () => {
     it('should work with main logger export', () => {
       expect(() => {
         logger.info.text('Main logger test').print()
@@ -162,7 +162,7 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Performance in Node.js Environment', () => {
+  describe('performance in Node.js Environment', () => {
     it('should create logger instances efficiently', () => {
       const { duration } = measurePerformance(() => {
         for (let i = 0; i < 100; i++) {
@@ -197,7 +197,7 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Edge Cases and Error Handling', () => {
+  describe('edge Cases and Error Handling', () => {
     it('should handle empty strings gracefully', () => {
       const nodeLogger = new NodeLogger()
       expect(() => {
@@ -227,7 +227,7 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Divider Operations', () => {
+  describe('divider Operations', () => {
     it('should handle prepend dividers', () => {
       const nodeLogger = new NodeLogger()
       nodeLogger.prependDivider('=', 20).text('Message with prepend divider').print()
@@ -247,11 +247,11 @@ describe('NodeLogger - Node.js Environment', () => {
     })
   })
 
-  describe('Time Display', () => {
+  describe('time Display', () => {
     it('should include timestamp when enabled', () => {
       const nodeLogger = new NodeLogger()
       const timedLogger = nodeLogger.time(true).text('Timestamped message')
-      
+
       const output = timedLogger.toString()
       expect(validateLoggerOutput(output).hasTimestamp()).toBe(true)
     })
@@ -259,14 +259,14 @@ describe('NodeLogger - Node.js Environment', () => {
     it('should exclude timestamp when disabled', () => {
       const nodeLogger = new NodeLogger()
       nodeLogger.time(false).text('Non-timestamped message').print()
-      
+
       const output = nodeLogger.toString()
       expect(validateLoggerOutput(output).hasTimestamp()).toBe(false)
     })
   })
 })
 
-describe('NodeStreamLogger - Node.js Stream Logging', () => {
+describe('nodeStreamLogger - Node.js Stream Logging', () => {
   let originalConsole: typeof console
   let nodeEnv: ReturnType<typeof mockNodeEnvironment>
 
@@ -282,7 +282,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     nodeEnv.restore()
   })
 
-  describe('Stream Logger Creation', () => {
+  describe('stream Logger Creation', () => {
     it('should create NodeStreamLogger instance', () => {
       const streamLogger = new NodeStreamLogger('STREAM')
       expect(streamLogger).toBeInstanceOf(NodeStreamLogger)
@@ -305,7 +305,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     })
   })
 
-  describe('Ora Integration', () => {
+  describe('ora Integration', () => {
     it('should handle ora spinner initialization', async () => {
       const stream = new NodeStreamLogger('ORA_TEST')
       expect(() => {
@@ -316,7 +316,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     it('should handle text updates with ora', async () => {
       const stream = new NodeStreamLogger('UPDATE_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.text('Initial text')
         stream.update()
@@ -328,18 +328,18 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     it('should handle async updates', async () => {
       const stream = new NodeStreamLogger('ASYNC_TEST')
       stream.initializeStream()
-      
+
       expect(async () => {
         await stream.asyncUpdate(10)
       }).not.toThrow()
     })
   })
 
-  describe('Stream State Management', () => {
+  describe('stream State Management', () => {
     it('should handle succeed state', async () => {
       const stream = new NodeStreamLogger('SUCCESS_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.succeed('Operation completed successfully')
       }).not.toThrow()
@@ -348,7 +348,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     it('should handle fail state', async () => {
       const stream = new NodeStreamLogger('FAIL_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.fail('Operation failed')
       }).not.toThrow()
@@ -357,7 +357,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     it('should handle start state', async () => {
       const stream = new NodeStreamLogger('START_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.start('Starting operation')
       }).not.toThrow()
@@ -366,14 +366,14 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     it('should handle stop state', async () => {
       const stream = new NodeStreamLogger('STOP_TEST')
       stream.initializeStream()
-      
+
       expect(() => {
         stream.stop('Stopping operation')
       }).not.toThrow()
     })
   })
 
-  describe('Stream Logger Integration', () => {
+  describe('stream Logger Integration', () => {
     it('should work with logger.stream', () => {
       const stream = logger.stream
       expect(() => {
@@ -400,7 +400,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     })
   })
 
-  describe('Stream Performance', () => {
+  describe('stream Performance', () => {
     it('should handle rapid updates efficiently', async () => {
       const stream = new NodeStreamLogger('RAPID_TEST')
       stream.initializeStream()
@@ -430,7 +430,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     })
   })
 
-  describe('Stream Error Handling', () => {
+  describe('stream Error Handling', () => {
     it('should handle initialization errors gracefully', () => {
       const stream = new NodeStreamLogger('ERROR_TEST')
       expect(() => {
@@ -454,7 +454,7 @@ describe('NodeStreamLogger - Node.js Stream Logging', () => {
     })
   })
 
-  describe('Stream Method Chaining', () => {
+  describe('stream Method Chaining', () => {
     it('should support method chaining', () => {
       const stream = new NodeStreamLogger('CHAIN_TEST')
       const result = stream

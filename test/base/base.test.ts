@@ -1,7 +1,7 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { BaseLogger, BaseStreamLogger } from '../../src/logger/base'
 import type { Type } from '../../src/typings'
-import { testData, testStyles, validateLoggerOutput } from '../shared/test-utils'
+import { testData, validateLoggerOutput } from '../shared/test-utils'
 
 // Concrete implementation for testing abstract BaseLogger
 class TestLogger extends BaseLogger {
@@ -232,7 +232,7 @@ describe('baseLogger Abstract Functionality', () => {
 
   describe('static Type Management', () => {
     it('should track registered types', () => {
-      const initialCount = BaseLogger.registeredTypes.length
+      // const initialCount = BaseLogger.registeredTypes.length
       // This would be tested in concrete implementations
       expect(BaseLogger.registeredTypes).toBeInstanceOf(Array)
     })
