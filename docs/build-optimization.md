@@ -56,7 +56,7 @@ The build scripts already exclude `chalk` from bundles:
 {
   "scripts": {
     "build:node": "bun build ./src/index.ts --minify --outdir ./.output/dist --target node --external chalk --external ora",
-    "build:browser": "bun build ./src/index.ts --minify --outfile ./.output/dist/index.browser.js --target browser --external chalk --external ora --define process.env.NODE_ENV='\"production\"'"
+    "build:browser": "bun build ./src/index.ts --minify --outfile ./.output/dist/index.browser.js --target browser --external chalk --external ora --external node:module --external node:process --external node:fs --external node:path --external node:os --define process.env.NODE_ENV='\"browser\"' --define process='undefined'"
   }
 }
 ```
