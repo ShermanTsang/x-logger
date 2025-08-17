@@ -3,7 +3,7 @@
  */
 
 import type { BaseLogger as IBaseLogger, BaseStreamLogger as IBaseStreamLogger, Type } from './typings'
-import { isBrowser, isNode } from './environment'
+import { isBrowser, isNode } from './utils'
 import { NodeLogger, NodeStreamLogger } from './logger/node'
 import { BrowserLogger, BrowserStreamLogger } from './logger/browser'
 import type { BaseLogger, BaseStreamLogger } from './logger/base'

@@ -27,10 +27,14 @@ globalThis.window = mockWindow as any
 globalThis.document = mockDocument as any
 
 // Mock the environment detection module
-vi.mock('../src/environment', () => ({
-  isBrowser: true,
-  isNode: false,
-}))
+vi.mock('../src/utils', async () => {
+  const actual = await vi.importActual('../src/utils')
+  return {
+    ...actual,
+    isBrowser: true,
+    isNode: false,
+  }
+})
 
 describe('browser Integration Tests', () => {
   beforeEach(() => {

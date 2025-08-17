@@ -2,12 +2,10 @@
 export { Logger, StreamLogger } from './logger-factory'
 
 // Custom type creation and accessor utilities
-export { createLoggerWithCustomType as createLogger } from './wrapper'
-export { accessor as logger } from './accessor'
+export { createLoggerWithCustomType as createLogger, accessor as logger } from './wrapper'
 
 // Utility functions
-export { safeNavigator } from './utils'
-export { isBrowser, isNode } from './environment'
+export { safeNavigator, isBrowser, isNode } from './utils'
 
 // Type definitions for TypeScript users
 export type { BaseLogger, BaseStreamLogger, Type } from './typings'

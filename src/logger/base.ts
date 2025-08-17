@@ -152,19 +152,23 @@ export abstract class BaseLogger {
   }
 
   get formattedData() {
-    if (!this._data) return ''
-    
+    if (!this._data)
+      return ''
+
     // Handle different data types appropriately
     if (typeof this._data === 'string') {
       return `\n${this._data}`
-    } else if (typeof this._data === 'object') {
+    }
+    else if (typeof this._data === 'object') {
       try {
         return `\n${JSON.stringify(this._data, null, 2)}`
-      } catch (error) {
+      }
+      catch (error) {
         // Handle circular references and other JSON.stringify errors
         return `\n[Circular Reference or Invalid JSON]`
       }
-    } else {
+    }
+    else {
       return `\n${String(this._data)}`
     }
   }
