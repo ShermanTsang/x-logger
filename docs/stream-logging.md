@@ -11,6 +11,61 @@ Stream logging allows you to:
 - Create progress indicators
 - Provide visual feedback for long-running processes
 
+## Browser Environment Limitations
+
+::: warning Browser Compatibility
+Stream logging is primarily designed for Node.js environments. In browser environments, stream logging has limited functionality due to the lack of interactive terminal capabilities.
+:::
+
+### Browser vs Node.js Behavior
+
+**Node.js Environment:**
+- Full interactive streaming with spinners and real-time updates
+- Methods return `this` for chaining (e.g., `stream.text('...').update()`)
+- Real-time terminal manipulation and cursor control
+
+**Browser Environment:**
+- Static console logging only (no interactive spinners)
+- Action methods (`update()`, `state()`, `succeed()`, `fail()`, `start()`, `stop()`) return `void`
+- Setup methods (`prefix()`, `text()`, `detail()`, `delay()`) still return `this` for chaining
+- Output appears in browser console as regular log messages
+
+### Browser Usage Example
+
+```typescript
+import { logger } from '@shermant/logger'
+
+const stream = logger.stream
+
+// Setup methods can still be chained
+stream
+  .prefix('📦 INSTALL')
+  .text('Installing packages...')
+  .detail('This will appear in console')
+
+// Action methods return void in browser
+stream.update() // Returns void, cannot chain further
+
+// Correct browser usage
+stream.text('Installation completed!')
+stream.state('succeed') // Returns void
+```
+
+### Environment Detection
+
+The logger automatically detects the environment and adjusts behavior accordingly:
+
+```typescript
+// This works in both environments, but behavior differs
+const stream = logger.stream
+  .prefix('🔄 PROCESS')
+  .text('Processing...')
+
+// In Node.js: Interactive spinner with real-time updates
+// In Browser: Static console log messages
+stream.update()
+```
+
 ## Basic Stream Usage
 
 ### Simple Stream Example

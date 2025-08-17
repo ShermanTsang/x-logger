@@ -172,44 +172,65 @@ export class NodeLogger extends BaseLogger {
  */
 export class NodeStreamLogger extends BaseStreamLogger {
   protected _spinner: Ora | undefined = undefined
+  private _isInitialized: boolean = false
+  private _initializationPromise: Promise<void>
 
   constructor(prefix?: string, prefixStyles?: Type.Styles) {
     super(prefix, prefixStyles)
     // Initialize stream after ensuring modules are loaded
-    this.initializeStreamAsync()
+    this._initializationPromise = this.initializeStreamAsync()
   }
 
   private async initializeStreamAsync(): Promise<void> {
     // Wait for modules to load before initializing
     await loadNodeModules()
-    this.initializeStream()
+    if (ora) {
+      // Node.js environment with ora
+      this._spinner = ora({
+        text: this._prefix ? this.decorateText(this._prefix, this._prefixStyles) : '',
+        color: 'cyan',
+        discardStdin: false, // Fix for Windows hanging issue (ora v4+)
+        hideCursor: true,
+      })
+      this._spinner?.start()
+    }
+    this._isInitialized = true
+  }
+
+  private async ensureInitialized(): Promise<void> {
+    if (!this._isInitialized) {
+      await this._initializationPromise
+    }
   }
 
   initializeStream(): void {
     if (ora) {
       // Node.js environment with ora
-      this._spinner = ora()
+      this._spinner = ora({
+        text: this._prefix ? this.decorateText(this._prefix, this._prefixStyles) : '',
+        color: 'cyan',
+        discardStdin: false, // Fix for Windows hanging issue (ora v4+)
+        hideCursor: true,
+      })
       this._spinner?.start()
     }
     else {
       // Node.js fallback without ora
       this._spinner = undefined
-      safeConsoleLog('[STREAM STARTED]')
     }
   }
 
-  updateStream(output: string): void {
+  async updateStream(output: string): Promise<void> {
+    await this.ensureInitialized()
     if (this._spinner) {
       this._spinner.text = output
     }
-    else {
-      // Fallback when no spinner is available
-      const message = output || '[STREAM UPDATE]'
-      safeConsoleLog(`[STREAM UPDATE] ${message}`)
-    }
+    // Note: No fallback needed here as spinner should be available after initialization
+    // If ora is not available, the spinner will be undefined and no update is needed
   }
 
-  finalizeStream(state: Type.StreamLoggerState, output: string): void {
+  async finalizeStream(state: Type.StreamLoggerState, output: string): Promise<void> {
+    await this.ensureInitialized()
     if (this._spinner) {
       // Node.js environment with spinner
       switch (state) {
@@ -221,10 +242,12 @@ export class NodeStreamLogger extends BaseStreamLogger {
           this._spinner = undefined
           break
         case 'succeed':
+          // succeed() automatically stops the spinner
           this._spinner.succeed(output)
           this._spinner = undefined
           break
         case 'fail':
+          // fail() automatically stops the spinner
           this._spinner.fail(output)
           this._spinner = undefined
           break

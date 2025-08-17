@@ -2,8 +2,8 @@
  * Browser Logger - Browser-specific logger implementation with CSS styling
  */
 
-import type { Type } from './typings'
-import { BaseLogger, BaseStreamLogger } from './base-logger'
+import type { BrowserStreamLogger as IBrowserStreamLogger, Type } from './typings'
+import { BaseLogger } from './base-logger'
 import { safeConsoleLog } from './utils'
 
 /**
@@ -135,7 +135,7 @@ export class BrowserLogger extends BaseLogger {
     return this.getLoggerInstance('failure')
   }
 
-  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+  toStream(prefix?: string, prefixStyles?: Type.Styles): BrowserStreamLogger {
     const streamLogger = new BrowserStreamLogger(prefix, prefixStyles)
     if (this._text) {
       streamLogger.text(this._text, this._textStyles)
@@ -269,16 +269,23 @@ export class BrowserLogger extends BaseLogger {
 
 /**
  * Browser-specific stream logger with CSS-styled console output
+ * Note: Stream operations return void in browser environments as interactive streaming is not supported
  */
-export class BrowserStreamLogger extends BaseStreamLogger {
+export class BrowserStreamLogger extends BaseLogger implements IBrowserStreamLogger {
+  protected _state: 'start' | 'stop' | 'succeed' | 'fail' | undefined = undefined
+  protected _delay: number = 0
+  declare _loggerType: 'normal' | 'stream'
+
   constructor(prefix?: string, prefixStyles?: Type.Styles) {
-    super(prefix, prefixStyles)
-    this.initializeStream()
+    super(prefixStyles || [])
+    this._loggerType = 'stream'
+    this._state = 'start'
+    prefix && this.prefix(prefix, prefixStyles)
   }
 
   initializeStream(): void {
-    // Browser environment - no spinner support
-    safeConsoleLog('%c[STREAM STARTED]', 'color: #00ff00; font-weight: bold')
+    // Browser environment - no spinner support, just log a simple message
+    // Don't log anything on initialization to avoid console spam
   }
 
   updateStream(output: string): void {
@@ -317,17 +324,71 @@ export class BrowserStreamLogger extends BaseStreamLogger {
     }
   }
 
-  prefix(prefix: string, styles?: Type.Styles) {
+  // Setup methods return this for chaining, action methods return void
+  prefix(prefix: string, styles?: Type.Styles): this {
     this._prefix = prefix
     styles && (this._prefixStyles = styles)
-
-    // Browser environment - just store the prefix for later use
-    safeConsoleLog(
-      `%c[PREFIX SET: ${prefix}]`,
-      'color: #888; font-style: italic;',
-    )
-
     return this
+  }
+
+  text(text: string = '', styles?: Type.Styles): this {
+    this._text = text
+    styles && (this._textStyles = styles)
+    return this
+  }
+
+  detail(detail = '', styles?: Type.Styles): this {
+    this._detail = detail
+    styles && (this._detailStyles = styles)
+    return this
+  }
+
+  data(data: any): this {
+    this._data = data
+    return this
+  }
+
+  delay(_delay: number): this {
+    // Browser environment - delay is not supported, but return this for chaining
+    return this
+  }
+
+  // Override asyncUpdate to remove delay functionality in browser
+  async asyncUpdate(_delay?: number): Promise<void> {
+    // Browser environment - ignore delay parameter and just update immediately
+    this.update()
+  }
+
+  // Action methods return void (no interactive streaming in browser)
+  state(state: 'start' | 'stop' | 'succeed' | 'fail'): void {
+    this._state = state
+    const output = this.composeMainOutput()
+    this.finalizeStream(state, output)
+  }
+
+  update(): void {
+    const output = this.composeMainOutput()
+    this.updateStream(output)
+  }
+
+  succeed(output?: string): void {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('succeed', finalOutput)
+  }
+
+  fail(output?: string): void {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('fail', finalOutput)
+  }
+
+  start(output?: string): void {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('start', finalOutput)
+  }
+
+  stop(output?: string): void {
+    const finalOutput = output || this.composeMainOutput()
+    this.finalizeStream('stop', finalOutput)
   }
 
   decorateText(content: string, styles?: Type.Styles): string {
@@ -353,11 +414,9 @@ export class BrowserStreamLogger extends BaseStreamLogger {
     }
   }
 
-  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
-    if (prefix || prefixStyles) {
-      return new BrowserStreamLogger(prefix, prefixStyles)
-    }
-    return this
+  toStream(prefix?: string, prefixStyles?: Type.Styles): BrowserStreamLogger {
+    // Browser environment - return a new instance that operates with void returns
+    return new BrowserStreamLogger(prefix, prefixStyles)
   }
 
   private getStyledText(

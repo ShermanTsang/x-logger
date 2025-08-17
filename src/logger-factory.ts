@@ -31,7 +31,7 @@ export class LoggerFactory {
   /**
    * Creates a stream logger instance appropriate for the current environment
    */
-  static createStreamLogger(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+  static createStreamLogger(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | BrowserStreamLogger {
     if (isBrowser) {
       return new BrowserStreamLogger(prefix, prefixStyles)
     }
@@ -79,7 +79,7 @@ export class LoggerFactory {
   /**
    * Gets a stream logger instance
    */
-  static get stream(): BaseStreamLogger {
+  static get stream(): BaseStreamLogger | BrowserStreamLogger {
     return this.createStreamLogger()
   }
 
@@ -162,7 +162,7 @@ export class Logger implements IBaseLogger {
     return LoggerFactory.type(type, styles)
   }
 
-  static get stream(): BaseStreamLogger {
+  static get stream(): BaseStreamLogger | BrowserStreamLogger {
     return LoggerFactory.stream
   }
 
@@ -252,8 +252,8 @@ export class Logger implements IBaseLogger {
     return this
   }
 
-  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
-    return this._instance.toStream(prefix, prefixStyles)
+  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | BrowserStreamLogger {
+    return this._instance.toStream(prefix, prefixStyles) as BaseStreamLogger | BrowserStreamLogger
   }
 
   decorateText(content: string, styles?: Type.Styles): string {
@@ -277,7 +277,7 @@ export class Logger implements IBaseLogger {
  * but uses the factory pattern internally to select the appropriate implementation
  */
 export class StreamLogger implements IBaseStreamLogger {
-  private _instance: BaseStreamLogger
+  private _instance: BaseStreamLogger | BrowserStreamLogger
 
   constructor(prefix?: string, prefixStyles?: Type.Styles) {
     this._instance = LoggerFactory.createStreamLogger(prefix, prefixStyles)
@@ -286,7 +286,7 @@ export class StreamLogger implements IBaseStreamLogger {
     return new Proxy(this, {
       get(target, prop, receiver) {
         if (prop in target._instance) {
-          const value = target._instance[prop as keyof BaseStreamLogger]
+          const value = (target._instance as any)[prop]
           if (typeof value === 'function') {
             return value.bind(target._instance)
           }
@@ -304,7 +304,7 @@ export class StreamLogger implements IBaseStreamLogger {
     })
   }
 
-  static create(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
+  static create(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | BrowserStreamLogger {
     return LoggerFactory.createStreamLogger(prefix, prefixStyles)
   }
 
@@ -366,8 +366,8 @@ export class StreamLogger implements IBaseStreamLogger {
     return this
   }
 
-  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger {
-    return this._instance.toStream(prefix, prefixStyles)
+  toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | BrowserStreamLogger {
+    return this._instance.toStream(prefix, prefixStyles) as BaseStreamLogger | BrowserStreamLogger
   }
 
   decorateText(content: string, styles?: Type.Styles): string {
@@ -405,11 +405,11 @@ export class StreamLogger implements IBaseStreamLogger {
     return this._instance.initializeStream()
   }
 
-  updateStream(output: string): void {
+  updateStream(output: string): Promise<void> | void {
     return this._instance.updateStream(output)
   }
 
-  finalizeStream(state: 'start' | 'stop' | 'succeed' | 'fail', output: string): void {
+  finalizeStream(state: 'start' | 'stop' | 'succeed' | 'fail', output: string): Promise<void> | void {
     return this._instance.finalizeStream(state, output)
   }
 

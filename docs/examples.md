@@ -165,6 +165,10 @@ logger.info.divider('-', 30)
 
 ## Stream Logger Examples
 
+::: warning Browser Environment
+The following stream logging examples are optimized for Node.js environments with interactive terminal support. In browser environments, stream operations output static console messages instead of interactive spinners, and action methods return `void` instead of `this`. See the [Browser Support](./browser-support.md#stream-logger-behavior-in-browsers) documentation for browser-specific usage patterns.
+:::
+
 ### Basic Stream Usage
 
 ```typescript

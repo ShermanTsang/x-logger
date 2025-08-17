@@ -42,6 +42,7 @@ Sherman Logger now supports browser environments! The library automatically dete
 - Uses CSS styling for console output
 - Provides visual feedback for stream operations
 - Maintains API compatibility
+- Stream logging outputs static console messages (no interactive spinners)
 
 ### Usage Example
 
@@ -54,8 +55,12 @@ Logger.success.text('Operation completed').print()
 
 // Stream logging with cross-platform support
 const stream = Logger.stream
-stream.text('Processing...').update()
-stream.text('Done!').state('succeed')
+  .prefix('TASK')
+  .text('Processing...')  // Setup methods return 'this' for chaining
+
+// Action methods return void in browsers (no chaining)
+stream.update()  // Outputs to console
+stream.state('succeed')  // Outputs to console
 ```
 
 ## Docs

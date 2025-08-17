@@ -37,9 +37,71 @@ Starting from version 1.2.0, Sherman Logger includes significant browser compati
 | Basic Logging   | ✅ Full          | ✅ Full         | Always available                    |
 | Console Styling | ✅ Full          | ⚠️ Limited      | Mobile consoles may not show colors |
 | Highlights      | ✅ Full          | ✅ Full         | Works with CSS styling              |
-| Stream Logging  | ✅ Full          | ✅ Full         | Full functionality                  |
+| Stream Logging  | ⚠️ Limited       | ⚠️ Limited      | Static console logs, no spinners    |
 | Time Stamps     | ✅ Full          | ✅ Full         | Native browser support              |
 | Dividers        | ✅ Full          | ✅ Full         | Text-based dividers                 |
+
+## Stream Logger Behavior in Browsers
+
+Stream logging in browser environments has important differences compared to Node.js environments:
+
+### Key Differences
+
+- **No Interactive Spinners**: Browsers don't support interactive terminal spinners like Node.js
+- **Static Console Output**: Stream operations output static messages to the browser console
+- **Void Returns**: Action methods (`update()`, `state()`, `succeed()`, `fail()`, `start()`, `stop()`) return `void` instead of `this`
+- **Setup Method Chaining**: Setup methods (`prefix()`, `text()`, `delay()`) still return `this` for chaining
+
+### Browser Stream Logger API
+
+```javascript
+import { logger } from '@shermant/logger'
+
+// Setup methods return 'this' for chaining
+const stream = logger.stream
+  .prefix('Processing')
+  .text('Starting task...')
+
+// Action methods return 'void' in browsers
+stream.start()  // Returns void, outputs to console
+stream.update('Step 1 complete')  // Returns void
+stream.succeed('Task completed!')  // Returns void
+
+// This won't work in browsers (no chaining after action methods):
+// stream.start().update('text')  // ❌ Error: Cannot read property 'update' of undefined
+```
+
+### Environment Detection
+
+The logger automatically detects the environment and adjusts behavior accordingly:
+
+```javascript
+import { logger } from '@shermant/logger'
+
+// This works in both Node.js and browsers
+const stream = logger.stream.prefix('Task').text('Processing...')
+
+// In Node.js: returns stream instance for chaining
+// In browsers: returns void, outputs to console
+stream.start()
+```
+
+### Best Practices for Cross-Platform Code
+
+1. **Separate Setup and Actions**: Always complete your setup chain before calling action methods
+2. **Don't Chain After Actions**: Never chain methods after calling action methods in cross-platform code
+3. **Use Environment Detection**: Check the environment if you need different behavior
+
+```javascript
+// ✅ Good: Setup first, then actions
+const stream = logger.stream.prefix('API').text('Fetching data...')
+stream.start()
+stream.update('Connecting...')
+stream.succeed('Data fetched!')
+
+// ❌ Bad: Trying to chain after actions
+// stream.start().update('text')  // Will fail in browsers
+```
 
 ## Installation for Browser
 

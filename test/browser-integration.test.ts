@@ -99,7 +99,7 @@ describe('browser Integration Tests', () => {
   describe('stream Logger in Browser', () => {
     it('should handle stream logger initialization', () => {
       const stream = Logger.stream
-      stream.prefix('[PROCESS]').text('Starting data processing...')
+      stream.prefix('[PROCESS]').text('Starting data processing...').update()
       expect(mockConsole.log).toHaveBeenCalled()
     })
 

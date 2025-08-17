@@ -222,7 +222,7 @@ export abstract class BaseLogger {
   /**
    * Creates a stream logger instance
    */
-  abstract toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger
+  abstract toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | import('./typings').BrowserStreamLogger
 }
 
 /**
@@ -248,8 +248,8 @@ export abstract class BaseStreamLogger extends BaseLogger {
 
   // Abstract methods for platform-specific stream handling
   abstract initializeStream(): void
-  abstract updateStream(output: string): void
-  abstract finalizeStream(state: Type.StreamLoggerState, output: string): void
+  abstract updateStream(output: string): Promise<void> | void
+  abstract finalizeStream(state: Type.StreamLoggerState, output: string): Promise<void> | void
 
   text(text: string = '', styles?: Type.Styles) {
     this._text = text
@@ -268,7 +268,7 @@ export abstract class BaseStreamLogger extends BaseLogger {
     return this
   }
 
-  state(state: 'start' | 'stop' | 'succeed' | 'fail') {
+  state(state: 'start' | 'stop' | 'succeed' | 'fail'): this {
     this._state = state
     this.update() // Automatically trigger update when state is set
     return this
@@ -280,12 +280,22 @@ export abstract class BaseStreamLogger extends BaseLogger {
     }
     else {
       const output = this.composeMainOutput()
-      this.updateStream(output)
+      const result = this.updateStream(output)
+      // Handle potential promise without awaiting to maintain sync interface
+      if (result instanceof Promise) {
+        result.catch(console.error)
+      }
     }
   }
 
   async asyncUpdate(delay?: number): Promise<void> {
-    this.update()
+    if (this._state) {
+      await this.asyncUpdateState(this._state)
+    }
+    else {
+      const output = this.composeMainOutput()
+      await this.updateStream(output)
+    }
     const _delay = this._delay || delay
     if (_delay) {
       await sleep(_delay)
@@ -295,32 +305,58 @@ export abstract class BaseStreamLogger extends BaseLogger {
 
   private updateState(state: Type.StreamLoggerState) {
     const output = this.composeMainOutput()
-    this.finalizeStream(state, output)
+    const result = this.finalizeStream(state, output)
+    // Handle potential promise without awaiting to maintain sync interface
+    if (result instanceof Promise) {
+      result.catch(console.error)
+    }
+    this._state = undefined
+  }
+
+  private async asyncUpdateState(state: Type.StreamLoggerState) {
+    const output = this.composeMainOutput()
+    await this.finalizeStream(state, output)
     this._state = undefined
   }
 
   // Convenience methods for common stream states
   succeed(output?: string): this {
     const finalOutput = output || this.composeMainOutput()
-    this.finalizeStream('succeed', finalOutput)
+    const result = this.finalizeStream('succeed', finalOutput)
+    // Handle potential promise without awaiting to maintain sync interface
+    if (result instanceof Promise) {
+      result.catch(console.error)
+    }
     return this
   }
 
   fail(output?: string): this {
     const finalOutput = output || this.composeMainOutput()
-    this.finalizeStream('fail', finalOutput)
+    const result = this.finalizeStream('fail', finalOutput)
+    // Handle potential promise without awaiting to maintain sync interface
+    if (result instanceof Promise) {
+      result.catch(console.error)
+    }
     return this
   }
 
   start(output?: string): this {
     const finalOutput = output || this.composeMainOutput()
-    this.finalizeStream('start', finalOutput)
+    const result = this.finalizeStream('start', finalOutput)
+    // Handle potential promise without awaiting to maintain sync interface
+    if (result instanceof Promise) {
+      result.catch(console.error)
+    }
     return this
   }
 
   stop(output?: string): this {
     const finalOutput = output || this.composeMainOutput()
-    this.finalizeStream('stop', finalOutput)
+    const result = this.finalizeStream('stop', finalOutput)
+    // Handle potential promise without awaiting to maintain sync interface
+    if (result instanceof Promise) {
+      result.catch(console.error)
+    }
     return this
   }
 }

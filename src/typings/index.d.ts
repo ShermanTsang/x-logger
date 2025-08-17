@@ -23,7 +23,7 @@ export interface BaseLogger {
   print: (isVisible?: boolean) => void
   toString: () => string
   toObject: () => this
-  toStream: (prefix?: string, prefixStyles?: Type.Styles) => BaseStreamLogger
+  toStream: (prefix?: string, prefixStyles?: Type.Styles) => BaseStreamLogger | BrowserStreamLogger
 
   // Abstract methods
   decorateText: (content: string, styles?: Type.Styles) => string
@@ -55,6 +55,23 @@ export interface BaseStreamLogger extends BaseLogger {
   initializeStream: () => void
   updateStream: (output: string) => void
   finalizeStream: (state: 'start' | 'stop' | 'succeed' | 'fail', output: string) => void
+
+  // Convenience methods for common stream states
+  succeed: (output?: string) => this
+  fail: (output?: string) => this
+  start: (output?: string) => this
+  stop: (output?: string) => this
+}
+
+// Browser-specific stream logger interface with void returns for action methods
+export interface BrowserStreamLogger extends Omit<BaseStreamLogger, 'state' | 'succeed' | 'fail' | 'start' | 'stop' | 'update'> {
+  // Action methods return void in browser environments
+  state: (state: 'start' | 'stop' | 'succeed' | 'fail') => void
+  update: () => void
+  succeed: (output?: string) => void
+  fail: (output?: string) => void
+  start: (output?: string) => void
+  stop: (output?: string) => void
 }
 
 // Main Type namespace containing all type definitions
