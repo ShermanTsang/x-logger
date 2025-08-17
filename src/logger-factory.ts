@@ -4,9 +4,9 @@
 
 import type { BaseLogger as IBaseLogger, BaseStreamLogger as IBaseStreamLogger, Type } from './typings'
 import { isBrowser, isNode } from './environment'
-import { NodeLogger, NodeStreamLogger } from './node-logger'
-import { BrowserLogger, BrowserStreamLogger } from './browser-logger'
-import type { BaseLogger, BaseStreamLogger } from './base-logger'
+import { NodeLogger, NodeStreamLogger } from './logger/node'
+import { BrowserLogger, BrowserStreamLogger } from './logger/browser'
+import type { BaseLogger, BaseStreamLogger } from './logger/base'
 
 /**
  * Factory class that creates the appropriate logger instance based on the current environment

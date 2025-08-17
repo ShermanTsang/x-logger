@@ -2,9 +2,9 @@
  * Browser Logger - Browser-specific logger implementation with CSS styling
  */
 
-import type { BrowserStreamLogger as IBrowserStreamLogger, Type } from './typings'
-import { BaseLogger } from './base-logger'
-import { safeConsoleLog } from './utils'
+import type { BrowserStreamLogger as IBrowserStreamLogger, Type } from '../typings'
+import { safeConsoleLog } from '../utils'
+import { BaseLogger } from './base'
 
 /**
  * Maps style names to CSS properties for browser console styling

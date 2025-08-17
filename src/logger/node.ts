@@ -3,9 +3,9 @@
  */
 
 import type { Ora } from 'ora'
-import type { Type } from './typings'
-import { BaseLogger, BaseStreamLogger } from './base-logger'
-import { safeConsoleLog } from './utils'
+import type { Type } from '../typings'
+import { safeConsoleLog } from '../utils'
+import { BaseLogger, BaseStreamLogger } from './base'
 
 // Lazy-loaded modules for Node.js
 let chalk: any = null
@@ -163,8 +163,6 @@ export class NodeLogger extends BaseLogger {
     }
     return text
   }
-
-
 }
 
 /**
@@ -330,6 +328,4 @@ export class NodeStreamLogger extends BaseStreamLogger {
     }
     return text
   }
-
-
 }

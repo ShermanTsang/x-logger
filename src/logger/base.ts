@@ -2,8 +2,8 @@
  * Base Logger - Abstract foundation for platform-specific logger implementations
  */
 
-import type { Type } from './typings'
-import { sleep } from './utils'
+import type { Type } from '../typings'
+import { sleep } from '../utils'
 
 /**
  * Abstract base class for all logger implementations
@@ -236,7 +236,7 @@ export abstract class BaseLogger {
   /**
    * Creates a stream logger instance
    */
-  abstract toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | import('./typings').BrowserStreamLogger
+  abstract toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | import('../typings').BrowserStreamLogger
 }
 
 /**
