@@ -47,6 +47,21 @@ export abstract class BaseLogger {
     ;(this as any)._isShermanLogger = true
   }
 
+  /**
+   * Creates a clone of the current logger instance
+   */
+  private clone(): this {
+    const cloned = Object.create(Object.getPrototypeOf(this))
+    
+    // Copy all properties
+    Object.assign(cloned, this)
+    
+    // Ensure the cloned instance is recognized as a Sherman Logger
+    cloned._isShermanLogger = true
+    
+    return cloned
+  }
+
   static stylesMap: Record<Type.Type | string, Type.Styles> = {
     info: ['blueBright', 'underline'],
     warn: ['bgYellowBright'],
@@ -84,26 +99,33 @@ export abstract class BaseLogger {
   divider(char?: string, length?: number, styles?: Type.Styles) {
     this.setDividerProperties('single', char, length, styles)
     this.print()
+    return this
   }
 
   styles(styles: Type.Styles) {
-    this._textStyles = styles
-    return this
+    const cloned = this.clone()
+    cloned._textStyles = styles
+    return cloned
   }
 
   prependDivider(char?: string, length?: number, styles?: Type.Styles) {
-    this.setDividerProperties('prepend', char, length, styles)
-    return this
+    const cloned = this.clone()
+    // Reset single divider when prepend divider is set
+    cloned._singleDivider = false
+    cloned.setDividerProperties('prepend', char, length, styles)
+    return cloned
   }
 
   appendDivider(char?: string, length?: number, styles?: Type.Styles) {
-    this.setDividerProperties('append', char, length, styles)
-    return this
+    const cloned = this.clone()
+    cloned.setDividerProperties('append', char, length, styles)
+    return cloned
   }
 
   time(isDisplay: boolean = true) {
-    this._displayTime = isDisplay
-    return this
+    const cloned = this.clone()
+    cloned._displayTime = isDisplay
+    return cloned
   }
 
   get formattedTime() {
@@ -111,9 +133,10 @@ export abstract class BaseLogger {
   }
 
   text(text: string, styles?: Type.Styles) {
-    this._text = text
-    styles && (this._textStyles = styles)
-    return this
+    const cloned = this.clone()
+    cloned._text = text
+    styles && (cloned._textStyles = styles)
+    return cloned
   }
 
   get formattedText() {
@@ -123,9 +146,10 @@ export abstract class BaseLogger {
   }
 
   detail(detail: string, styles?: Type.Styles) {
-    this._detail = detail
-    styles && (this._detailStyles = styles)
-    return this
+    const cloned = this.clone()
+    cloned._detail = detail
+    styles && (cloned._detailStyles = styles)
+    return cloned
   }
 
   get formattedDetail() {
@@ -135,9 +159,10 @@ export abstract class BaseLogger {
   }
 
   prefix(prefix: string, styles?: Type.Styles) {
-    this._prefix = prefix
-    styles && (this._prefixStyles = styles)
-    return this
+    const cloned = this.clone()
+    cloned._prefix = prefix
+    styles && (cloned._prefixStyles = styles)
+    return cloned
   }
 
   get formattedPrefix() {
@@ -147,8 +172,9 @@ export abstract class BaseLogger {
   }
 
   data(data: any) {
-    this._data = data
-    return this
+    const cloned = this.clone()
+    cloned._data = data
+    return cloned
   }
 
   get formattedData() {
@@ -226,15 +252,53 @@ export abstract class BaseLogger {
   }
 
   get [Symbol.toStringTag]() {
-    return 'ShermanLoggerClass'
+    return 'ShermanLogger'
   }
 
   toString() {
-    return this.composeMainOutput().toString()
+    let result = ''
+    
+    // Add prepend divider if present
+    if (this._prependDivider) {
+      const prependText = this._prependDividerChar.repeat(this._prependDividerLength)
+      result += prependText
+    }
+    
+    // Add single divider if present
+    if (this._singleDivider) {
+      const dividerText = this._singleDividerChar.repeat(this._singleDividerLength)
+      result += dividerText
+    }
+    
+    // Add main output
+    const mainOutput = this.composeMainOutput()
+    if (mainOutput) {
+      if (result) result += '\n'
+      result += mainOutput
+    }
+    
+    // Add append divider if present
+    if (this._appendDivider) {
+      const appendText = this._appendDividerChar.repeat(this._appendDividerLength)
+      if (result) result += '\n'
+      result += appendText
+    }
+    
+    return result
   }
 
   toObject() {
-    return this
+    return {
+      prefix: this._prefix,
+      text: this._text,
+      detail: this._detail,
+      data: this._data,
+      displayTime: this._displayTime,
+      loggerType: this._loggerType,
+      prefixStyles: this._prefixStyles,
+      textStyles: this._textStyles,
+      detailStyles: this._detailStyles
+    }
   }
 
   /**
@@ -272,12 +336,14 @@ export abstract class BaseStreamLogger extends BaseLogger {
   text(text: string = '', styles?: Type.Styles) {
     this._text = text
     styles && (this._textStyles = styles)
+    this.update()
     return this
   }
 
   detail(detail = '', styles?: Type.Styles) {
     this._detail = detail
     styles && (this._detailStyles = styles)
+    this.update()
     return this
   }
 
@@ -292,7 +358,7 @@ export abstract class BaseStreamLogger extends BaseLogger {
     return this
   }
 
-  update(): void {
+  update(): this {
     if (this._state) {
       this.updateState(this._state)
     }
@@ -304,6 +370,7 @@ export abstract class BaseStreamLogger extends BaseLogger {
         result.catch(console.error)
       }
     }
+    return this
   }
 
   async asyncUpdate(delay?: number): Promise<void> {
@@ -339,7 +406,10 @@ export abstract class BaseStreamLogger extends BaseLogger {
 
   // Convenience methods for common stream states
   succeed(output?: string): this {
-    const finalOutput = output || this.composeMainOutput()
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     const result = this.finalizeStream('succeed', finalOutput)
     // Handle potential promise without awaiting to maintain sync interface
     if (result instanceof Promise) {
@@ -349,7 +419,10 @@ export abstract class BaseStreamLogger extends BaseLogger {
   }
 
   fail(output?: string): this {
-    const finalOutput = output || this.composeMainOutput()
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     const result = this.finalizeStream('fail', finalOutput)
     // Handle potential promise without awaiting to maintain sync interface
     if (result instanceof Promise) {
@@ -359,7 +432,10 @@ export abstract class BaseStreamLogger extends BaseLogger {
   }
 
   start(output?: string): this {
-    const finalOutput = output || this.composeMainOutput()
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     const result = this.finalizeStream('start', finalOutput)
     // Handle potential promise without awaiting to maintain sync interface
     if (result instanceof Promise) {
@@ -369,7 +445,10 @@ export abstract class BaseStreamLogger extends BaseLogger {
   }
 
   stop(output?: string): this {
-    const finalOutput = output || this.composeMainOutput()
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     const result = this.finalizeStream('stop', finalOutput)
     // Handle potential promise without awaiting to maintain sync interface
     if (result instanceof Promise) {

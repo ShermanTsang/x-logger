@@ -225,8 +225,9 @@ export class Logger implements IBaseLogger {
     return this
   }
 
-  divider(char?: string, length?: number, styles?: Type.Styles): void {
-    return this._instance.divider(char, length, styles)
+  divider(char?: string, length?: number, styles?: Type.Styles): this {
+    this._instance.divider(char, length, styles)
+    return this
   }
 
   prependDivider(char?: string, length?: number, styles?: Type.Styles): this {
@@ -288,7 +289,14 @@ export class StreamLogger implements IBaseStreamLogger {
         if (prop in target._instance) {
           const value = (target._instance as any)[prop]
           if (typeof value === 'function') {
-            return value.bind(target._instance)
+            return function(...args: any[]) {
+              const result = value.apply(target._instance, args)
+              // If the method returns the instance (for chaining), return the proxy instead
+              if (result === target._instance) {
+                return receiver
+              }
+              return result
+            }
           }
           return value
         }
@@ -339,8 +347,9 @@ export class StreamLogger implements IBaseStreamLogger {
     return this
   }
 
-  divider(char?: string, length?: number, styles?: Type.Styles): void {
-    return this._instance.divider(char, length, styles)
+  divider(char?: string, length?: number, styles?: Type.Styles): this {
+    this._instance.divider(char, length, styles)
+    return this
   }
 
   prependDivider(char?: string, length?: number, styles?: Type.Styles): this {
@@ -393,8 +402,9 @@ export class StreamLogger implements IBaseStreamLogger {
     return this
   }
 
-  update(): void {
-    return this._instance.update()
+  update(): this {
+    this._instance.update()
+    return this
   }
 
   async asyncUpdate(delay?: number): Promise<void> {

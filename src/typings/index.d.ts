@@ -38,7 +38,7 @@ export interface BaseStreamLogger extends BaseLogger {
   // Stream-specific methods
   delay: (delay: number) => this
   state: (state: 'start' | 'stop' | 'succeed' | 'fail') => this
-  update: () => void
+  update: () => this
   asyncUpdate: (delay?: number) => Promise<void>
 
   // Override BaseLogger methods to return this for chaining

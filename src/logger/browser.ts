@@ -359,11 +359,12 @@ export class BrowserStreamLogger extends BaseLogger implements IBrowserStreamLog
     this.update()
   }
 
-  // Action methods return void (no interactive streaming in browser)
-  state(state: 'start' | 'stop' | 'succeed' | 'fail'): void {
+  // Action methods return this for chaining
+  state(state: 'start' | 'stop' | 'succeed' | 'fail'): this {
     this._state = state
     const output = this.composeMainOutput()
     this.finalizeStream(state, output)
+    return this
   }
 
   update(): void {
@@ -371,24 +372,40 @@ export class BrowserStreamLogger extends BaseLogger implements IBrowserStreamLog
     this.updateStream(output)
   }
 
-  succeed(output?: string): void {
-    const finalOutput = output || this.composeMainOutput()
+  succeed(output?: string): this {
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     this.finalizeStream('succeed', finalOutput)
+    return this
   }
 
-  fail(output?: string): void {
-    const finalOutput = output || this.composeMainOutput()
+  fail(output?: string): this {
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     this.finalizeStream('fail', finalOutput)
+    return this
   }
 
-  start(output?: string): void {
-    const finalOutput = output || this.composeMainOutput()
+  start(output?: string): this {
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     this.finalizeStream('start', finalOutput)
+    return this
   }
 
-  stop(output?: string): void {
-    const finalOutput = output || this.composeMainOutput()
+  stop(output?: string): this {
+    if (output) {
+      this._text = output
+    }
+    const finalOutput = this.composeMainOutput()
     this.finalizeStream('stop', finalOutput)
+    return this
   }
 
   decorateText(content: string, styles?: Type.Styles): string {
