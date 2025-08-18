@@ -5,6 +5,7 @@ This guide covers all the features and methods available in `@shermant/logger`. 
 ## Table of Contents
 
 - [Basic Usage](#basic-usage)
+- [Logger Invocation Methods](#logger-invocation-methods)
 - [Logger Class](#logger-class)
 - [Predefined Log Types](#predefined-log-types)
 - [Custom Log Types](#custom-log-types)
@@ -26,6 +27,213 @@ logger.warn.text('This is a warning').print()
 logger.error.text('Something went wrong').print()
 logger.success.text('Operation completed').print()
 ```
+
+## Logger Invocation Methods
+
+Sherman Logger provides multiple flexible ways to invoke logger instances, each suited for different use cases and coding styles. This section covers all the available invocation patterns.
+
+### 1. Direct Predefined Type Access
+
+The most common and straightforward way to use the logger is through direct access to predefined log types:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Direct type access - most common pattern
+logger.info.text('Application started').print()
+logger.warn.text('Warning message').print()
+logger.error.text('Error occurred').print()
+logger.success.text('Operation successful').print()
+logger.debug.text('Debug information').print()
+logger.failure.text('Operation failed').print()
+logger.plain.text('Plain text without styling').print()
+```
+
+### 2. Type Method Invocation
+
+Use the `type()` method to specify log types dynamically or create custom types:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Using type() method with predefined types
+logger.type('info').text('Dynamic type selection').print()
+logger.type('warn').text('Dynamic warning').print()
+
+// Creating custom types on-the-fly
+logger.type('custom', ['bgMagenta', 'bold']).text('Custom styled message').print()
+logger.type('security', ['bgRed', 'white']).text('Security alert').print()
+```
+
+### 3. Logger Class Static Methods
+
+Import and use the `Logger` class directly for more control:
+
+```typescript
+import { Logger } from '@shermant/logger'
+
+// Using Logger class static methods
+Logger.info.text('Class-based logging').print()
+Logger.type('custom', ['bgBlue']).text('Custom type via class').print()
+
+// Create reusable logger instances
+const appLogger = Logger.type('info').prefix('APP').time()
+appLogger.text('First message').print()
+appLogger.text('Second message').print()
+```
+
+### 4. Factory Pattern with createLogger
+
+Create logger instances with predefined custom types using the factory pattern:
+
+```typescript
+import { createLogger } from '@shermant/logger'
+import type { LoggerType } from '@shermant/logger'
+
+// Define custom types at creation time
+const customLogger = createLogger<{
+  security: LoggerType.CreateCustomType
+  performance: LoggerType.CreateCustomType
+}>()
+
+// Use the custom types
+customLogger.security(['bgRed', 'bold']).text('Security event').print()
+customLogger.performance(['bgYellow', 'black']).text('Performance metric').print()
+
+// Later use with type() method
+customLogger.type('security').text('Another security event').print()
+```
+
+### 5. Callable Logger Instances
+
+Logger instances are callable functions that can be invoked directly:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Get a logger instance
+const infoLogger = logger.info
+
+// Call it as a function with text parameters
+infoLogger('Simple message')
+infoLogger('Multiple', 'parameters', 'supported')
+infoLogger('User', 123, 'logged in')
+
+// Still chainable for complex scenarios
+infoLogger.prefix('APP').text('Complex message').print()
+```
+
+### 6. Method Chaining Patterns
+
+All logger invocation methods support fluent method chaining:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Chain multiple configuration methods
+logger.info
+  .prefix('🚀 SERVER')
+  .text('Starting application')
+  .detail('Port: 3000')
+  .time()
+  .print()
+
+// Chain with custom types
+logger
+  .type('deployment', ['bgGreen', 'bold'])
+  .prefix('🚀 DEPLOY')
+  .text('Application deployed successfully')
+  .detail('Version: 1.2.3')
+  .data({ environment: 'production', region: 'us-east-1' })
+  .print()
+```
+
+### 7. Conditional Logging
+
+All invocation methods support conditional logging:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+const isDevelopment = process.env.NODE_ENV === 'development'
+const isVerbose = process.env.VERBOSE === 'true'
+
+// Conditional printing
+logger.debug.text('Debug information').print(isDevelopment)
+logger.info.text('Verbose logging').print(isVerbose)
+
+// With callable pattern
+const debugLogger = logger.debug
+if (isDevelopment) {
+  debugLogger('Development mode active')
+}
+```
+
+### 8. Reusable Logger Configurations
+
+Create reusable logger configurations for consistent formatting:
+
+```typescript
+import { Logger } from '@shermant/logger'
+
+// Create base configurations
+const apiLogger = Logger.type('info').prefix('🌐 API').time()
+const dbLogger = Logger.type('info').prefix('🗄️ DB').time()
+const authLogger = Logger.type('security', ['bgRed', 'white']).prefix('🔒 AUTH')
+
+// Use throughout your application
+apiLogger.text('Request received').detail('POST /api/users').print()
+dbLogger.text('Query executed').detail('SELECT * FROM users').print()
+authLogger.text('Login attempt').detail('IP: 192.168.1.100').print()
+```
+
+### 9. Stream Logger Invocation
+
+For interactive logging with spinners and real-time updates:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Get stream logger instance
+const stream = logger.stream
+
+// Configure and start
+stream.prefix('📦 INSTALL').text('Installing packages...').update()
+
+// Update progress
+setTimeout(() => {
+  stream.text('Downloading dependencies...').update()
+}, 1000)
+
+// Complete
+setTimeout(() => {
+  stream.text('Installation completed!').state('succeed')
+}, 2000)
+```
+
+### 10. Environment-Aware Invocation
+
+The logger automatically adapts to different environments:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Works in both Node.js and browser environments
+logger.info.text('Cross-platform logging').print()
+
+// Browser-specific features are automatically handled
+logger.stream.text('Progress indicator').update() // Spinner in Node.js, console log in browser
+```
+
+### Best Practices for Logger Invocation
+
+1. **Use direct type access** for simple, one-off logging
+2. **Use type() method** for dynamic type selection or custom types
+3. **Use Logger class** when you need multiple instances with shared configuration
+4. **Use createLogger** for applications with many custom log types
+5. **Use callable pattern** for simple text logging without additional configuration
+6. **Use method chaining** for complex log messages with multiple attributes
+7. **Create reusable configurations** for consistent logging across modules
 
 ## Predefined Log Types
 
@@ -197,7 +405,37 @@ In the future, you can use `prefix` attribute to filter log messages.
 
 ## `text()` method
 
-Use `text(string)` to add a text to the log text.
+Use `text(string)` to add a text to the log text. The method now supports multiple parameters that will be concatenated with spaces.
+
+### Single Parameter
+
+```typescript
+import { logger } from '@shermant/logger'
+
+logger.info.prefix('INFO').text('This is a single text message').print()
+```
+
+### Multiple Parameters
+
+You can pass multiple parameters to the `text()` method, and they will be concatenated with spaces:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Multiple string parameters
+logger.info.prefix('INFO').text('User', 'authentication', 'completed').print()
+// Output: User authentication completed
+
+// Mixed parameter types
+logger.info.prefix('DEBUG').text('Processing item', 42, 'of', 100).print()
+// Output: Processing item 42 of 100
+
+// With variables
+const userId = 'user123'
+const action = 'login'
+logger.info.prefix('AUTH').text('User', userId, 'performed', action).print()
+// Output: User user123 performed login
+```
 
 ### Emphasize key information
 

@@ -86,6 +86,30 @@ import { logger } from '@shermant/logger'
 logger.info.text('This works everywhere!').print()
 ```
 
+### Multiple Invocation Methods
+
+Sherman Logger provides several ways to invoke logger instances:
+
+```typescript
+import { logger, Logger, createLogger } from '@shermant/logger'
+
+// 1. Direct type access (most common)
+logger.info.text('Direct access').print()
+
+// 2. Dynamic type selection
+logger.type('info').text('Dynamic type').print()
+
+// 3. Callable logger instances
+const infoLogger = logger.info
+infoLogger('Simple callable syntax')
+
+// 4. Logger class for reusable instances
+const appLogger = Logger.type('info').prefix('APP')
+appLogger.text('Reusable configuration').print()
+```
+
+> 📖 **Learn More**: See the complete [Logger Invocation Methods](./usage.md#logger-invocation-methods) guide for all available patterns and best practices.
+
 ## Environment Support
 
 | Environment | Status | Notes |

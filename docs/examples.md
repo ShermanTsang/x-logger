@@ -169,6 +169,36 @@ logger.debug
   .print()
 ```
 
+### Text Method with Multiple Parameters
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Single parameter (traditional usage)
+logger.info.text('Application started successfully').print()
+
+// Multiple parameters - concatenated with spaces
+logger.info.text('User', 'authentication', 'completed').print()
+// Output: User authentication completed
+
+// Mixed parameter types
+logger.debug.text('Processing item', 42, 'of', 100).print()
+// Output: Processing item 42 of 100
+
+// Dynamic content with variables
+const userId = 'user123'
+const action = 'login'
+const timestamp = new Date().toISOString()
+logger.info.text('User', userId, 'performed', action, 'at', timestamp).print()
+// Output: User user123 performed login at 2024-01-15T10:30:00.000Z
+
+// Error messages with context
+const errorCode = 'DB_CONN_FAILED'
+const retryCount = 3
+logger.error.text('Database error:', errorCode, 'after', retryCount, 'retries').print()
+// Output: Database error: DB_CONN_FAILED after 3 retries
+```
+
 ### Highlights and Formatting
 
 ```typescript

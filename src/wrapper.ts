@@ -7,7 +7,12 @@ export const typeProxyHandler = new Proxy(Logger, {
   get(target, prop, receiver) {
     // If the property exists on the target (predefined types), return it directly
     if (prop in target) {
-      return Reflect.get(target, prop, receiver)
+      const value = Reflect.get(target, prop, receiver)
+      // If it's a predefined logger type, return it directly (our new implementation already handles callable behavior)
+      if (['plain', 'info', 'warn', 'error', 'debug', 'success', 'failure'].includes(prop as string)) {
+        return value
+      }
+      return value
     }
 
     // For custom types not in target, return a function that can create and register the custom type

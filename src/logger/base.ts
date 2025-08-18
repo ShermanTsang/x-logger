@@ -39,7 +39,7 @@ export abstract class BaseLogger {
   private _singleDividerStyles: Type.Styles = []
   private _singleDividerChar: string = '-'
   private _singleDividerLength: number = 1
-  private _isVisible: boolean = true
+  private _isValid: boolean = true
 
   constructor(prefixStyles?: Type.Styles) {
     prefixStyles && (this._prefixStyles = prefixStyles)
@@ -132,10 +132,32 @@ export abstract class BaseLogger {
     return this._displayTime ? `${new Date().toLocaleTimeString()} ` : ''
   }
 
-  text(text: string, styles?: Type.Styles) {
+  text(...args: any[]): this {
     const cloned = this.clone()
-    cloned._text = text
-    styles && (cloned._textStyles = styles)
+
+    // Handle different argument patterns
+    if (args.length === 0) {
+      cloned._text = ''
+    }
+    else if (args.length === 1) {
+      // Single argument - could be text or styles
+      if (typeof args[0] === 'string') {
+        cloned._text = args[0]
+      }
+      else {
+        cloned._text = String(args[0])
+      }
+    }
+    else if (args.length === 2 && Array.isArray(args[1])) {
+      // Two arguments where second is styles array
+      cloned._text = String(args[0])
+      cloned._textStyles = args[1] as Type.Styles
+    }
+    else {
+      // Multiple arguments - concatenate with spaces
+      cloned._text = args.map(arg => String(arg)).join(' ')
+    }
+
     return cloned
   }
 
@@ -176,7 +198,8 @@ export abstract class BaseLogger {
     // If only one parameter is passed, maintain backward compatibility
     if (dataItems.length === 1) {
       cloned._data = dataItems[0]
-    } else {
+    }
+    else {
       // For multiple parameters, store as array
       cloned._data = dataItems
     }
@@ -191,7 +214,7 @@ export abstract class BaseLogger {
     if (Array.isArray(this._data) && this._data.length > 1) {
       return this._data.map(item => this.formatSingleDataItem(item)).join('')
     }
-    
+
     // Handle single data item (backward compatibility)
     const singleItem = Array.isArray(this._data) ? this._data[0] : this._data
     return this.formatSingleDataItem(singleItem)
@@ -233,9 +256,9 @@ export abstract class BaseLogger {
     return ''
   }
 
-  print(isVisible: boolean = true) {
-    this._isVisible = isVisible
-    if (!this._isVisible) {
+  print(isValid: boolean = true) {
+    this._isValid = isValid
+    if (!this._isValid) {
       return
     }
 
@@ -273,6 +296,26 @@ export abstract class BaseLogger {
 
   get [Symbol.toStringTag]() {
     return 'ShermanLogger'
+  }
+
+  /**
+   * Gets the type of this logger instance
+   */
+  get type(): string {
+    // Find the type by looking up the styles in the stylesMap
+    const constructor = this.constructor as typeof BaseLogger
+    for (const [type, styles] of Object.entries(constructor.stylesMap)) {
+      if (JSON.stringify(styles) === JSON.stringify(this._prefixStyles)) {
+        return type
+      }
+    }
+    // If not found in stylesMap, check registered custom types
+    for (const customType of constructor.registeredTypes) {
+      if (JSON.stringify(constructor.stylesMap[customType]) === JSON.stringify(this._prefixStyles)) {
+        return customType
+      }
+    }
+    return 'unknown'
   }
 
   toString() {
@@ -355,9 +398,30 @@ export abstract class BaseStreamLogger extends BaseLogger {
   abstract updateStream(output: string): Promise<void> | void
   abstract finalizeStream(state: Type.StreamLoggerState, output: string): Promise<void> | void
 
-  text(text: string = '', styles?: Type.Styles) {
-    this._text = text
-    styles && (this._textStyles = styles)
+  text(...args: any[]): this {
+    // Handle different argument patterns
+    if (args.length === 0) {
+      this._text = ''
+    }
+    else if (args.length === 1) {
+      // Single argument - could be text or styles
+      if (typeof args[0] === 'string') {
+        this._text = args[0]
+      }
+      else {
+        this._text = String(args[0])
+      }
+    }
+    else if (args.length === 2 && Array.isArray(args[1])) {
+      // Two arguments where second is styles array
+      this._text = String(args[0])
+      this._textStyles = args[1] as Type.Styles
+    }
+    else {
+      // Multiple arguments - concatenate with spaces
+      this._text = args.map(arg => String(arg)).join(' ')
+    }
+
     this.update()
     return this
   }

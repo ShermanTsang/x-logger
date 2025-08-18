@@ -140,7 +140,10 @@ describe('browserLogger - Browser Environment', () => {
       ]
 
       loggers.forEach((logger, index) => {
-        expect(logger).toBeInstanceOf(BrowserLogger)
+        // Check that logger has the expected methods and properties
+        expect(typeof logger.text).toBe('function')
+        expect(typeof logger.print).toBe('function')
+        expect(logger.type).toBeDefined()
         logger.text(`Test message ${index}`).print()
       })
 

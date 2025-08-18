@@ -7,7 +7,7 @@ import './global'
 // Forward declarations for circular dependency resolution
 export interface BaseLogger {
   // Core methods
-  text: (text: string, styles?: Type.Styles) => this
+  text: (...args: any[]) => this
   detail: (detail: string, styles?: Type.Styles) => this
   prefix: (prefix: string, styles?: Type.Styles) => this
   data: (data: any) => this
@@ -20,7 +20,7 @@ export interface BaseLogger {
   appendDivider: (char?: string, length?: number, styles?: Type.Styles) => this
 
   // Output methods
-  print: (isVisible?: boolean) => void
+  print: (isValid?: boolean) => void
   toString: () => string
   toObject: () => this
   toStream: (prefix?: string, prefixStyles?: Type.Styles) => BaseStreamLogger | BrowserStreamLogger
@@ -42,7 +42,7 @@ export interface BaseStreamLogger extends BaseLogger {
   asyncUpdate: (delay?: number) => Promise<void>
 
   // Override BaseLogger methods to return this for chaining
-  text: (text?: string, styles?: Type.Styles) => this
+  text: (...args: any[]) => this
   detail: (detail?: string, styles?: Type.Styles) => this
   prefix: (prefix: string, styles?: Type.Styles) => this
   data: (data: any) => this

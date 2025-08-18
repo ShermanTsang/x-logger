@@ -76,6 +76,11 @@ logger
 // Stream logging for progress
 const stream = logger.stream
 stream.prefix('📦 Installing').text('packages...').update()
+
+// Multiple invocation methods
+const infoLogger = logger.info
+infoLogger('Callable syntax')
+infoLogger('Multiple', 'parameters', 'supported')
 ```
 
 ## Installation

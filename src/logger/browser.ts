@@ -107,32 +107,67 @@ export class BrowserLogger extends BaseLogger {
     return new BrowserStreamLogger()
   }
 
-  static get plain() {
-    return this.getLoggerInstance('plain')
+  static get plain(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.plain)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get info() {
-    return this.getLoggerInstance('info')
+  static get info(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.info)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get warn() {
-    return this.getLoggerInstance('warn')
+  static get warn(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.warn)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get error() {
-    return this.getLoggerInstance('error')
+  static get error(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.error)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get debug() {
-    return this.getLoggerInstance('debug')
+  static get debug(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.debug)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get success() {
-    return this.getLoggerInstance('success')
+  static get success(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.success)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get failure() {
-    return this.getLoggerInstance('failure')
+  static get failure(): BrowserLogger {
+    const instance = new BrowserLogger(BrowserLogger.stylesMap.failure)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, BrowserLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
   toStream(prefix?: string, prefixStyles?: Type.Styles): BrowserStreamLogger {

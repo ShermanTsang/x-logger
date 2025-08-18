@@ -84,34 +84,62 @@ export class LoggerFactory {
   }
 
   /**
-   * Gets predefined logger types
+   * Gets predefined logger types - can be used as both getters and methods
    */
   static get plain(): BaseLogger {
-    return this.getLoggerInstance('plain')
+    const instance = this.getLoggerInstance('plain')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
   static get info(): BaseLogger {
-    return this.getLoggerInstance('info')
+    const instance = this.getLoggerInstance('info')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
   static get warn(): BaseLogger {
-    return this.getLoggerInstance('warn')
+    const instance = this.getLoggerInstance('warn')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
   static get error(): BaseLogger {
-    return this.getLoggerInstance('error')
+    const instance = this.getLoggerInstance('error')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
   static get debug(): BaseLogger {
-    return this.getLoggerInstance('debug')
+    const instance = this.getLoggerInstance('debug')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
   static get success(): BaseLogger {
-    return this.getLoggerInstance('success')
+    const instance = this.getLoggerInstance('success')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
   static get failure(): BaseLogger {
-    return this.getLoggerInstance('failure')
+    const instance = this.getLoggerInstance('failure')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 }
 
@@ -167,36 +195,71 @@ export class Logger implements IBaseLogger {
   }
 
   static get plain(): BaseLogger {
-    return LoggerFactory.plain
+    const instance = LoggerFactory.getLoggerInstance('plain')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   static get info(): BaseLogger {
-    return LoggerFactory.info
+    const instance = LoggerFactory.getLoggerInstance('info')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   static get warn(): BaseLogger {
-    return LoggerFactory.warn
+    const instance = LoggerFactory.getLoggerInstance('warn')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   static get error(): BaseLogger {
-    return LoggerFactory.error
+    const instance = LoggerFactory.getLoggerInstance('error')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   static get debug(): BaseLogger {
-    return LoggerFactory.debug
+    const instance = LoggerFactory.getLoggerInstance('debug')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   static get success(): BaseLogger {
-    return LoggerFactory.success
+    const instance = LoggerFactory.getLoggerInstance('success')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   static get failure(): BaseLogger {
-    return LoggerFactory.failure
+    const instance = LoggerFactory.getLoggerInstance('failure')
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, Object.getPrototypeOf(instance))
+    return Object.assign(callable, instance) as any
   }
 
   // Implement BaseLogger interface methods
-  text(text: string, styles?: Type.Styles): this {
-    this._instance.text(text, styles)
+  text(...args: any[]): this {
+    this._instance.text(...args)
     return this
   }
 
@@ -240,8 +303,8 @@ export class Logger implements IBaseLogger {
     return this
   }
 
-  print(isVisible?: boolean): void {
-    return this._instance.print(isVisible)
+  print(isValid?: boolean): void {
+    return this._instance.print(isValid)
   }
 
   toString(): string {
@@ -317,8 +380,8 @@ export class StreamLogger implements IBaseStreamLogger {
   }
 
   // Implement BaseStreamLogger interface methods
-  text(text?: string, styles?: Type.Styles): this {
-    this._instance.text(text, styles)
+  text(...args: any[]): this {
+    this._instance.text(...args)
     return this
   }
 
@@ -362,8 +425,8 @@ export class StreamLogger implements IBaseStreamLogger {
     return this
   }
 
-  print(isVisible?: boolean): void {
-    return this._instance.print(isVisible)
+  print(isValid?: boolean): void {
+    return this._instance.print(isValid)
   }
 
   toString(): string {

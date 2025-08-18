@@ -84,32 +84,67 @@ export class NodeLogger extends BaseLogger {
     return new NodeStreamLogger()
   }
 
-  static get plain() {
-    return this.getLoggerInstance('plain')
+  static get plain(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.plain)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get info() {
-    return this.getLoggerInstance('info')
+  static get info(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.info)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get warn() {
-    return this.getLoggerInstance('warn')
+  static get warn(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.warn)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get error() {
-    return this.getLoggerInstance('error')
+  static get error(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.error)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get debug() {
-    return this.getLoggerInstance('debug')
+  static get debug(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.debug)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get success() {
-    return this.getLoggerInstance('success')
+  static get success(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.success)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
-  static get failure() {
-    return this.getLoggerInstance('failure')
+  static get failure(): NodeLogger {
+    const instance = new NodeLogger(NodeLogger.stylesMap.failure)
+    const callable = (...args: any[]) => {
+      return args.length > 0 ? instance.text(...args) : instance
+    }
+    Object.setPrototypeOf(callable, NodeLogger.prototype)
+    return Object.assign(callable, instance) as any
   }
 
   decorateText(content: string, styles?: Type.Styles): string {
