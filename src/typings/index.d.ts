@@ -5,6 +5,10 @@ import type { Ora } from 'ora'
 import './global'
 
 // Forward declarations for circular dependency resolution
+
+// Callable logger type that represents logger instances that can be invoked as functions
+export type CallableLogger = BaseLogger & ((...args: any[]) => BaseLogger)
+
 export interface BaseLogger {
   // Core methods
   text: (...args: any[]) => this

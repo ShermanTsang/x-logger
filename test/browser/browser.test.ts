@@ -116,14 +116,18 @@ describe('browserLogger - Browser Environment', () => {
   describe('static Factory Methods', () => {
     it('should create logger via static type method', () => {
       const infoLogger = BrowserLogger.type('info')
-      expect(infoLogger).toBeInstanceOf(BrowserLogger)
+      expect(typeof infoLogger).toBe('function')
+      expect(infoLogger.text).toBeDefined()
+      expect(infoLogger.print).toBeDefined()
       infoLogger.text('Info message').print()
       expect(mocks.mockConsole.log).toHaveBeenCalled()
     })
 
     it('should create custom type logger', () => {
       const customLogger = BrowserLogger.type('custom', ['bgMagenta', 'white'])
-      expect(customLogger).toBeInstanceOf(BrowserLogger)
+      expect(typeof customLogger).toBe('function')
+      expect(customLogger.text).toBeDefined()
+      expect(customLogger.print).toBeDefined()
       customLogger.text('Custom message').print()
       expect(mocks.mockConsole.log).toHaveBeenCalled()
     })

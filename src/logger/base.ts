@@ -39,7 +39,7 @@ export abstract class BaseLogger {
   private _singleDividerStyles: Type.Styles = []
   private _singleDividerChar: string = '-'
   private _singleDividerLength: number = 1
-  private _isValid: boolean = true
+  protected _isValid: boolean = true
 
   constructor(prefixStyles?: Type.Styles) {
     prefixStyles && (this._prefixStyles = prefixStyles)
@@ -268,7 +268,10 @@ export abstract class BaseLogger {
     return ''
   }
 
-  print() {
+  print(isValid?: boolean) {
+    if (isValid !== undefined) {
+      this._isValid = isValid
+    }
     if (!this._isValid) {
       return
     }

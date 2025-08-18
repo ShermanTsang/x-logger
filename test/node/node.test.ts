@@ -66,14 +66,18 @@ describe('nodeLogger - Node.js Environment', () => {
   describe('static Factory Methods', () => {
     it('should create logger via static type method', () => {
       const infoLogger = NodeLogger.type('info')
-      expect(infoLogger).toBeInstanceOf(NodeLogger)
+      expect(typeof infoLogger).toBe('function')
+      expect(infoLogger.text).toBeDefined()
+      expect(infoLogger.print).toBeDefined()
       infoLogger.text('Info message').print()
       expect(mockConsole.log).toHaveBeenCalled()
     })
 
     it('should create custom type logger', () => {
       const customLogger = NodeLogger.type('custom', ['bgMagenta', 'bold'])
-      expect(customLogger).toBeInstanceOf(NodeLogger)
+      expect(typeof customLogger).toBe('function')
+      expect(customLogger.text).toBeDefined()
+      expect(customLogger.print).toBeDefined()
       customLogger.text('Custom message').print()
       expect(mockConsole.log).toHaveBeenCalled()
     })

@@ -2,7 +2,7 @@
  * Logger Factory - Automatically selects the appropriate logger implementation based on environment
  */
 
-import type { BaseLogger as IBaseLogger, BaseStreamLogger as IBaseStreamLogger, Type } from './typings'
+import type { BaseLogger as IBaseLogger, BaseStreamLogger as IBaseStreamLogger, Type, CallableLogger } from './typings'
 import { isBrowser, isNode } from './utils'
 import { NodeLogger, NodeStreamLogger } from './logger/node'
 import { BrowserLogger, BrowserStreamLogger } from './logger/browser'
@@ -47,15 +47,15 @@ export class LoggerFactory {
   /**
    * Creates a logger instance with valid condition
    */
-  static valid(isValid: boolean = true): BaseLogger {
+  static valid(isValid: boolean = true): CallableLogger {
     const logger = LoggerFactory.createLogger()
-    return logger.valid(isValid)
+    return logger.valid(isValid) as unknown as CallableLogger
   }
 
   /**
    * Gets a logger instance for a specific type
    */
-  static getLoggerInstance(type: Type.Type, styles?: Type.Styles): BaseLogger {
+  static getLoggerInstance(type: Type.Type, styles?: Type.Styles): CallableLogger {
     if (isBrowser) {
       return BrowserLogger.getLoggerInstance(type, styles)
     }
@@ -71,7 +71,7 @@ export class LoggerFactory {
   /**
    * Creates and registers a custom logger type
    */
-  static type(type: Type.Type, styles?: Type.Styles): BaseLogger {
+  static type(type: Type.Type, styles?: Type.Styles): CallableLogger {
     if (isBrowser) {
       return BrowserLogger.type(type, styles)
     }
@@ -94,7 +94,7 @@ export class LoggerFactory {
   /**
    * Gets predefined logger types - can be used as both getters and methods
    */
-  static get plain(): BaseLogger {
+  static get plain(): CallableLogger {
     const instance = this.getLoggerInstance('plain')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -102,7 +102,7 @@ export class LoggerFactory {
     return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
-  static get info(): BaseLogger {
+  static get info(): CallableLogger {
     const instance = this.getLoggerInstance('info')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -110,7 +110,7 @@ export class LoggerFactory {
     return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
-  static get warn(): BaseLogger {
+  static get warn(): CallableLogger {
     const instance = this.getLoggerInstance('warn')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -118,7 +118,7 @@ export class LoggerFactory {
     return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
-  static get error(): BaseLogger {
+  static get error(): CallableLogger {
     const instance = this.getLoggerInstance('error')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -126,7 +126,7 @@ export class LoggerFactory {
     return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
-  static get debug(): BaseLogger {
+  static get debug(): CallableLogger {
     const instance = this.getLoggerInstance('debug')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -134,7 +134,7 @@ export class LoggerFactory {
     return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
-  static get success(): BaseLogger {
+  static get success(): CallableLogger {
     const instance = this.getLoggerInstance('success')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -142,7 +142,7 @@ export class LoggerFactory {
     return Object.setPrototypeOf(Object.assign(callable, instance), Object.getPrototypeOf(instance))
   }
 
-  static get failure(): BaseLogger {
+  static get failure(): CallableLogger {
     const instance = this.getLoggerInstance('failure')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -190,15 +190,15 @@ export class Logger implements IBaseLogger {
     })
   }
 
-  static getLoggerInstance(type: Type.Type, styles?: Type.Styles): BaseLogger {
+  static getLoggerInstance(type: Type.Type, styles?: Type.Styles): CallableLogger {
     return LoggerFactory.getLoggerInstance(type, styles)
   }
 
-  static valid(isValid: boolean = true): BaseLogger {
+  static valid(isValid: boolean = true): CallableLogger {
     return LoggerFactory.valid(isValid)
   }
 
-  static type(type: Type.Type, styles?: Type.Styles): BaseLogger {
+  static type(type: Type.Type, styles?: Type.Styles): CallableLogger {
     return LoggerFactory.type(type, styles)
   }
 
@@ -206,7 +206,7 @@ export class Logger implements IBaseLogger {
     return LoggerFactory.stream
   }
 
-  static get plain(): BaseLogger {
+  static get plain(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('plain')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -215,7 +215,7 @@ export class Logger implements IBaseLogger {
     return Object.assign(callable, instance) as any
   }
 
-  static get info(): BaseLogger {
+  static get info(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('info')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -224,7 +224,7 @@ export class Logger implements IBaseLogger {
     return Object.assign(callable, instance) as any
   }
 
-  static get warn(): BaseLogger {
+  static get warn(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('warn')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -233,7 +233,7 @@ export class Logger implements IBaseLogger {
     return Object.assign(callable, instance) as any
   }
 
-  static get error(): BaseLogger {
+  static get error(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('error')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -242,7 +242,7 @@ export class Logger implements IBaseLogger {
     return Object.assign(callable, instance) as any
   }
 
-  static get debug(): BaseLogger {
+  static get debug(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('debug')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -251,7 +251,7 @@ export class Logger implements IBaseLogger {
     return Object.assign(callable, instance) as any
   }
 
-  static get success(): BaseLogger {
+  static get success(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('success')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -260,7 +260,7 @@ export class Logger implements IBaseLogger {
     return Object.assign(callable, instance) as any
   }
 
-  static get failure(): BaseLogger {
+  static get failure(): CallableLogger {
     const instance = LoggerFactory.getLoggerInstance('failure')
     const callable = (...args: any[]) => {
       return args.length > 0 ? instance.text(...args) : instance
@@ -329,7 +329,7 @@ export class Logger implements IBaseLogger {
   }
 
   toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | BrowserStreamLogger {
-    return this._instance.toStream(prefix, prefixStyles)
+    return this._instance.toStream(prefix, prefixStyles) as BaseStreamLogger | BrowserStreamLogger
   }
 
   valid(isValid?: boolean): this {

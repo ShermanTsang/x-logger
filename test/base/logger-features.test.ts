@@ -194,7 +194,9 @@ describe('logger Features and Functionality', () => {
     it('should add custom types via type function', () => {
       const customLogger = Logger.type('custom', ['red', 'bold'])
 
-      expect(customLogger).toBeInstanceOf(Logger)
+      expect(typeof customLogger).toBe('function')
+      expect(customLogger.prefix).toBeDefined()
+      expect(customLogger.text).toBeDefined()
 
       const result = customLogger
         .prefix('CUSTOM')
@@ -226,7 +228,9 @@ describe('logger Features and Functionality', () => {
     it('should override preset types', () => {
       const overriddenLogger = logger.type('info', ['magenta', 'italic'])
 
-      expect(overriddenLogger).toBeInstanceOf(Logger)
+      expect(typeof overriddenLogger).toBe('function')
+      expect(overriddenLogger.prefix).toBeDefined()
+      expect(overriddenLogger.text).toBeDefined()
 
       const result = overriddenLogger
         .prefix('OVERRIDE')
@@ -295,9 +299,11 @@ describe('logger Features and Functionality', () => {
       const logger1 = logger.type('duplicate', ['red'])
       const logger2 = logger.type('duplicate', ['blue'])
 
-      expect(logger1).toBeInstanceOf(Logger)
-      expect(logger2).toBeInstanceOf(Logger)
+      expect(typeof logger1).toBe('function')
+      expect(typeof logger2).toBe('function')
       expect(logger1).not.toBe(logger2)
+      expect(logger1.text).toBeDefined()
+      expect(logger2.text).toBeDefined()
 
       // Both should work independently
       expect(() => {
