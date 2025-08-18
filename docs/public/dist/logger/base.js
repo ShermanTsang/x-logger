@@ -1,0 +1,473 @@
+/**
+ * Base Logger - Abstract foundation for platform-specific logger implementations
+ */
+import { sleep } from '../utils';
+/**
+ * Abstract base class for all logger implementations
+ * Provides common functionality and defines the interface for platform-specific loggers
+ */
+export class BaseLogger {
+    // Static property to identify logger instances
+    static [Symbol.hasInstance] = (instance) => {
+        return instance && typeof instance === 'object' && instance._isShermanLogger === true;
+    };
+    // Track registered custom types
+    static registeredTypes = [];
+    _text = null;
+    _textStyles = [];
+    _detail = null;
+    _detailStyles = [];
+    _prefix = null;
+    _prefixStyles = [];
+    _data;
+    _displayTime = false;
+    _loggerType = 'normal';
+    _prependDivider = false;
+    _prependDividerStyles = [];
+    _prependDividerLength = 1;
+    _prependDividerChar = '-';
+    _appendDivider = false;
+    _appendDividerStyles = [];
+    _appendDividerChar = '-';
+    _appendDividerLength = 1;
+    _singleDivider = false;
+    _singleDividerStyles = [];
+    _singleDividerChar = '-';
+    _singleDividerLength = 1;
+    _isValid = true;
+    constructor(prefixStyles) {
+        prefixStyles && (this._prefixStyles = prefixStyles);
+        this._isShermanLogger = true;
+    }
+    /**
+     * Creates a clone of the current logger instance
+     */
+    clone() {
+        const cloned = Object.create(Object.getPrototypeOf(this));
+        // Copy all properties
+        Object.assign(cloned, this);
+        // Ensure the cloned instance is recognized as a Sherman Logger
+        cloned._isShermanLogger = true;
+        return cloned;
+    }
+    static stylesMap = {
+        info: ['blueBright', 'underline'],
+        warn: ['bgYellowBright'],
+        error: ['bgRedBright'],
+        debug: ['bgCyanBright'],
+        success: ['bgGreenBright'],
+        failure: ['bgRedBright'],
+        plain: ['white'],
+    };
+    setDividerProperties(type, char = '-', length = 40, styles = ['gray']) {
+        const prefix = type === 'prepend'
+            ? '_prependDivider'
+            : type === 'append'
+                ? '_appendDivider'
+                : '_singleDivider';
+        this[`${prefix}`] = true;
+        this[`${prefix}Char`] = char || this[`${prefix}Char`];
+        this[`${prefix}Styles`] = styles || this[`${prefix}Styles`];
+        this[`${prefix}Length`]
+            = length || (char && char.length === 1 ? 40 : this[`${prefix}Length`]);
+    }
+    divider(char, length, styles) {
+        this.setDividerProperties('single', char, length, styles);
+        this.print();
+        return this;
+    }
+    styles(styles) {
+        const cloned = this.clone();
+        cloned._textStyles = styles;
+        return cloned;
+    }
+    prependDivider(char, length, styles) {
+        const cloned = this.clone();
+        // Reset single divider when prepend divider is set
+        cloned._singleDivider = false;
+        cloned.setDividerProperties('prepend', char, length, styles);
+        return cloned;
+    }
+    appendDivider(char, length, styles) {
+        const cloned = this.clone();
+        cloned.setDividerProperties('append', char, length, styles);
+        return cloned;
+    }
+    time(isDisplay = true) {
+        const cloned = this.clone();
+        cloned._displayTime = isDisplay;
+        return cloned;
+    }
+    /**
+     * Sets the validity condition for the logger
+     * When set to false, all logger operations will be skipped
+     * @param isValid - Whether the logger should execute operations (default: true)
+     * @returns Cloned logger instance for method chaining
+     */
+    valid(isValid = true) {
+        const cloned = this.clone();
+        cloned._isValid = isValid;
+        return cloned;
+    }
+    get formattedTime() {
+        return this._displayTime ? `${new Date().toLocaleTimeString()} ` : '';
+    }
+    text(...args) {
+        const cloned = this.clone();
+        // Handle different argument patterns
+        if (args.length === 0) {
+            cloned._text = '';
+        }
+        else if (args.length === 1) {
+            // Single argument - could be text or styles
+            if (typeof args[0] === 'string') {
+                cloned._text = args[0];
+            }
+            else {
+                cloned._text = String(args[0]);
+            }
+        }
+        else if (args.length === 2 && Array.isArray(args[1])) {
+            // Two arguments where second is styles array
+            cloned._text = String(args[0]);
+            cloned._textStyles = args[1];
+        }
+        else {
+            // Multiple arguments - concatenate with spaces
+            cloned._text = args.map(arg => String(arg)).join(' ');
+        }
+        return cloned;
+    }
+    get formattedText() {
+        return this._text
+            ? `${this.decorateText(this._text, this._textStyles)} `
+            : '';
+    }
+    detail(detail, styles) {
+        const cloned = this.clone();
+        cloned._detail = detail;
+        styles && (cloned._detailStyles = styles);
+        return cloned;
+    }
+    get formattedDetail() {
+        return this._detail
+            ? `\n${this.decorateText(this._detail, this._detailStyles)}`
+            : '';
+    }
+    prefix(prefix, styles) {
+        const cloned = this.clone();
+        cloned._prefix = prefix;
+        styles && (cloned._prefixStyles = styles);
+        return cloned;
+    }
+    get formattedPrefix() {
+        return this._prefix
+            ? `${this.decorateText(this._prefix, this._prefixStyles)} `
+            : '';
+    }
+    data(...dataItems) {
+        const cloned = this.clone();
+        // If only one parameter is passed, maintain backward compatibility
+        if (dataItems.length === 1) {
+            cloned._data = dataItems[0];
+        }
+        else {
+            // For multiple parameters, store as array
+            cloned._data = dataItems;
+        }
+        return cloned;
+    }
+    get formattedData() {
+        if (!this._data)
+            return '';
+        // Handle array of multiple data items (new feature)
+        if (Array.isArray(this._data) && this._data.length > 1) {
+            return this._data.map(item => this.formatSingleDataItem(item)).join('');
+        }
+        // Handle single data item (backward compatibility)
+        const singleItem = Array.isArray(this._data) ? this._data[0] : this._data;
+        return this.formatSingleDataItem(singleItem);
+    }
+    formatSingleDataItem(data) {
+        if (data === null || data === undefined)
+            return `\n${String(data)}`;
+        // Handle different data types appropriately
+        if (typeof data === 'string') {
+            return `\n${data}`;
+        }
+        else if (typeof data === 'object') {
+            try {
+                return `\n${JSON.stringify(data, null, 2)}`;
+            }
+            catch (error) {
+                // Handle circular references and other JSON.stringify errors
+                return `\n[Circular Reference or Invalid JSON]`;
+            }
+        }
+        else {
+            return `\n${String(data)}`;
+        }
+    }
+    composeMainOutput() {
+        if (this.formattedTime
+            || this.formattedText
+            || this.formattedDetail
+            || this.formattedData
+            || this.formattedPrefix) {
+            return `${this.formattedTime}${this.formattedPrefix}${this.formattedText}${this.formattedDetail}${this.formattedData}`;
+        }
+        return '';
+    }
+    print(isValid) {
+        if (isValid !== undefined) {
+            this._isValid = isValid;
+        }
+        if (!this._isValid) {
+            return;
+        }
+        if (this._singleDivider) {
+            const dividerText = this._singleDividerChar.repeat(this._singleDividerLength);
+            this.printDivider(dividerText, this._singleDividerStyles);
+            return;
+        }
+        if (this._prependDivider) {
+            const prependText = this._prependDividerChar.repeat(this._prependDividerLength);
+            this.printDivider(prependText, this._prependDividerStyles);
+        }
+        const mainOutput = this.composeMainOutput();
+        if (mainOutput) {
+            this.printOutput(mainOutput);
+        }
+        if (this._appendDivider) {
+            const appendText = this._appendDividerChar.repeat(this._appendDividerLength);
+            this.printDivider(appendText, this._appendDividerStyles);
+        }
+    }
+    capitalize(text) {
+        return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+    get [Symbol.toStringTag]() {
+        return 'ShermanLogger';
+    }
+    /**
+     * Gets the type of this logger instance
+     */
+    get type() {
+        // Find the type by looking up the styles in the stylesMap
+        const constructor = this.constructor;
+        for (const [type, styles] of Object.entries(constructor.stylesMap)) {
+            if (JSON.stringify(styles) === JSON.stringify(this._prefixStyles)) {
+                return type;
+            }
+        }
+        // If not found in stylesMap, check registered custom types
+        for (const customType of constructor.registeredTypes) {
+            if (JSON.stringify(constructor.stylesMap[customType]) === JSON.stringify(this._prefixStyles)) {
+                return customType;
+            }
+        }
+        return 'unknown';
+    }
+    toString() {
+        let result = '';
+        // Add prepend divider if present
+        if (this._prependDivider) {
+            const prependText = this._prependDividerChar.repeat(this._prependDividerLength);
+            result += prependText;
+        }
+        // Add single divider if present
+        if (this._singleDivider) {
+            const dividerText = this._singleDividerChar.repeat(this._singleDividerLength);
+            result += dividerText;
+        }
+        // Add main output
+        const mainOutput = this.composeMainOutput();
+        if (mainOutput) {
+            if (result)
+                result += '\n';
+            result += mainOutput;
+        }
+        // Add append divider if present
+        if (this._appendDivider) {
+            const appendText = this._appendDividerChar.repeat(this._appendDividerLength);
+            if (result)
+                result += '\n';
+            result += appendText;
+        }
+        return result;
+    }
+    toObject() {
+        return {
+            prefix: this._prefix,
+            text: this._text,
+            detail: this._detail,
+            data: this._data,
+            displayTime: this._displayTime,
+            loggerType: this._loggerType,
+            prefixStyles: this._prefixStyles,
+            textStyles: this._textStyles,
+            detailStyles: this._detailStyles,
+        };
+    }
+}
+/**
+ * Abstract base class for stream loggers
+ */
+export class BaseStreamLogger extends BaseLogger {
+    _state = undefined;
+    _delay = 0;
+    constructor(prefix, prefixStyles) {
+        super(prefixStyles || []);
+        this._loggerType = 'stream';
+        this._state = undefined;
+        prefix && this.prefix(prefix, prefixStyles);
+    }
+    text(...args) {
+        // Handle different argument patterns
+        if (args.length === 0) {
+            this._text = '';
+        }
+        else if (args.length === 1) {
+            // Single argument - could be text or styles
+            if (typeof args[0] === 'string') {
+                this._text = args[0];
+            }
+            else {
+                this._text = String(args[0]);
+            }
+        }
+        else if (args.length === 2 && Array.isArray(args[1])) {
+            // Two arguments where second is styles array
+            this._text = String(args[0]);
+            this._textStyles = args[1];
+        }
+        else {
+            // Multiple arguments - concatenate with spaces
+            this._text = args.map(arg => String(arg)).join(' ');
+        }
+        this.update();
+        return this;
+    }
+    detail(detail = '', styles) {
+        this._detail = detail;
+        styles && (this._detailStyles = styles);
+        this.update();
+        return this;
+    }
+    delay(delay) {
+        this._delay = delay;
+        return this;
+    }
+    /**
+     * Sets the validity condition for the stream logger
+     * When set to false, all logger operations will be skipped
+     * @param isValid - Whether the logger should execute operations (default: true)
+     * @returns Current logger instance for method chaining
+     */
+    valid(isValid = true) {
+        this._isValid = isValid;
+        return this;
+    }
+    state(state) {
+        this._state = state;
+        this.update(); // Automatically trigger update when state is set
+        return this;
+    }
+    update() {
+        if (!this._isValid) {
+            return this;
+        }
+        if (this._state) {
+            this.updateState(this._state);
+        }
+        else {
+            const output = this.composeMainOutput();
+            const result = this.updateStream(output);
+            // Handle potential promise without awaiting to maintain sync interface
+            if (result instanceof Promise) {
+                result.catch(console.error);
+            }
+        }
+        return this;
+    }
+    async asyncUpdate(delay) {
+        if (!this._isValid) {
+            return;
+        }
+        if (this._state) {
+            await this.asyncUpdateState(this._state);
+        }
+        else {
+            const output = this.composeMainOutput();
+            await this.updateStream(output);
+        }
+        const _delay = this._delay || delay;
+        if (_delay) {
+            await sleep(_delay);
+            this._delay && (this._delay = 0);
+        }
+    }
+    updateState(state) {
+        const output = this.composeMainOutput();
+        const result = this.finalizeStream(state, output);
+        // Handle potential promise without awaiting to maintain sync interface
+        if (result instanceof Promise) {
+            result.catch(console.error);
+        }
+        this._state = undefined;
+    }
+    async asyncUpdateState(state) {
+        const output = this.composeMainOutput();
+        await this.finalizeStream(state, output);
+        this._state = undefined;
+    }
+    // Convenience methods for common stream states
+    succeed(output) {
+        if (output) {
+            this._text = output;
+        }
+        const finalOutput = this.composeMainOutput();
+        const result = this.finalizeStream('succeed', finalOutput);
+        // Handle potential promise without awaiting to maintain sync interface
+        if (result instanceof Promise) {
+            result.catch(console.error);
+        }
+        return this;
+    }
+    fail(output) {
+        if (output) {
+            this._text = output;
+        }
+        const finalOutput = this.composeMainOutput();
+        const result = this.finalizeStream('fail', finalOutput);
+        // Handle potential promise without awaiting to maintain sync interface
+        if (result instanceof Promise) {
+            result.catch(console.error);
+        }
+        return this;
+    }
+    start(output) {
+        if (output) {
+            this._text = output;
+        }
+        const finalOutput = this.composeMainOutput();
+        const result = this.finalizeStream('start', finalOutput);
+        // Handle potential promise without awaiting to maintain sync interface
+        if (result instanceof Promise) {
+            result.catch(console.error);
+        }
+        return this;
+    }
+    stop(output) {
+        if (output) {
+            this._text = output;
+        }
+        const finalOutput = this.composeMainOutput();
+        const result = this.finalizeStream('stop', finalOutput);
+        // Handle potential promise without awaiting to maintain sync interface
+        if (result instanceof Promise) {
+            result.catch(console.error);
+        }
+        return this;
+    }
+}

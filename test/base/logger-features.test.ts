@@ -136,7 +136,7 @@ describe('logger Features and Functionality', () => {
 
     it('should maintain backward compatibility with single data parameter', () => {
       const testObject = { legacy: 'test' }
-      
+
       const result = logger.info
         .prefix('LEGACY_DATA')
         .text('Legacy single data test')
@@ -169,7 +169,7 @@ describe('logger Features and Functionality', () => {
 
       const lines = result.split('\n')
       const dataLines = lines.filter(line => line === 'first' || line === 'second' || line === 'third')
-      
+
       expect(dataLines).toHaveLength(3)
       expect(dataLines[0]).toBe('first')
       expect(dataLines[1]).toBe('second')
@@ -568,7 +568,6 @@ describe('logger Features and Functionality', () => {
 
       presetTypes.forEach((type) => {
         expect(() => {
-          // @ts-expect-error: Dynamic type access for testing
           const result = logger[type]
             .prefix(type.toUpperCase())
             .text(`${type} type test`)

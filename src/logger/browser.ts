@@ -200,8 +200,15 @@ export class BrowserLogger extends BaseLogger {
   decorateText(content: string, styles?: Type.Styles): string {
     let formattedContent = content || ''
     if (formattedContent) {
-      // Browser environment - handle [[text]] pattern differently
-      formattedContent = formattedContent.replace(/\[\[(.+?)\]\]/g, '$1')
+      // Browser environment - handle [[text]] pattern for highlighting
+      // For toString() method, we need to preserve highlighting in a text-friendly way
+      // Similar to how Node.js handles it with chalk
+      const hasHighlight = formattedContent.includes('[[')
+      if (hasHighlight) {
+        // For browser, we'll use a simple text decoration approach for toString()
+        // The actual console styling will be handled in printOutput()
+        formattedContent = formattedContent.replace(/\[\[(.+?)\]\]/g, '**$1**')
+      }
     }
     return this.getStyledText(styles, formattedContent).text
   }
@@ -459,8 +466,15 @@ export class BrowserStreamLogger extends BaseLogger implements IBrowserStreamLog
   decorateText(content: string, styles?: Type.Styles): string {
     let formattedContent = content || ''
     if (formattedContent) {
-      // Browser environment - handle [[text]] pattern differently
-      formattedContent = formattedContent.replace(/\[\[(.+?)\]\]/g, '$1')
+      // Browser environment - handle [[text]] pattern for highlighting
+      // For toString() method, we need to preserve highlighting in a text-friendly way
+      // Similar to how Node.js handles it with chalk
+      const hasHighlight = formattedContent.includes('[[')
+      if (hasHighlight) {
+        // For browser, we'll use a simple text decoration approach for toString()
+        // The actual console styling will be handled in printOutput()
+        formattedContent = formattedContent.replace(/\[\[(.+?)\]\]/g, '**$1**')
+      }
     }
     return this.getStyledText(styles, formattedContent).text
   }
