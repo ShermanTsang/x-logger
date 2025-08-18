@@ -267,20 +267,78 @@ The detail will be displayed below the main log text.
 
 ## `data()` method
 
-Use `data()` method to print your data below the log text.
+Use `data()` method to print your data below the log text. The method supports both single and multiple parameters.
 
-The second parameter is a boolean value that controls whether to print the data in the log text, default value is
-`true`.
+### Single Data Parameter
 
 ```typescript
 logger.info.prefix('info title').styles(['bgRed', 'white']).text('error data')
-  .data(
-    {
-      error: 'error text',
-      status: 500
-    },
-    false
-  ).print()
+  .data({
+    error: 'error text',
+    status: 500
+  }).print()
+```
+
+### Multiple Data Parameters
+
+You can pass multiple parameters to the `data()` method, and each will be displayed on separate lines:
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// Multiple data items of different types
+logger.info
+  .prefix('MULTI_DATA')
+  .text('Processing multiple data items')
+  .data([], 123, 'ok', {})
+  .print()
+
+// Output:
+// [] 
+// 123
+// ok
+// {}
+```
+
+### Mixed Data Types Example
+
+```typescript
+const userArray = [1, 2, 3]
+const userObject = { name: 'John', age: 30 }
+const statusMessage = 'Processing complete'
+const responseCode = 200
+
+logger.success
+  .prefix('API_RESPONSE')
+  .text('Request processed successfully')
+  .data(userArray, userObject, statusMessage, responseCode)
+  .print()
+
+// Output:
+// [
+//   1,
+//   2,
+//   3
+// ]
+// {
+//   "name": "John",
+//   "age": 30
+// }
+// Processing complete
+// 200
+```
+
+### Backward Compatibility
+
+The method maintains full backward compatibility with existing single-parameter usage:
+
+```typescript
+// This still works exactly as before
+logger.error
+  .prefix('ERROR')
+  .text('Database connection failed')
+  .data({ error: 'Connection timeout', code: 'DB_TIMEOUT' })
+  .print()
 ```
 
 ## `toString()` method

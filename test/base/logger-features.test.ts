@@ -90,6 +90,92 @@ describe('logger Features and Functionality', () => {
       expect(result).toContain('Object data test')
     })
 
+    it('should handle multiple data parameters correctly', () => {
+      const result = logger.info
+        .prefix('MULTI_DATA')
+        .text('Multiple data test')
+        .data([], 123, 'ok', {})
+        .toString()
+
+      expect(result).toContain('MULTI_DATA')
+      expect(result).toContain('Multiple data test')
+      expect(result).toContain('[]')
+      expect(result).toContain('123')
+      expect(result).toContain('ok')
+      expect(result).toContain('{}')
+    })
+
+    it('should handle mixed data types in multiple parameters', () => {
+      const testArray = [1, 2, 3]
+      const testObject = { key: 'value', number: 42 }
+      const testString = 'test string'
+      const testNumber = 999
+      const testBoolean = true
+      const testNull = null
+      const testUndefined = undefined
+
+      const result = logger.info
+        .prefix('MIXED_DATA')
+        .text('Mixed data types test')
+        .data(testArray, testObject, testString, testNumber, testBoolean, testNull, testUndefined)
+        .toString()
+
+      expect(result).toContain('MIXED_DATA')
+      expect(result).toContain('Mixed data types test')
+      // Check for array elements (formatted with pretty-printing)
+      expect(result).toContain('1')
+      expect(result).toContain('2')
+      expect(result).toContain('3')
+      expect(result).toContain('"key": "value"')
+      expect(result).toContain('test string')
+      expect(result).toContain('999')
+      expect(result).toContain('true')
+      expect(result).toContain('null')
+      expect(result).toContain('undefined')
+    })
+
+    it('should maintain backward compatibility with single data parameter', () => {
+      const testObject = { legacy: 'test' }
+      
+      const result = logger.info
+        .prefix('LEGACY_DATA')
+        .text('Legacy single data test')
+        .data(testObject)
+        .toString()
+
+      expect(result).toContain('LEGACY_DATA')
+      expect(result).toContain('Legacy single data test')
+      expect(result).toContain('"legacy": "test"')
+    })
+
+    it('should handle empty data parameters gracefully', () => {
+      const result = logger.info
+        .prefix('EMPTY_DATA')
+        .text('Empty data test')
+        .data()
+        .toString()
+
+      expect(result).toContain('EMPTY_DATA')
+      expect(result).toContain('Empty data test')
+      // Should not contain any data section when no parameters are passed
+    })
+
+    it('should format each data item on separate lines', () => {
+      const result = logger.info
+        .prefix('FORMAT_TEST')
+        .text('Data formatting test')
+        .data('first', 'second', 'third')
+        .toString()
+
+      const lines = result.split('\n')
+      const dataLines = lines.filter(line => line === 'first' || line === 'second' || line === 'third')
+      
+      expect(dataLines).toHaveLength(3)
+      expect(dataLines[0]).toBe('first')
+      expect(dataLines[1]).toBe('second')
+      expect(dataLines[2]).toBe('third')
+    })
+
     it('should handle time display correctly', () => {
       const result = logger.info
         .time()

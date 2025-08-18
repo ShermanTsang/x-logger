@@ -171,9 +171,15 @@ export abstract class BaseLogger {
       : ''
   }
 
-  data(data: any) {
+  data(...dataItems: any[]) {
     const cloned = this.clone()
-    cloned._data = data
+    // If only one parameter is passed, maintain backward compatibility
+    if (dataItems.length === 1) {
+      cloned._data = dataItems[0]
+    } else {
+      // For multiple parameters, store as array
+      cloned._data = dataItems
+    }
     return cloned
   }
 
@@ -181,13 +187,27 @@ export abstract class BaseLogger {
     if (!this._data)
       return ''
 
-    // Handle different data types appropriately
-    if (typeof this._data === 'string') {
-      return `\n${this._data}`
+    // Handle array of multiple data items (new feature)
+    if (Array.isArray(this._data) && this._data.length > 1) {
+      return this._data.map(item => this.formatSingleDataItem(item)).join('')
     }
-    else if (typeof this._data === 'object') {
+    
+    // Handle single data item (backward compatibility)
+    const singleItem = Array.isArray(this._data) ? this._data[0] : this._data
+    return this.formatSingleDataItem(singleItem)
+  }
+
+  private formatSingleDataItem(data: any): string {
+    if (data === null || data === undefined)
+      return `\n${String(data)}`
+
+    // Handle different data types appropriately
+    if (typeof data === 'string') {
+      return `\n${data}`
+    }
+    else if (typeof data === 'object') {
       try {
-        return `\n${JSON.stringify(this._data, null, 2)}`
+        return `\n${JSON.stringify(data, null, 2)}`
       }
       catch (error) {
         // Handle circular references and other JSON.stringify errors
@@ -195,7 +215,7 @@ export abstract class BaseLogger {
       }
     }
     else {
-      return `\n${String(this._data)}`
+      return `\n${String(data)}`
     }
   }
 

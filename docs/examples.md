@@ -126,6 +126,49 @@ logger.type('performance', ['bgYellow', 'black'])
   .print()
 ```
 
+### Multiple Data Parameters
+
+```typescript
+import { logger } from '@shermant/logger'
+
+// API request logging with multiple data items
+logger.info
+  .prefix('🌐 API')
+  .text('Processing API request')
+  .data(
+    { method: 'POST', endpoint: '/api/users' },
+    { userId: 12345, email: 'user@example.com' },
+    'Request validation passed',
+    { timestamp: new Date().toISOString() }
+  )
+  .print()
+
+// Error logging with context data
+logger.error
+  .prefix('❌ ERROR')
+  .text('Database operation failed')
+  .data(
+    ['connection_timeout', 'retry_exhausted'],
+    { attempts: 3, maxRetries: 3 },
+    'Database connection lost',
+    { errorCode: 'DB_CONN_TIMEOUT', severity: 'high' }
+  )
+  .print()
+
+// Development debugging with mixed types
+logger.debug
+  .prefix('🐛 DEBUG')
+  .text('Function execution trace')
+  .data(
+    'calculateUserScore',
+    { input: { userId: 123, activities: 15 } },
+    42.5,
+    true,
+    null
+  )
+  .print()
+```
+
 ### Highlights and Formatting
 
 ```typescript
