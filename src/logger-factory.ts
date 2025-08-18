@@ -285,8 +285,8 @@ export class Logger implements IBaseLogger {
     return this
   }
 
-  data(data: any): this {
-    this._instance.data(data)
+  data(...dataItems: any[]): this {
+    this._instance.data(...dataItems)
     return this
   }
 
@@ -412,8 +412,8 @@ export class StreamLogger implements IBaseStreamLogger {
     return this
   }
 
-  data(data: any): this {
-    this._instance.data(data)
+  data(...dataItems: any[]): this {
+    this._instance.data(...dataItems)
     return this
   }
 

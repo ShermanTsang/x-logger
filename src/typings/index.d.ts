@@ -14,7 +14,7 @@ export interface BaseLogger {
   text: (...args: any[]) => this
   detail: (detail: string, styles?: Type.Styles) => this
   prefix: (prefix: string, styles?: Type.Styles) => this
-  data: (data: any) => this
+  data: (...dataItems: any[]) => this
   time: (isDisplay?: boolean) => this
   valid: (isValid?: boolean) => this
   styles: (styles: Type.Styles) => this
@@ -50,7 +50,7 @@ export interface BaseStreamLogger extends BaseLogger {
   text: (...args: any[]) => this
   detail: (detail?: string, styles?: Type.Styles) => this
   prefix: (prefix: string, styles?: Type.Styles) => this
-  data: (data: any) => this
+  data: (...dataItems: any[]) => this
   time: (isDisplay?: boolean) => this
   valid: (isValid?: boolean) => this
   styles: (styles: Type.Styles) => this
