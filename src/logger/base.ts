@@ -128,6 +128,18 @@ export abstract class BaseLogger {
     return cloned
   }
 
+  /**
+   * Sets the validity condition for the logger
+   * When set to false, all logger operations will be skipped
+   * @param isValid - Whether the logger should execute operations (default: true)
+   * @returns Cloned logger instance for method chaining
+   */
+  valid(isValid: boolean = true) {
+    const cloned = this.clone()
+    cloned._isValid = isValid
+    return cloned
+  }
+
   get formattedTime() {
     return this._displayTime ? `${new Date().toLocaleTimeString()} ` : ''
   }
@@ -256,8 +268,7 @@ export abstract class BaseLogger {
     return ''
   }
 
-  print(isValid: boolean = true) {
-    this._isValid = isValid
+  print() {
     if (!this._isValid) {
       return
     }
@@ -438,6 +449,17 @@ export abstract class BaseStreamLogger extends BaseLogger {
     return this
   }
 
+  /**
+   * Sets the validity condition for the stream logger
+   * When set to false, all logger operations will be skipped
+   * @param isValid - Whether the logger should execute operations (default: true)
+   * @returns Current logger instance for method chaining
+   */
+  valid(isValid: boolean = true) {
+    this._isValid = isValid
+    return this
+  }
+
   state(state: 'start' | 'stop' | 'succeed' | 'fail'): this {
     this._state = state
     this.update() // Automatically trigger update when state is set
@@ -445,6 +467,9 @@ export abstract class BaseStreamLogger extends BaseLogger {
   }
 
   update(): this {
+    if (!this._isValid) {
+      return this
+    }
     if (this._state) {
       this.updateState(this._state)
     }
@@ -460,6 +485,9 @@ export abstract class BaseStreamLogger extends BaseLogger {
   }
 
   async asyncUpdate(delay?: number): Promise<void> {
+    if (!this._isValid) {
+      return
+    }
     if (this._state) {
       await this.asyncUpdateState(this._state)
     }

@@ -12,6 +12,7 @@ export interface BaseLogger {
   prefix: (prefix: string, styles?: Type.Styles) => this
   data: (data: any) => this
   time: (isDisplay?: boolean) => this
+  valid: (isValid?: boolean) => this
   styles: (styles: Type.Styles) => this
 
   // Divider methods
@@ -20,7 +21,7 @@ export interface BaseLogger {
   appendDivider: (char?: string, length?: number, styles?: Type.Styles) => this
 
   // Output methods
-  print: (isValid?: boolean) => void
+  print: () => void
   toString: () => string
   toObject: () => this
   toStream: (prefix?: string, prefixStyles?: Type.Styles) => BaseStreamLogger | BrowserStreamLogger
@@ -47,6 +48,7 @@ export interface BaseStreamLogger extends BaseLogger {
   prefix: (prefix: string, styles?: Type.Styles) => this
   data: (data: any) => this
   time: (isDisplay?: boolean) => this
+  valid: (isValid?: boolean) => this
   styles: (styles: Type.Styles) => this
   prependDivider: (char?: string, length?: number, styles?: Type.Styles) => this
   appendDivider: (char?: string, length?: number, styles?: Type.Styles) => this

@@ -45,6 +45,14 @@ export class LoggerFactory {
   }
 
   /**
+   * Creates a logger instance with valid condition
+   */
+  static valid(isValid: boolean = true): BaseLogger {
+    const logger = LoggerFactory.createLogger()
+    return logger.valid(isValid)
+  }
+
+  /**
    * Gets a logger instance for a specific type
    */
   static getLoggerInstance(type: Type.Type, styles?: Type.Styles): BaseLogger {
@@ -186,6 +194,10 @@ export class Logger implements IBaseLogger {
     return LoggerFactory.getLoggerInstance(type, styles)
   }
 
+  static valid(isValid: boolean = true): BaseLogger {
+    return LoggerFactory.valid(isValid)
+  }
+
   static type(type: Type.Type, styles?: Type.Styles): BaseLogger {
     return LoggerFactory.type(type, styles)
   }
@@ -317,7 +329,12 @@ export class Logger implements IBaseLogger {
   }
 
   toStream(prefix?: string, prefixStyles?: Type.Styles): BaseStreamLogger | BrowserStreamLogger {
-    return this._instance.toStream(prefix, prefixStyles) as BaseStreamLogger | BrowserStreamLogger
+    return this._instance.toStream(prefix, prefixStyles)
+  }
+
+  valid(isValid?: boolean): this {
+    this._instance.valid(isValid)
+    return this
   }
 
   decorateText(content: string, styles?: Type.Styles): string {
@@ -472,6 +489,11 @@ export class StreamLogger implements IBaseStreamLogger {
 
   async asyncUpdate(delay?: number): Promise<void> {
     return this._instance.asyncUpdate(delay)
+  }
+
+  valid(isValid?: boolean): this {
+    this._instance.valid(isValid)
+    return this
   }
 
   initializeStream(): void {

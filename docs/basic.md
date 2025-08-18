@@ -106,6 +106,13 @@ infoLogger('Simple callable syntax')
 // 4. Logger class for reusable instances
 const appLogger = Logger.type('info').prefix('APP')
 appLogger.text('Reusable configuration').print()
+
+// 5. Conditional logging with valid()
+const devLogger = Logger.valid(process.env.NODE_ENV === 'development')
+devLogger.text('Development-only message').print() // Only prints in dev
+
+// Chain with other methods
+logger.info.valid(process.env.DEBUG).text('Debug info').print()
 ```
 
 > 📖 **Learn More**: See the complete [Logger Invocation Methods](./usage.md#logger-invocation-methods) guide for all available patterns and best practices.

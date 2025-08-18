@@ -150,23 +150,60 @@ logger
 
 ### 7. Conditional Logging
 
-All invocation methods support conditional logging:
+All invocation methods support conditional logging using the `valid()` method or conditional printing:
 
 ```typescript
-import { logger } from '@shermant/logger'
+import { logger, Logger } from '@shermant/logger'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 const isVerbose = process.env.VERBOSE === 'true'
 
-// Conditional printing
+// Using valid() method (recommended)
+const appLogger = Logger.type('info').prefix('APP').time().valid(isDevelopment)
+appLogger.text('Development mode message').print() // Only prints if isDevelopment is true
+
+// Static valid() method
+const debugLogger = Logger.valid(isVerbose)
+debugLogger.text('Verbose logging information').print()
+
+// Chaining with valid()
+logger.debug.valid(isDevelopment).text('Debug information').print()
+logger.info.valid(isVerbose).text('Verbose logging').print()
+
+// Traditional conditional printing (still supported)
 logger.debug.text('Debug information').print(isDevelopment)
 logger.info.text('Verbose logging').print(isVerbose)
 
 // With callable pattern
-const debugLogger = logger.debug
-if (isDevelopment) {
-  debugLogger('Development mode active')
-}
+const conditionalLogger = logger.debug.valid(isDevelopment)
+conditionalLogger('Development mode active') // Only executes if isDevelopment is true
+```
+
+#### Environment-Based Logging
+
+The `valid()` method is particularly useful for environment-based logging:
+
+```typescript
+import { Logger } from '@shermant/logger'
+
+// Create environment-aware loggers
+const devLogger = Logger.valid(process.env.NODE_ENV === 'development')
+const prodLogger = Logger.valid(process.env.NODE_ENV === 'production')
+const debugLogger = Logger.valid(process.env.DEBUG === 'true')
+
+// These will only execute in appropriate environments
+devLogger.text('Development-only message').print()
+prodLogger.text('Production-only message').print()
+debugLogger.text('Debug information').print()
+
+// Complex conditional logging
+const apiLogger = Logger
+  .type('info')
+  .prefix('API')
+  .time()
+  .valid(process.env.LOG_API === 'true')
+
+apiLogger.text('API request processed').detail('POST /users').print()
 ```
 
 ### 8. Reusable Logger Configurations
