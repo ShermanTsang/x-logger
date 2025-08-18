@@ -398,8 +398,15 @@ export class BrowserStreamLogger extends BaseLogger implements IBrowserStreamLog
     return this
   }
 
-  data(data: any): this {
-    this._data = data
+  data(...dataItems: any[]): this {
+    // If only one parameter is passed, maintain backward compatibility
+    if (dataItems.length === 1) {
+      this._data = dataItems[0]
+    }
+    else {
+      // For multiple parameters, store as array
+      this._data = dataItems
+    }
     return this
   }
 
